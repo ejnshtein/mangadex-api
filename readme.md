@@ -25,7 +25,6 @@ Mangadex.getChapter(8857).then(chapter => {
   console.log(chapter.title, chapter.volume, chapter.chapter)
 })
 
-
 Mangadex.search('senko').then(response => {
   console.log(response.titles.length)
 })
@@ -124,7 +123,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 | **last_chapter** | `string` |
 | **lang_name** | `string` |
 | **lang_flag** | [`LangCode`](#LangCode) |
-| **hentai** | `0 | 1` | // ( ͡~ ͜ʖ ͡°)
+| **hentai** | `0` `|` `1` | // ( ͡~ ͜ʖ ͡°)
 | **links** | `Array`<[`Link`](#Link)> \| `Map`<`string`, `string`> |
 
 ---
