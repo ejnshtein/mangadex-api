@@ -11,6 +11,11 @@
     "mangadex",
     "manga"
   ],
+  "homepage": "https://github.com/ejnshtein/mangadex-api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ejnshtein/mangadex-api"
+  },
   "author": "ejnshtein",
   "license": "ISC",
   "dependencies": {
