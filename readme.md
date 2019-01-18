@@ -1,11 +1,16 @@
 # Mangadex-api
 
-
 [![NPM Version](https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
 [![node](https://img.shields.io/node/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
 [![npm downloads](https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square)](http://npm-stat.com/charts.html?package=mangadex-api)
 
 This is [Mangadex](https://mangadex.org) website api wrapper with some custom methods.  
+
+## Installation
+
+```
+  npm i mangadex-api
+```
 
 ## Example
 
