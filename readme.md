@@ -1,7 +1,6 @@
 # Mangadex-api
 
 [![NPM Version](https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
-[![node](https://img.shields.io/node/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
 [![npm downloads](https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square)](http://npm-stat.com/charts.html?package=mangadex-api)
 
 This is [Mangadex](https://mangadex.org) website api wrapper with some custom methods.  
@@ -42,7 +41,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 | Argument | Type | Description |
 |-|-|-|
-| **mangaId** | `number | string` | Mangadex manga id |
+| **mangaId** | `number` \| `string` | Mangadex manga id |
 | **normalize=true** | `boolean` | Will transform some manga object properties. [Details](#Manga-normalize-example) |
 | **params** | `AxiosRequestConfig` | [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config) |
 
@@ -54,7 +53,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 | Argument | Type | Description |
 |-|-|-|
-| **chapterId** | `number | string` | Mangedex chapter id |
+| **chapterId** | `number` \| `string` | Mangedex chapter id |
 | **normalize=true** | `boolean` | Will transform some manga object properties. [Details](#Chapter-normalize-example) |
 | **params** | `AxiosRequestConfig` | [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config) |
 
