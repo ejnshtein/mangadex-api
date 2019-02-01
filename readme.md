@@ -14,7 +14,7 @@ This is [Mangadex](https://mangadex.org) website api wrapper with some custom me
 ## Example
 
 ```js
-const Mangadex = require('mangadex-api')
+const Mangadex = require('mangadex-api') // add .default for typings in JS
 
 Mangadex.getManga(22723).then(({ manga, chapter }) => {
   console.log(manga.title, chapter.length)
