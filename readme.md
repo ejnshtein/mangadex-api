@@ -7,7 +7,7 @@ This is [Mangadex](https://mangadex.org) website api wrapper with some custom me
 
 ## Installation
 
-```
+```shell
   npm i mangadex-api
 ```
 
@@ -25,7 +25,7 @@ Mangadex.getChapter(8857).then(chapter => {
 })
 
 Mangadex.search('senko').then(response => {
-  console.log(response.titles.length)
+  console.log(`Found ${response.titles.length} titles.`)
 })
 ```
 
