@@ -16,20 +16,20 @@ module.exports = {
     }
     const titles = content('body > div#content > div.row.mt-1.mx-0').children('div')
       .map((i, el) => {
-        const select = cheerio.load(el)
-        const id = Number.parseInt(select().data('id'))
+        const block = cheerio(el)
+        const id = Number.parseInt(block.data('id'))
         return {
           id,
-          title: select('div:nth-child(2)').children('a').attr('title'),
-          image_url: `https://mangadex.org${select('div:nth-child(1)').children('a').children('img').attr('src')}`,
-          description: select('div:last-of-type').text(),
-          views: parseInt(select('ul').children('li:nth-child(3)').text().trim().replace(/,/i, '')),
-          follows: parseInt(select('ul').children('li:nth-child(2)').text().trim().replace(/,/i, '')),
+          title: block.children('div:nth-child(2)').children('a').attr('title'),
+          image_url: `https://mangadex.org${block.children('div:nth-child(1)').children('a').children('img').attr('src')}`,
+          description: block.children('div:last-of-type').text(),
+          views: parseInt(block.children('ul').children('li:nth-child(3)').text().trim().replace(/,/i, '')),
+          follows: parseInt(block.children('ul').children('li:nth-child(2)').text().trim().replace(/,/i, '')),
           rating: {
-            value: parseFloat(select('ul').children('li:nth-child(1)').children('span:last-of-type').text()),
-            votes: parseInt(select('ul').children('li:nth-child(1)').children('span:last-of-type').attr('title').match(/(\S+) .+/i)[1])
+            value: parseFloat(block.children('ul').children('li:nth-child(1)').children('span:last-of-type').text()),
+            votes: parseInt(block.children('ul').children('li:nth-child(1)').children('span:last-of-type').attr('title').match(/(\S+) .+/i)[1])
           },
-          lang_name: select('div:nth-child(2)').children('div').children('img').attr('title')
+          lang_name: block.children('div:nth-child(2)').children('div').children('img').attr('title')
         }
       }).get()
 
