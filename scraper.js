@@ -21,7 +21,7 @@ module.exports = {
         return {
           id,
           title: block.children('div:nth-child(2)').children('a').attr('title'),
-          image_url: `https://mangadex.org${block.children('div:nth-child(1)').children('a').children('img').attr('src')}`,
+          image_url: `https://cdndex.com${block.children('div:nth-child(1)').children('a').children('img').attr('src')}`,
           description: block.children('div:last-of-type').text(),
           views: parseInt(block.children('ul').children('li:nth-child(3)').text().trim().replace(/,/i, '')),
           follows: parseInt(block.children('ul').children('li:nth-child(2)').text().trim().replace(/,/i, '')),

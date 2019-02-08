@@ -68,7 +68,7 @@ const normalizeManga = response => {
     fixedChapters.sort((a, b) => Number(a.chapter) - Number(b.chapter))
     mangaData.chapter = fixedChapters
   }
-  mangaData.manga.cover_url = `https://mangadex.org${mangaData.manga.cover_url}`
+  mangaData.manga.cover_url = `https://cdndex.com${mangaData.manga.cover_url}`
   if (typeof mangaData.manga.genres === 'object' && mangaData.manga.genres !== null) {
     mangaData.manga.genres = Composer.getGenres(mangaData.manga.genres)
   }
