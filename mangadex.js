@@ -1,4 +1,5 @@
 const axios = require('axios').default
+const merge = require('deepmerge')
 const { parseSearch } = require('./scraper')
 const api = axios.create({
   baseURL: 'https://mangadex.org/api/',
@@ -37,11 +38,16 @@ class Mangadex extends Composer {
     return axios
       .get(
         'https://mangadex.org/search',
-        Object.assign({}, {
-          params: {
-            [searchSegment]: query
-          }
-        }, params)
+        merge.all(
+          [
+            {
+              params: {
+                [searchSegment]: query
+              }
+            },
+            params
+          ]
+        )
       )
       .then(response => parseSearch(response.data))
   }
