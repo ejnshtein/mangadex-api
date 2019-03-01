@@ -35,6 +35,32 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 ---
 
+### constructor
+
+`const client = new Mangadex([options]): Mangadex`
+
+| Property | Type | Description |
+|-|-|-|
+| **options.cacheTimeout** | `number` | Default cache timeout for both manga and chapter data. (ms) |
+| **options.mangaCacheTimeout** | `number` | Default cache timeout for manga data. (ms) |
+| **options.chapterCacheTimeout** | `number` | Default cache timeout for chapter data. (ms) |
+| **options.cacheMangaResult** | `boolean` | Set `true` if you want to use caching for manga data. |
+| **options.cacheChapterResult** | `boolean` | Set `true` if you want to use caching for chapter data. |
+
+Default `options` config:
+
+```json
+{
+  cacheTimeout: 600000,
+  mangaCacheTimeout: 0,
+  chapterCachetimeout: 0,
+  cacheMangaResult: false,
+  cacheChapterResult: false
+}
+```
+
+---
+
 ### getManga
 
 `Mangadex.getManga(mangaId, [normalize], [params]): Promise<`[`Title`](#Title)`>`
@@ -78,7 +104,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 | Property name | Type |
 |-|-|
 | **manga** | [`MangaDescription`](#MangaDescription) |
-| **chapter** | `Array`<[`MangaChapter`](#MangaChapter)> \| `Map`<[`MangaId`](#MangaId), [`MangaChapter`](#MangaChapter)> |
+| **chapter** | `Array`<[`MangaChapter`](#MangaChapter)> \| `Map`<`string`, [`MangaChapter`](#MangaChapter)> |
 | **status** | `string` |
 
 ---
@@ -87,7 +113,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 | Property name | Type |
 |-|-|
-| **id**  | [`ChapterId`](#ChapterId) |
+| **id**  | `string` \| `number` |
 | **timestamp** | `number` |
 | **hash** | `string` |
 | **volume** | `string` |
@@ -131,7 +157,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 | Property name | Type |
 |-|-|
-| **id** | [`ChapterId`](#ChapterId) |
+| **id** | `string` \| `number` |
 | **volume** | `string` |
 | **chapter** | `string` |
 | **title** | `string` |
@@ -196,22 +222,6 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 ---
 
-### MangaId
-
-| Type |
-|-|
-| `string` | `number` |
-
----
-
-### ChapterId
-
-| Type |
-|-|
-| `string` | `number` |
-
----
-
 ### Status
 
 | Type |
@@ -236,3 +246,6 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 
 **Chapter.server** will became an absolute path of server.  
 **Chapter.page_array** will became an array of images with absolute path.  
+
+## Caching
+
