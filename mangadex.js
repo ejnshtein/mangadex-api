@@ -10,12 +10,18 @@ const MangadexError = require('./lib/error')
 // const validate = require('./lib/validate')
 const Composer = require('./lib')
 
+const sharedMangaCache = new LRU({ maxAge: 600000 })
+
+const sharedChapterCache = new LRU({ maxAge: 600000 })
+
 const DefaultOptions = {
   cacheTimeout: 600000,
   mangaCacheTimeout: 0,
   chapterCachetimeout: 0,
   cacheMangaResult: false,
-  cacheChapterResult: false
+  cacheChapterResult: false,
+  shareMangaCache: false,
+  shareChapterCache: false
 }
 
 class Mangadex extends Composer {
@@ -23,23 +29,39 @@ class Mangadex extends Composer {
     super()
     this.options = Object.assign({}, DefaultOptions, options)
 
-    this.mangaCache = new LRU({
-      maxAge: this.options.mangaCacheTimeout ? this.options.mangaCacheTimeout : this.options.cacheTimeout
-    })
-    this.chapterCache = new LRU({
-      maxAge: this.options.chapterCachetimeout ? this.options.chapterCachetimeout : this.options.cacheTimeout
-    })
+    if (!this.options.shareMangaCache) {
+      this.mangaCache = new LRU({
+        maxAge: this.options.mangaCacheTimeout ? this.options.mangaCacheTimeout : this.options.cacheTimeout
+      })
+    }
+    if (!this.options.shareChapterCache) {
+      this.chapterCache = new LRU({
+        maxAge: this.options.chapterCachetimeout ? this.options.chapterCachetimeout : this.options.cacheTimeout
+      })
+    }
   }
 
   getManga (mangaId, normalize = true, params = {}) {
     if (this.options.cacheMangaResult) {
-      const cachedResult = this.mangaCache.get(`${mangaId}:${normalize === true ? '1' : '0'}`)
+      const cachedResult = this.options.shareMangaCache
+        ? sharedMangaCache.get(`${mangaId}:${normalize === true ? '1' : '0'}`)
+        : this.mangaCache.get(`${mangaId}:${normalize === true ? '1' : '0'}`)
       if (cachedResult) {
         return cachedResult
       } else {
         return Mangadex.getManga(mangaId, normalize, params)
           .then(result => {
-            this.mangaCache.set(`${mangaId}:${normalize === true ? '1' : '0'}`, result)
+            if (this.options.shareMangaCache) {
+              sharedMangaCache.set(
+                `${mangaId}:${normalize === true ? '1' : '0'}`,
+                result,
+                this.options.mangaCacheTimeout
+                  ? this.options.mangaCacheTimeout
+                  : this.options.cacheTimeout
+              )
+            } else {
+              this.mangaCache.set(`${mangaId}:${normalize === true ? '1' : '0'}`, result)
+            }
             return result
           })
       }
@@ -49,13 +71,25 @@ class Mangadex extends Composer {
 
   getChapter (chapterId, normalize = true, params = {}) {
     if (this.options.cacheChapterResult) {
-      const cachedResult = this.chapterCache.get(`${chapterId}:${normalize === true ? '1' : '0'}`)
+      const cachedResult = this.options.sharedChapteCache
+        ? sharedChapterCache.get(`${chapterId}:${normalize === true ? '1' : '0'}`)
+        : this.chapterCache.get(`${chapterId}:${normalize === true ? '1' : '0'}`)
       if (cachedResult) {
         return cachedResult
       } else {
         return Mangadex.getChapter(chapterId, normalize, params)
           .then(result => {
-            this.chapterCache.set(`${chapterId}:${normalize === true ? '1' : '0'}`, result)
+            if (this.options.sharedChapteCache) {
+              sharedChapterCache.set(
+                `${chapterId}:${normalize === true ? '1' : '0'}`,
+                result,
+                this.options.chapterCachetimeout
+                  ? this.options.chapterCachetimeout
+                  : this.options.cacheTimeout
+              )
+            } else {
+              this.chapterCache.set(`${chapterId}:${normalize === true ? '1' : '0'}`, result)
+            }
             return result
           })
       }

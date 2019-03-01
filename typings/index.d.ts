@@ -41,6 +41,9 @@ export interface MangadexOptions {
 
   cacheChapterResult: boolean
   
+  shareMangaCache: boolean
+
+  shareChapterCache: boolean
 }
 
 export default Mangadex
