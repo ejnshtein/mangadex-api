@@ -39,6 +39,8 @@ class Mangadex extends Composer {
         maxAge: this.options.chapterCachetimeout ? this.options.chapterCachetimeout : this.options.cacheTimeout
       })
     }
+    this.getChapter = this.getChapter.bind(this)
+    this.getManga = this.getManga.bind(this)
   }
 
   getManga (mangaId, normalize = true, params = {}) {
