@@ -1,5 +1,6 @@
 const axios = require('axios').default
 const merge = require('deepmerge')
+const LRU = require('lru-cache')
 const { parseSearch } = require('./scraper')
 const api = axios.create({
   baseURL: 'https://mangadex.org/api/',
@@ -9,12 +10,56 @@ const MangadexError = require('./lib/error')
 // const validate = require('./lib/validate')
 const Composer = require('./lib')
 
+const DefaultOptions = {
+  cacheTimeout: 600000,
+  mangaCacheTimeout: 0,
+  chapterCachetimeout: 0,
+  cacheMangaResult: false,
+  cacheChapterResult: false
+}
+
 class Mangadex extends Composer {
+  constructor (options) {
+    super()
+    this.options = Object.assign({}, DefaultOptions, options)
+
+    this.mangaCache = new LRU({
+      maxAge: this.options.mangaCacheTimeout ? this.options.mangaCacheTimeout : this.options.cacheTimeout
+    })
+    this.chapterCache = new LRU({
+      maxAge: this.options.chapterCachetimeout ? this.options.chapterCachetimeout : this.options.cacheTimeout
+    })
+  }
+
   getManga (mangaId, normalize = true, params = {}) {
+    if (this.options.cacheMangaResult) {
+      const cachedResult = this.mangaCache.get(`${mangaId}:${normalize === true ? '1' : '0'}`)
+      if (cachedResult) {
+        return cachedResult
+      } else {
+        return Mangadex.getManga(mangaId, normalize, params)
+          .then(result => {
+            this.mangaCache.set(`${mangaId}:${normalize === true ? '1' : '0'}`, result)
+            return result
+          })
+      }
+    }
     return Mangadex.getManga(mangaId, normalize, params)
   }
 
   getChapter (chapterId, normalize = true, params = {}) {
+    if (this.options.cacheChapterResult) {
+      const cachedResult = this.chapterCache.get(`${chapterId}:${normalize === true ? '1' : '0'}`)
+      if (cachedResult) {
+        return cachedResult
+      } else {
+        return Mangadex.getChapter(chapterId, normalize, params)
+          .then(result => {
+            this.chapterCache.set(`${chapterId}:${normalize === true ? '1' : '0'}`, result)
+            return result
+          })
+      }
+    }
     return Mangadex.getChapter(chapterId, normalize, params)
   }
 
@@ -38,16 +83,14 @@ class Mangadex extends Composer {
     return axios
       .get(
         'https://mangadex.org/search',
-        merge.all(
-          [
-            {
-              params: {
-                [searchSegment]: query
-              }
-            },
-            params
-          ]
-        )
+        merge.all([
+          {
+            params: {
+              [searchSegment]: query
+            }
+          },
+          params
+        ])
       )
       .then(response => parseSearch(response.data))
   }

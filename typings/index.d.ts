@@ -4,7 +4,7 @@ import { AxiosRequestConfig } from 'axios'
 export const Mangadex: Mangadex
 
 export interface MangadexConstructor {
-  new (): Mangadex
+  new (options: MangadexOptions): Mangadex
 }
 
 export interface Mangadex extends Composer {
@@ -27,6 +27,20 @@ export interface Composer {
 
   getLangName (landCode: string): string
 
+}
+
+export interface MangadexOptions {
+
+  cacheTimeout: number
+
+  mangaCacheTimeout: number
+
+  chapterCacheTimeout: number
+
+  cacheMangaResult: boolean
+
+  cacheChapterResult: boolean
+  
 }
 
 export default Mangadex
