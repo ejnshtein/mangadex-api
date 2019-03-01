@@ -51,11 +51,11 @@ Default `options` config:
 
 ```json
 {
-  cacheTimeout: 600000,
-  mangaCacheTimeout: 0,
-  chapterCachetimeout: 0,
-  cacheMangaResult: false,
-  cacheChapterResult: false
+  "cacheTimeout": 600000,
+  "mangaCacheTimeout": 0,
+  "chapterCachetimeout": 0,
+  "cacheMangaResult": false,
+  "cacheChapterResult": false
 }
 ```
 
