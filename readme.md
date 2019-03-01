@@ -47,7 +47,7 @@ P.S. Manga from example: [Sewayaki Kitsune no Senko-san](https://mangadex.org/ti
 | **options.cacheMangaResult** | `boolean` | Set `true` if you want to use caching for manga data. |
 | **options.cacheChapterResult** | `boolean` | Set `true` if you want to use caching for chapter data. |
 | **options.shareMangaCache** | `boolean` | If `true` will use shared manga in-memory store instead of Mangadex instance cache store. (Works with timeout **mangaCacheTimeout** option) |
-| **options.shareChapterCache** | `boolean` | If `true` will use shared chapter in-memory store instead of Mangadex instance cache store. (Works with timeout **chapterCacheTimeout** option)
+| **options.shareChapterCache** | `boolean` | If `true` will use shared chapter in-memory store instead of Mangadex instance cache store. (Works with timeout **chapterCacheTimeout** option) |
 
 Default `options` config:
 
