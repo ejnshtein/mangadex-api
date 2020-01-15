@@ -103,15 +103,13 @@ export interface MangaDescription {
   lang_name: string
   lang_flag: LangCode
   hentai: 0 | 1
-  links: Array<Link> & Map<string, string>
+  links: Array<Link> | Map<string, string>
 }
 
 export interface Genre {
   id: number
   label: string
 }
-
-export type SearchSegment = 'title' | 'author' | 'artist'
 
 export interface SearchResult {
   titles: Array<SearchResultTitle>
@@ -138,3 +136,38 @@ export interface Link {
   title: string
   url: string
 }
+
+export type OriginalLanguage =
+  | English
+  | Japanese
+  | Polish
+  | German
+  | French
+  | Vietnamese
+  | Chinese
+  | Indonesian
+  | Korean
+  | SpanishLATAM
+  | Thai
+  | Filipino
+  | ChineseTrad
+
+type English = 1
+type Japanese = 2
+type Polish = 3
+type German = 8
+type French = 10
+type Vietnamese = 12
+type Chinese = 21
+type Indonesian = 27
+type Korean = 28
+type SpanishLATAM = 29
+type Thai = 32
+type Filipino = 34
+type ChineseTrad = 35
+
+export type Demographic = Array<number>
+
+export type PublicationStatus = Array<number>
+
+export type Tags = Array<number>

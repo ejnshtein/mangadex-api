@@ -1,5 +1,5 @@
 import * as md from './mangadex.d'
-import { AxiosRequestConfig } from 'axios'
+import * as request from './request.d'
 
 export const Mangadex: MangadexConstructor
 
@@ -12,7 +12,11 @@ export interface Mangadex extends Composer {
    * @param normalize Will transform some manga object properties. [Details](#Manga-normalize-example)
    * @param params [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config)
    */
-  getManga (mangaId: string | number, normalize?: Boolean, params?: AxiosRequestConfig): Promise<md.Title>
+  getManga (
+    mangaId: string | number,
+    normalize?: Boolean,
+    params?: request.RequestOptions
+  ): Promise<md.Title>
 
   /**
    * 
@@ -20,7 +24,11 @@ export interface Mangadex extends Composer {
    * @param normalize Will transform some manga object properties. [Details](#Chapter-normalize-example)
    * @param params [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config)
    */
-  getChapter (chapterId: string | number, normalize?: boolean, params?: AxiosRequestConfig): Promise<md.Chapter>
+  getChapter (
+    chapterId: string | number,
+    normalize?: boolean,
+    params?: request.RequestOptions
+  ):Promise<md.Chapter>
 
   /**
    * 
@@ -28,15 +36,65 @@ export interface Mangadex extends Composer {
    * @param searchSegment Will specify search request segment . There are 3 segments to search: `title`, `artist` and `author`. By default used `title` segment, because basically people search manga by this parameter.
    * @param params [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config)
    */
-  search (query: string, searchSegment?: md.SearchSegment, params?: AxiosRequestConfig): Promise<md.SearchResult>
+  search (
+    query?: SearchQuery,
+    params?: request.RequestOptions
+  ): Promise<md.SearchResult>
+}
 
+export interface SearchQuery {
+
+  /**
+   * Manga title
+   */
+  title: String
+
+  /**
+   * Author
+   */
+  author: String
+
+  /**
+   * Artist
+   */
+  artist: String
+
+  /**
+   * Original Language
+   */
+  lang_id: md.OriginalLanguage
+
+  /**
+   * Demographic
+   */
+  demos: md.Demographic
+
+  /**
+   * Publication status
+   */
+  statuses: md.PublicationStatus
+
+  /**
+   * Tags
+   */
+  tags: md.Tags
+
+  /**
+   * Tag inclusion mode
+   */
+  tag_mode_inc_all: 'all' | 'any'
+
+  /**
+   * Tag exclusion mode
+   */
+  tag_mode_exc: 'all' | 'any'
 }
 
 export interface Composer {
 
   getGenres (genre: number | string): Array<{ id: number, label: string }>
 
-  getMangaLinks (link: Map<string, string>): Array<{ title: string, url: string }>
+  getMangaLinks (links: Map<string, string>): Array<{ title: string, url: string }>
 
   getStatus (status: number): string
 

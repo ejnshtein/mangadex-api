@@ -1,0 +1,334 @@
+[
+  {
+    "id": 1,
+    "label": "4-Koma"
+  },
+  {
+    "id": 2,
+    "label": "Action"
+  },
+  {
+    "id": 3,
+    "label": "Adventure"
+  },
+  {
+    "id": 4,
+    "label": "Award Winning"
+  },
+  {
+    "id": 5,
+    "label": "Comedy"
+  },
+  {
+    "id": 6,
+    "label": "Cooking"
+  },
+  {
+    "id": 7,
+    "label": "Doujinshi"
+  },
+  {
+    "id": 8,
+    "label": "Drama"
+  },
+  {
+    "id": 9,
+    "label": "Ecchi"
+  },
+  {
+    "id": 10,
+    "label": "Fantasy"
+  },
+  {
+    "id": 11,
+    "label": "Gyaru"
+  },
+  {
+    "id": 12,
+    "label": "Harem"
+  },
+  {
+    "id": 13,
+    "label": "Historical"
+  },
+  {
+    "id": 14,
+    "label": "Horror"
+  },
+  {
+    "id": 15,
+    "label": "Josei"
+  },
+  {
+    "id": 16,
+    "label": "Martial Arts"
+  },
+  {
+    "id": 17,
+    "label": "Mecha"
+  },
+  {
+    "id": 18,
+    "label": "Medical"
+  },
+  {
+    "id": 19,
+    "label": "Music"
+  },
+  {
+    "id": 20,
+    "label": "Mystery"
+  },
+  {
+    "id": 21,
+    "label": "Oneshot"
+  },
+  {
+    "id": 22,
+    "label": "Psychological"
+  },
+  {
+    "id": 23,
+    "label": "Romance"
+  },
+  {
+    "id": 24,
+    "label": "School Life"
+  },
+  {
+    "id": 25,
+    "label": "Sci-Fi"
+  },
+  {
+    "id": 26,
+    "label": "Seinen"
+  },
+  {
+    "id": 27,
+    "label": "Shoujo"
+  },
+  {
+    "id": 28,
+    "label": "Shoujo Ai"
+  },
+  {
+    "id": 29,
+    "label": "Shounen"
+  },
+  {
+    "id": 30,
+    "label": "Shounen Ai"
+  },
+  {
+    "id": 31,
+    "label": "Slice of Life"
+  },
+  {
+    "id": 32,
+    "label": "Smut"
+  },
+  {
+    "id": 33,
+    "label": "Sports"
+  },
+  {
+    "id": 34,
+    "label": "Supernatural"
+  },
+  {
+    "id": 35,
+    "label": "Tragedy"
+  },
+  {
+    "id": 36,
+    "label": "Long Strip"
+  },
+  {
+    "id": 37,
+    "label": "Yaoi"
+  },
+  {
+    "id": 38,
+    "label": "Yuri"
+  },
+  {
+    "id": 39,
+    "label": "[no chapters]"
+  },
+  {
+    "id": 40,
+    "label": "Video Games"
+  },
+  {
+    "id": 41,
+    "label": "Isekai"
+  },
+  {
+    "id": 42,
+    "label": "Adaptation"
+  },
+  {
+    "id": 43,
+    "label": "Anthology"
+  },
+  {
+    "id": 44,
+    "label": "Web Comic"
+  },
+  {
+    "id": 45,
+    "label": "Full Color"
+  },
+  {
+    "id": 46,
+    "label": "User Created"
+  },
+  {
+    "id": 47,
+    "label": "Official Colored"
+  },
+  {
+    "id": 48,
+    "label": "Fan Colored"
+  },
+  {
+    "id": 49,
+    "label": "Gore"
+  },
+  {
+    "id": 50,
+    "label": "Sexual Violence"
+  },
+  {
+    "id": 51,
+    "label": "Crime"
+  },
+  {
+    "id": 52,
+    "label": "Magical Girls"
+  },
+  {
+    "id": 53,
+    "label": "Philosophical"
+  },
+  {
+    "id": 54,
+    "label": "Superhero"
+  },
+  {
+    "id": 55,
+    "label": "Thriller"
+  },
+  {
+    "id": 56,
+    "label": "Wuxia"
+  },
+  {
+    "id": 57,
+    "label": "Aliens"
+  },
+  {
+    "id": 58,
+    "label": "Animals"
+  },
+  {
+    "id": 59,
+    "label": "Crossdressing"
+  },
+  {
+    "id": 60,
+    "label": "Demons"
+  },
+  {
+    "id": 61,
+    "label": "Delinquents"
+  },
+  {
+    "id": 62,
+    "label": "Genderswap"
+  },
+  {
+    "id": 63,
+    "label": "Ghosts"
+  },
+  {
+    "id": 64,
+    "label": "Monster Girls"
+  },
+  {
+    "id": 65,
+    "label": "Loli"
+  },
+  {
+    "id": 66,
+    "label": "Magic"
+  },
+  {
+    "id": 67,
+    "label": "Military"
+  },
+  {
+    "id": 68,
+    "label": "Monsters"
+  },
+  {
+    "id": 69,
+    "label": "Ninja"
+  },
+  {
+    "id": 70,
+    "label": "Office Workers"
+  },
+  {
+    "id": 71,
+    "label": "Police"
+  },
+  {
+    "id": 72,
+    "label": "Post-Apocalyptic"
+  },
+  {
+    "id": 73,
+    "label": "Reincarnation"
+  },
+  {
+    "id": 74,
+    "label": "Reverse Harem"
+  },
+  {
+    "id": 75,
+    "label": "Samurai"
+  },
+  {
+    "id": 76,
+    "label": "Shota"
+  },
+  {
+    "id": 77,
+    "label": "Survival"
+  },
+  {
+    "id": 78,
+    "label": "Time Travel"
+  },
+  {
+    "id": 79,
+    "label": "Vampires"
+  },
+  {
+    "id": 80,
+    "label": "Traditional Games"
+  },
+  {
+    "id": 81,
+    "label": "Virtual Reality"
+  },
+  {
+    "id": 82,
+    "label": "Zombies"
+  },
+  {
+    "id": 83,
+    "label": "Incest"
+  }
+]
