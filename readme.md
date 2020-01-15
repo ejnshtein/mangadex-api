@@ -51,10 +51,7 @@ const Mangadex = require('mangadex-api')
 
 const client = new Mangadex({
   host: 'https://mangadex.cc',
-  apiHost: 'https://mangadex.cc/api',
-  getCredentials: async () => {
-
-  }
+  apiHost: 'https://mangadex.cc/api'
 })
 
 client.agent.login('username', 'password', false)
