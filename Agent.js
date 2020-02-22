@@ -1,4 +1,4 @@
-const { request, multipart, sleep } = require('./lib')
+const { request, multipart } = require('./lib')
 const { all: deepmerge } = require('deepmerge')
 const fs = require('fs')
 const cheerio = require('cheerio')
@@ -23,9 +23,9 @@ class Agent {
     this.sessionExpiration = sessionExpiration
     this.persistentId = persistentId
     this.hentai = hentai
-    this.host = host,
+    this.host = host
     this.apiHost = apiHost
-    this.getCredentials = getCredentials ? getCredentials : () => {}
+    this.getCredentials = getCredentials || (() => {})
   }
 
   setSession (id, expiration) {
@@ -53,10 +53,10 @@ class Agent {
       }
       if (!this.sessionId && !this.sessionExpiration) {
         if (!session.sessionId) {
-          throw new Error(`No Session Id was given`)
+          throw new Error('No Session Id was given')
         }
         if (!session.expiration) {
-          throw new Error(`No Expiration was given`)
+          throw new Error('No Expiration was given')
         }
         this.setSession(session.sessionId, session.expiration)
 
@@ -73,7 +73,9 @@ class Agent {
     }
     const { sessionId, expiration, persistentId } = await Agent.login(username, password, rememberMe, { baseUrl: this.host, ...options })
     this.setSession(sessionId, expiration)
-    this.setPersistent(persistentId)
+    if (persistentId) {
+      this.setPersistent(persistentId)
+    }
     return true
   }
 
@@ -106,8 +108,9 @@ class Agent {
 
     const mangadexSession = headers['set-cookie'].find(cookie => cookie.includes('mangadex_session'))
     if (mangadexSession) {
-      const [_, sessionId, expiration] = mangadexSession.match(/mangadex_session=(\S+); expires=([\S\s]+?);/i)
+      const [_, sessionId] = mangadexSession.match(/mangadex_session=(\S+);/i)
       session.sessionId = sessionId
+      const [fullMatch, expiration] = mangadexSession.match(/expires=([\S\s]+?);/i)
       session.expiration = expiration
     }
     const persistent = headers['set-cookie'].find(cookie => cookie.includes('mangadex_rememberme_token'))
@@ -138,10 +141,10 @@ class Agent {
       const session = this.getCredentials.constructor.name === 'AsyncFunction' ? await this.getCredentials() : this.getCredentials()
       if (!this.sessionId && !this.sessionExpiration) {
         if (!session.sessionId) {
-          throw new Error(`No Session Id was given`)
+          throw new Error('No Session Id was given')
         }
         if (!session.expiration) {
-          throw new Error(`No Expiration was given`)
+          throw new Error('No Expiration was given')
         }
         this.setSession(session.sessionId, session.expiration)
 
@@ -166,13 +169,12 @@ class Agent {
   }
 
   async loginWithSession (path) {
-
     const file = await readFile(path, 'utf8')
 
     const [sessionId, expiration, persistentId] = file.split('\n')
 
     if (!sessionId || !expiration) {
-      throw new Error(`Lost "${!sessionId && 'sessionId' || !expiration && 'expiration'}"`)
+      throw new Error(`Lost "${(!sessionId && 'sessionId') || (!expiration && 'expiration')}"`)
     }
 
     this.setSession(sessionId, expiration)
@@ -198,7 +200,7 @@ class Agent {
     })
   }
 
-  static async saveSession(path, session) {
+  static async saveSession (path, session) {
     await writeFile(path, `${session.sessionId}\n${session.sessionExpiration.toGMTString()}${session.persistentId ? `\n${session.persistentId}` : ''}`, 'utf8')
     return true
   }
@@ -206,7 +208,8 @@ class Agent {
   setCookies (cookies) {
     const mangadexSession = cookies.find(cookie => cookie.includes('mangadex_session'))
     if (mangadexSession) {
-      const [_, sessionId, expiration] = mangadexSession.match(/mangadex_session=(\S+); expires=([\S\s]+);/i)
+      const [_, sessionId] = mangadexSession.match(/mangadex_session=(\S+);/i)
+      const [__, expiration] = mangadexSession.match(/expires=([\S\s]+?);/i)
       if (sessionId === 'deleted') {
         return this._onDeleteSession()
       } else {
@@ -256,7 +259,6 @@ class Agent {
         ]
       )
     )
-  
     const resetedCookies = this.setCookies(result.headers['set-cookie'])
 
     if (typeof resetedCookies === 'boolean') {
@@ -290,20 +292,19 @@ class Agent {
 
   static async call (url, options = {}) {
     const result = await request(
-      `${options.baseUrl || 'https://mangadex.org'}${!(url.startsWith('/') && baseUrl.endsWith('/')) && '/'}${url}`,
-        deepmerge(
-          [
-            {
-              method: 'GET',
-              headers: {
-                'User-Agent': `mangadex-api/${packageVersion}`
-              }
-            },
-            options
-          ]
-        )
+      `${options.baseUrl || 'https://mangadex.org'}${!(url.startsWith('/') && options.baseUrl.endsWith('/')) && '/'}${url}`,
+      deepmerge(
+        [
+          {
+            method: 'GET',
+            headers: {
+              'User-Agent': `mangadex-api/${packageVersion}`
+            }
+          },
+          options
+        ]
       )
-    
+    )
     return result
   }
 

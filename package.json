@@ -1,6 +1,6 @@
 {
   "name": "mangadex-api",
-  "version": "2.0.1-b",
+  "version": "2.0.2",
   "description": "mangadex api wrapper with known apis",
   "main": "Mangadex.js",
   "types": "./typings/index.d.ts",
@@ -16,7 +16,7 @@
     "url": "git+ssh://git@github.com/ejnshtein/mangadex-api"
   },
   "author": "ejnshtein",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "deepmerge": "^4.2.2",

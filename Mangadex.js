@@ -92,7 +92,6 @@ class Mangadex extends Composer {
   async getChapter (chapterId, normalize = true, params = {}) {
     const fetchChapter = () => Agent.callApi(`chapter/${chapterId}`, { baseUrl: this.options.host, ...params })
       .then(({ data }) => normalize ? normalizeChapter(data, `${this.options.host}/data/`) : data)
-  
     if (this.options.cacheChapterResult) {
       const key = `${chapterId}:${normalize === true ? '1' : '0'}`
       const cachedResult = this.options.sharedChapteCache
@@ -155,17 +154,17 @@ class Mangadex extends Composer {
       .entries(defaultQuery)
       .reduce(
         (acc, [name, value]) => {
-        if (typeof value === 'string' && value) {
-          acc[name] = value
-        }
-        if (Array.isArray(value) && value.length > 0){
-          acc[name] = value.join(',')
-        }
-        return acc
-      }, {})
+          if (typeof value === 'string' && value) {
+            acc[name] = value
+          }
+          if (Array.isArray(value) && value.length > 0) {
+            acc[name] = value.join(',')
+          }
+          return acc
+        }, {})
 
     const result = await this.agent.call(
-      `search`,
+      'search',
       deepmerge(
         [
           {
@@ -213,13 +212,13 @@ class Mangadex extends Composer {
           if (typeof value === 'string' && value) {
             acc[name] = value
           }
-          if (Array.isArray(value) && value.length > 0){
+          if (Array.isArray(value) && value.length > 0) {
             acc[name] = value.join(',')
           }
-        return acc
-      }, {})
+          return acc
+        }, {})
     const result = await Agent.call(
-      `search`,
+      'search',
       deepmerge(
         [
           {
@@ -233,12 +232,12 @@ class Mangadex extends Composer {
   }
 
   async quickSearch (title, params = {}) {
-    const result = await this.agent.call(`quick_search/${encodeURIComponent(title)}`, params    )
+    const result = await this.agent.call(`quick_search/${encodeURIComponent(title)}`, params)
     return parseSearch(result)
   }
 
   static async quickSearch (title, params = {}) {
-    const result = await Agent.call(`quick_search/${encodeURIComponent(title)}`, params    )
+    const result = await Agent.call(`quick_search/${encodeURIComponent(title)}`, params)
     return parseSearch(result.data)
   }
 
@@ -262,19 +261,19 @@ class Mangadex extends Composer {
     return parseGroup(result.data)
   }
 
-  async getHome(params = {}) {
+  async getHome (params = {}) {
     const result = await this.agent.call('', params)
     return parseHome(result, this.options.host)
   }
 
-  static async getHome(params = {}) {
+  static async getHome (params = {}) {
     const result = await Agent.call('', params)
     return parseHome(result.data, params.baseUrl || DefaultOptions.host)
   }
 
   async getMe (params = {}) {
     const result = await this.agent.call('', params)
-    const { id } =  parseMe(result)
+    const { id } = parseMe(result)
 
     if (id) {
       return this.getUser(id)
