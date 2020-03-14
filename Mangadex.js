@@ -56,7 +56,7 @@ class Mangadex extends Composer {
 
   async getManga (mangaId, normalize = true, params = {}) {
     const fetchManga = () => Agent.callApi(`manga/${mangaId}`, { baseUrl: this.options.host, ...params })
-      .then(({ data }) => normalize ? normalizeManga(data) : data)
+      .then(({ data }) => normalize ? normalizeManga({ ...data, host: this.options.host }) : data)
 
     if (this.options.cacheMangaResult) {
       const key = `${mangaId}:${normalize === true ? '1' : '0'}`
@@ -86,7 +86,7 @@ class Mangadex extends Composer {
 
   static async getManga (mangaId, normalize = true, params = {}) {
     const { data } = await Agent.callApi(`manga/${mangaId}`, params)
-    return normalize ? normalizeManga(data) : data
+    return normalize ? normalizeManga({ ...data, host: params.baseUrl }) : data
   }
 
   async getChapter (chapterId, normalize = true, params = {}) {
@@ -293,14 +293,14 @@ module.exports.default = Object.assign(Mangadex, {
   Agent
 })
 
-const normalizeManga = ({ manga, chapter, status }) => {
+const normalizeManga = ({ manga, chapter, status, host }) => {
   if (typeof chapter === 'object') {
     const fixedChapters = Object.keys(chapter)
       .map(id => ({ id: Number.parseInt(id), lang_name: Composer.getLangName(chapter[id].lang_code), ...chapter[id] }))
       .sort((a, b) => Number(a.chapter) - Number(b.chapter))
     chapter = fixedChapters
   }
-  manga.cover_url = `https://cdndex.com${manga.cover_url}`
+  manga.cover_url = `${host || 'https://mangadex.org'}${manga.cover_url}`
   if (typeof manga.genres === 'object' && manga.genres !== null) {
     manga.genres = Composer.getGenres(manga.genres)
   }
