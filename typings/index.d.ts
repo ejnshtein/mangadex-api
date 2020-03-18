@@ -3,43 +3,45 @@ import * as request from './request.d'
 
 export const Mangadex: MangadexConstructor
 
-
 export interface Mangadex extends Composer {
 
-  /**
-   * 
-   * @param mangaId Mangadex manga id
-   * @param normalize Will transform some manga object properties. [Details](#Manga-normalize-example)
-   * @param params [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config)
-   */
+  agent: Agent
+
   getManga (
-    mangaId: string | number,
+    id: string | number,
     normalize?: Boolean,
     params?: request.RequestOptions
   ): Promise<md.Title>
 
-  /**
-   * 
-   * @param chapterId Mangedex chapter id
-   * @param normalize Will transform some manga object properties. [Details](#Chapter-normalize-example)
-   * @param params [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config)
-   */
   getChapter (
-    chapterId: string | number,
+    id: string | number,
     normalize?: boolean,
     params?: request.RequestOptions
   ):Promise<md.Chapter>
 
-  /**
-   * 
-   * @param query Query string for searching on [mangadex](https://mangadex.org/search)
-   * @param searchSegment Will specify search request segment . There are 3 segments to search: `title`, `artist` and `author`. By default used `title` segment, because basically people search manga by this parameter.
-   * @param params [github.com/axios/axios#request-config](https://github.com/axios/axios#request-config)
-   */
   search (
     query?: SearchQuery,
     params?: request.RequestOptions
   ): Promise<md.SearchResult>
+
+  quickSearch (
+    title: string,
+    params?: request.RequestOptions
+  ): Promise<md.SearchResult>
+
+  getUser (
+    id: string | number,
+    params?: request.RequestOptions
+  ): Promise<md.MangadexUser>
+
+  getGroup (
+    id: string | number,
+    params?: request.RequestOptions
+  ): Promise<md.MangadexGroup>
+
+  getHome (params?: request.RequestOptions): Promise<md.MangadexHome>
+
+  getMe (params?: request.RequestOptions): Promise<md.MangadexUser>
 }
 
 export interface SearchQuery {
@@ -104,47 +106,121 @@ export interface Composer {
 
 export interface MangadexOptions {
 
+  host?: string
+  apiHost?: string
+  getCredentials?: Promise | Function | Object
+
   /**
    * Default cache timeout for both manga and chapter data. (ms)
    */
-  cacheTimeout: number
+  cacheTimeout?: number
 
   /**
    * Default cache timeout for manga data. (ms)
    */
-  mangaCacheTimeout: number
+  mangaCacheTimeout?: number
 
   /**
    * Default cache timeout for chapter data. (ms)
    */
-  chapterCacheTimeout: number
+  chapterCacheTimeout?: number
 
   /**
    * Set `true` if you want to use caching for manga data.
    */
-  cacheMangaResult: boolean
+  cacheMangaResult?: boolean
 
   /**
    * Set `true` if you want to use caching for chapter data.
    */
-  cacheChapterResult: boolean
+  cacheChapterResult?: boolean
   
   /**
    * If `true` will use shared manga in-memory store instead of Mangadex instance cache store. (Works with timeout **mangaCacheTimeout** option)
    */
-  shareMangaCache: boolean
+  shareMangaCache?: boolean
 
   /**
    * If `true` will use shared chapter in-memory store instead of Mangadex instance cache store. (Works with timeout **chapterCacheTimeout** option)
    */
-  shareChapterCache: boolean
+  shareChapterCache?: boolean
 }
 
 export interface MangadexConstructor {
   /**
    * Initialize new Mangadex app.
    */
-  new (options: MangadexOptions): Mangadex
+  new (options?: MangadexOptions): Mangadex
+
+  getManga (
+    id: string | number,
+    normalize?: Boolean,
+    params?: request.RequestOptions
+  ): Promise<md.Title>
+
+  getChapter (
+    id: string | number,
+    normalize?: boolean,
+    params?: request.RequestOptions
+  ):Promise<md.Chapter>
+
+  search (
+    query?: SearchQuery,
+    params?: request.RequestOptions
+  ): Promise<md.SearchResult>
+
+  quickSearch (
+    title: string,
+    params?: request.RequestOptions
+  ): Promise<md.SearchResult>
+
+  getUser (
+    id: string | number,
+    params?: request.RequestOptions
+  ): Promise<md.MangadexUser>
+
+  getGroup (
+    id: string | number,
+    params?: request.RequestOptions
+  ): Promise<md.MangadexGroup>
+
+  getHome (params?: request.RequestOptions): Promise<md.MangadexHome>
+}
+
+export interface Session {
+  sessionId: string
+  sessionExpiration: Date
+  persistentId?: string
+}
+
+export interface AgentConstructor {
+  new (options?: AgentOptions): Agent
+  login (username: string, password: string, rememberMe?: boolean, options?: request.RequestOptions): Promise<Session>
+  saveSession (path: string, session: Session): Promise<boolean>
+  call (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
+  callApi (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
+}
+
+export interface AgentOptions {
+  host: string
+  apiHost: string
+  sessionId: string
+  sessionExpiration: string
+  persistantId: string
+  hentai: number
+  getCredentials: Promise | Function | Object
+  loginCredentials: Promise | Function | Object
+}
+
+export interface Agent {
+  setSession (id: string, expiration?: string): void
+  setPersistent (token: string): void
+  login (username: string, password: string, rememberMe?: boolean, options?: request.RequestOptions): Promise<boolean>
+  loginWithSession (path: string): Promise<boolean>
+  saveSession (path: string): Promise<boolean>
+  checkLogin (): Promise<boolean>
+  call (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
+  callApi (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
 }
 
 export default Mangadex

@@ -1,6 +1,6 @@
 {
   "name": "mangadex-api",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "mangadex api wrapper with known apis",
   "main": "Mangadex.js",
   "types": "./typings/index.d.ts",
@@ -23,6 +23,6 @@
     "lru-cache": "^5.1.1"
   },
   "devDependencies": {
-    "standard": "^14.3.1"
+    "standard": "^14.3.3"
   }
 }

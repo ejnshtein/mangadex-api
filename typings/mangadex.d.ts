@@ -171,3 +171,90 @@ export type Demographic = Array<number>
 export type PublicationStatus = Array<number>
 
 export type Tags = Array<number>
+
+export interface MangadexUser {
+  username: string
+  language: string
+  joined: string
+  photo_url: string
+  stats?: {
+    views: number
+    uploads: number
+  }
+  website?: string
+  last_online?: string
+}
+
+export interface MangadexGroup {
+  name: string
+  banner: string
+  stats: {
+    views: number
+    follows: number
+    total_chapters: number
+  }
+  links: {
+    discord?: string
+    website?: string
+    irc?: string
+    email?: string
+  }
+  leader: {
+    id: number
+    username: string
+  }
+  members: {
+    id: number
+    username: string
+  }[]
+  upload_restrictions: string
+  description: string
+}
+
+interface MangadexHomeUpdate {
+  id: number
+  chapter: string
+  title: string
+  manga_id: number
+  cover_url: string
+  group: {
+    id: number
+    name: string
+  }
+  uploaded: string
+}
+
+interface MangadexHomeTopChapter {
+  id: number
+  chapter: string
+  title: string
+  manga_id: number
+  cover_url: string
+  views: number
+}
+
+interface MangadexHomeTopManga {
+  id: number
+  title: string
+  cover_url: string
+  follows: number
+  rating: number
+  users: number
+}
+
+export interface MangadexHome {
+  announcement?: { text: string }
+  latest_updates: {
+    all: MangadexHomeUpdate[]
+    follows: string | MangadexHomeUpdate[]
+  }
+  top_chapters: {
+    six_hours: MangadexHomeTopChapter[]
+    day: MangadexHomeTopChapter[]
+    week: MangadexHomeTopChapter[]
+  }
+  top_manga: {
+    follows: MangadexHomeTopManga[]
+    rating: MangadexHomeTopManga[]
+  }
+}

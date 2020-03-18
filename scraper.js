@@ -148,7 +148,7 @@ module.exports = {
           }
         })
         .get()
-        .filter(el => el)
+        .filter(Boolean)
         .reduce(
           (acc, cur) => {
             acc[cur._] = cur[cur._]
