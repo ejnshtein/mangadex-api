@@ -281,6 +281,21 @@ class Mangadex extends Composer {
       throw new Error('User not found')
     }
   }
+
+  async getMangaFollows (params = {}) {
+    const { result } = await this.agent.callApi(
+      '',
+      deepmerge(
+        [
+          {
+            params: { type: 'manga_follows' }
+          },
+          params
+        ]
+      )
+    )
+    return result
+  }
 }
 
 module.exports = Object.assign(Mangadex, {

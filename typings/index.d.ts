@@ -42,6 +42,8 @@ export interface Mangadex extends Composer {
   getHome (params?: request.RequestOptions): Promise<md.MangadexHome>
 
   getMe (params?: request.RequestOptions): Promise<md.MangadexUser>
+
+  getMangaFollows (params?: request.RequestOptions): Promise<md.MangaFollows[]>
 }
 
 export interface SearchQuery {

@@ -258,3 +258,11 @@ export interface MangadexHome {
     rating: MangadexHomeTopManga[]
   }
 }
+
+export interface MangaFollows {
+  title: string
+  manga_id: number
+  follow_type: number
+  volume: string
+  chapter: string
+}
