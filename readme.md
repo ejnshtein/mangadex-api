@@ -252,6 +252,20 @@ Returns user info associated with current session.
 
 ---
 
+#### getMangaFollows
+
+`Mangadex.getMangaFollows([params]): Promise<`[`MangaFollows[]`](#MangaFollows)`>`
+
+***Authorization required***
+
+Returns manga followed by user.
+
+| Argument | Type | Description |
+|-|-|-|
+| **params** | `RequestOptions` | [RequestOptions](#RequestOptions) |
+
+---
+
 ### Agent
 
 #### constructor
@@ -626,6 +640,17 @@ Calls Mangadex Api by given path.
 | **top_chapters** | `{ six_hours: Array<>, day: Array<>, week: Array<> }`| Chapters top |
 | **top_manga** | `{ follows: Array<>, rating: Array<> }`| Manga top |
 
+---
+
+### MangaFollows
+
+| Property name | Type | Description |
+|-|-|-|
+| **title** | `string` | Manga title |
+| **manga_id** | `number`| Manga id |
+| **follow_type** | `number`| Follows type |
+| **volume** | `string`| Latest read volume |
+| **chapter** | `string`| Latest chapter chapter |
 
 ---
 
