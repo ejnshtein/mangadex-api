@@ -1,4 +1,5 @@
-const { request, multipart } = require('./lib')
+const { multipart } = require('./lib')
+const request = require('@ejnshtein/smol-request')
 const { all: deepmerge } = require('deepmerge')
 const fs = require('fs')
 const cheerio = require('cheerio')
@@ -279,7 +280,7 @@ class Agent {
       url,
       {
         baseUrl: this.apiHost,
-        json: true,
+        responseType: 'json',
         ...options
       }
     )

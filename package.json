@@ -1,6 +1,6 @@
 {
   "name": "mangadex-api",
-  "version": "2.0.7b",
+  "version": "2.0.8",
   "description": "mangadex api wrapper with known apis",
   "main": "Mangadex.js",
   "types": "./typings/index.d.ts",
@@ -18,6 +18,7 @@
   "author": "ejnshtein",
   "license": "MIT",
   "dependencies": {
+    "@ejnshtein/smol-request": "^1.1.0",
     "cheerio": "^1.0.0-rc.3",
     "deepmerge": "^4.2.2",
     "lru-cache": "^5.1.1"
