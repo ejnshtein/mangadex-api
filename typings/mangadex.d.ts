@@ -64,14 +64,14 @@ export type LangCode =
 export interface Title {
   manga: MangaDescription
   chapter: Array<MangaChapter> & Map<MangaId, MangaChapter>
+  group: Array<MangaGroup> & Map<String, MangaGroup>
   status: string
 }
 
-// export interface FixedTitle {
-//   manga: MangaDescription
-//   chapter: 
-//   status: string
-// }
+export interface MangaGroup {
+  id: number
+  name: string
+}
 
 export interface MangaChapter {
   id: ChapterId

@@ -308,12 +308,17 @@ module.exports.default = Object.assign(Mangadex, {
   Agent
 })
 
-const normalizeManga = ({ manga, chapter, status, host }) => {
+const normalizeManga = ({ manga, group, chapter, status, host }) => {
   if (typeof chapter === 'object') {
     const fixedChapters = Object.keys(chapter)
       .map(id => ({ id: Number.parseInt(id), lang_name: Composer.getLangName(chapter[id].lang_code), ...chapter[id] }))
       .sort((a, b) => Number(a.chapter) - Number(b.chapter))
     chapter = fixedChapters
+  }
+  if (typeof group === 'object') {
+    const fixedGroups = Object.entries(group)
+      .map(([groupId, { group_name }]) => ({ id: Number.parseInt(groupId), name: group_name }))
+    group = fixedGroups
   }
   manga.cover_url = `${host || 'https://mangadex.org'}${manga.cover_url}`
   if (typeof manga.genres === 'object' && manga.genres !== null) {
@@ -331,6 +336,7 @@ const normalizeManga = ({ manga, chapter, status, host }) => {
   return {
     manga,
     chapter,
+    group,
     status
   }
 }

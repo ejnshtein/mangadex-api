@@ -311,7 +311,7 @@ class Agent {
 
   static async callApi (url, options) {
     const result = await Agent.call(`api${!url.startsWith('/') && '/'}${url}`, {
-      json: true,
+      responseType: 'json',
       ...options
     })
     return result

@@ -16,8 +16,9 @@ This is [Mangadex](https://mangadex.org) website api wrapper.
 ```js
 const Mangadex = require('mangadex-api')
 
-Mangadex.getManga(22723).then(({ manga, chapter }) => {
+Mangadex.getManga(22723).then(({ manga, chapter, group }) => {
   console.log(`Manga ${manga.title} has ${chapter.length} chapters.`)
+  console.log(`And contributed by ${group.length} groups.`)
 })
 
 Mangadex.getChapter(8857).then(chapter => {
@@ -461,6 +462,7 @@ Calls Mangadex Api by given path.
 |-|-|
 | **manga** | [`MangaDescription`](#MangaDescription) |
 | **chapter** | `Array`<[`MangaChapter`](#MangaChapter)> \| `Map`<`string`, [`MangaChapter`](#MangaChapter)> |
+| **group** | `Array`<[`MangaGroup`](#MangaGroup)> \| `Map`<`string`, [`MangaGroup`](#MangaGroup)> |
 | **status** | `string` |
 
 ---
@@ -525,6 +527,15 @@ Calls Mangadex Api by given path.
 | **group_id_3** | `number` |
 | **group_name_3** | `string` | `null` |
 | **timestamp** | `number` |
+
+---
+
+### MangaGroup
+
+| Property name | Type |
+|-|-|
+| **id** | `number` |
+| **name** | `string` |
 
 ---
 
