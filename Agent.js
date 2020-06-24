@@ -184,7 +184,7 @@ class Agent {
       this.setPersistent(persistentId)
     }
 
-    const isLogined = this.checkLogin()
+    const isLogined = await this.checkLogin()
 
     if (isLogined) {
       return true
