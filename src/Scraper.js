@@ -110,7 +110,7 @@ class Scraper {
     }
 
     const group = {
-      id: groupId,
+      id: parseInt(groupId),
       name: content('#content > div.card > .card-header > span.mx-1').text().trim(),
       banner: content('#content > div.card > .card-img-bottom').attr('src'),
       stats: {
