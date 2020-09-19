@@ -2,8 +2,8 @@ const cheerio = require('cheerio')
 
 const { parseFloat, parseInt } = Number
 
-module.exports = {
-  parseSearch (html, host) {
+class Scraper {
+  static parseSearch (html, host) {
     const content = cheerio.load(html)
 
     if (/login/i.test(content('head > title').text())) {
@@ -13,7 +13,7 @@ module.exports = {
     const titles = content('#content > div.row.mt-1.mx-0').children('div')
       .map((i, el) => {
         const block = cheerio(el)
-        const id = Number.parseInt(block.data('id'))
+        const id = parseInt(block.data('id'))
         return {
           id,
           title: block.children('div:nth-child(2)').children('a').attr('title'),
@@ -43,9 +43,9 @@ module.exports = {
     }
 
     return searchResult
-  },
+  }
 
-  parseUser (html) {
+  static parseUser (html) {
     const content = cheerio.load(html)
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
@@ -68,8 +68,8 @@ module.exports = {
             return {
               _: 'stats',
               stats: {
-                views: Number.parseInt(selector('div:last-of-type > ul > li:first-of-type').text().trim().replace(/,/i, '')),
-                uploads: Number.parseInt(selector('div:last-of-type > ul > li:last-of-type').text().trim().replace(/,/i, ''))
+                views: parseInt(selector('div:last-of-type > ul > li:first-of-type').text().trim().replace(/,/i, '')),
+                uploads: parseInt(selector('div:last-of-type > ul > li:last-of-type').text().trim().replace(/,/i, ''))
               }
             }
           case /website/i.test(title):
@@ -93,17 +93,17 @@ module.exports = {
       })
 
     return user
-  },
+  }
 
-  parseLogin (html) {
+  static parseLogin (html) {
     const content = cheerio.load(html)
 
     const isLogined = /you are logged in/i.test(content('#login_container > p').text())
 
     return { isLogined }
-  },
+  }
 
-  parseGroup (html) {
+  static parseGroup (html) {
     const content = cheerio.load(html)
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
@@ -113,9 +113,9 @@ module.exports = {
       name: content('#content > div.card > .card-header > span.mx-1').text().trim(),
       banner: content('#content > div.card > .card-img-bottom').attr('src'),
       stats: {
-        views: Number.parseInt(content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(2) > td > ul > li:first-of-type').text().trim().replace(/,/i, '')),
-        follows: Number.parseInt(content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(2) > td > ul > li:nth-child(2)').text().trim().replace(/,/i, '')),
-        total_chapters: Number.parseInt(content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(2) > td > ul > li:nth-child(3)').text().trim().replace(/,/i, ''))
+        views: parseInt(content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(2) > td > ul > li:first-of-type').text().trim().replace(/,/i, '')),
+        follows: parseInt(content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(2) > td > ul > li:nth-child(2)').text().trim().replace(/,/i, '')),
+        total_chapters: parseInt(content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(2) > td > ul > li:nth-child(3)').text().trim().replace(/,/i, ''))
       },
       links: content('#content > .row > .col-md-6:first-of-type > .card > .table > tbody > tr:nth-child(3) > td')
         .children('a')
@@ -158,7 +158,7 @@ module.exports = {
           {}
         ),
       leader: {
-        id: Number.parseInt(content('#content > .row > .col-md-6:nth-child(2) > .card > .table > tbody > tr > td > a').attr('id')),
+        id: parseInt(content('#content > .row > .col-md-6:nth-child(2) > .card > .table > tbody > tr > td > a').attr('id')),
         username: content('#content > .row > .col-md-6:nth-child(2) > .card > .table > tbody > tr > td > a').text()
       },
       members: content('#content > .row > .col-md-6:nth-child(2) > .card > .table > tbody > tr:nth-child(2) > td > ul > li')
@@ -166,7 +166,7 @@ module.exports = {
           const selector = cheerio.load(el)
 
           return {
-            id: Number.parseInt(selector('a').attr('id')),
+            id: parseInt(selector('a').attr('id')),
             username: selector('a').text()
           }
         })
@@ -176,9 +176,9 @@ module.exports = {
     }
 
     return group
-  },
+  }
 
-  parseHome (html, host) {
+  static parseHome (html, host) {
     const content = cheerio.load(html)
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
@@ -188,13 +188,13 @@ module.exports = {
       const selector = cheerio.load(el)
 
       return {
-        id: Number.parseInt(selector('div:nth-child(3) > a').attr('href').split('/')[2]),
+        id: parseInt(selector('div:nth-child(3) > a').attr('href').split('/')[2]),
         chapter: selector('div:nth-child(3) > a').text(),
         title: selector('div:nth-child(2) > a').attr('title').trim(),
-        manga_id: Number.parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
+        manga_id: parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
         cover_url: selector('div:first-of-type > a > img').attr('src'),
         group: {
-          id: Number.parseInt(selector('div:nth-child(4) > a').attr('href').split('/')[2]),
+          id: parseInt(selector('div:nth-child(4) > a').attr('href').split('/')[2]),
           name: selector('div:nth-child(4) > a').text()
         },
         uploaded: selector('div:nth-child(5)').text().trim()
@@ -205,12 +205,12 @@ module.exports = {
       const selector = cheerio.load(el)
 
       return {
-        id: Number.parseInt(selector('p > span > a').attr('href').split('/')[2]),
+        id: parseInt(selector('p > span > a').attr('href').split('/')[2]),
         chapter: selector('p > span > a').text(),
         title: selector('div:nth-child(2) > a').attr('title').trim(),
-        manga_id: Number.parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
+        manga_id: parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
         cover_url: selector('div:first-of-type > a > img').attr('src'),
-        views: Number.parseInt(selector('p > span:last-of-type').text().replace(/,/i, ''))
+        views: parseInt(selector('p > span:last-of-type').text().replace(/,/i, ''))
       }
     }
 
@@ -218,12 +218,12 @@ module.exports = {
       const selector = cheerio.load(el)
 
       return {
-        id: Number.parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
+        id: parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
         title: selector('div:nth-child(2) > a').attr('title'),
         cover_url: selector('div:first-of-type > a > img').attr('src'),
-        follows: Number.parseInt(selector('p > span:first-of-type').text().trim().replace(/,/i, '')),
-        rating: Number.parseFloat(selector('p > span:last-of-type > span').text().trim()),
-        users: Number.parseInt(selector('p > span:last-of-type > small').text().trim().replace(/,/i, ''))
+        follows: parseInt(selector('p > span:first-of-type').text().trim().replace(/,/i, '')),
+        rating: parseFloat(selector('p > span:last-of-type > span').text().trim()),
+        users: parseInt(selector('p > span:last-of-type > small').text().trim().replace(/,/i, ''))
       }
     }
 
@@ -231,12 +231,12 @@ module.exports = {
       const selector = cheerio.load(el)
 
       return {
-        id: Number.parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
+        id: parseInt(selector('div:first-of-type > a').attr('href').split('/')[2]),
         title: selector('div:nth-child(2) > a').attr('title'),
         cover_url: selector('div:first-of-type > a > img').attr('src'),
-        follows: Number.parseInt(selector('p > span:last-of-type').text().trim().replace(/,/i, '')),
-        rating: Number.parseFloat(selector('p > span:first-of-type > span').text().trim()),
-        users: Number.parseInt(selector('p > span:first-of-type > small').text().trim().replace(/,/i, ''))
+        follows: parseInt(selector('p > span:last-of-type').text().trim().replace(/,/i, '')),
+        rating: parseFloat(selector('p > span:first-of-type > span').text().trim()),
+        users: parseInt(selector('p > span:first-of-type > small').text().trim().replace(/,/i, ''))
       }
     }
 
@@ -282,16 +282,18 @@ module.exports = {
     }
 
     return home
-  },
+  }
 
-  parseMe (html) {
+  static parseMe (html) {
     const content = cheerio.load(html)
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
     }
 
-    const id = Number.parseInt(content('#navbarSupportedContent > ul.navbar-nav:last-of-type > li:nth-child(2) > a').attr('href').split('/')[2])
+    const id = parseInt(content('#navbarSupportedContent > ul.navbar-nav:last-of-type > li:nth-child(2) > a').attr('href').split('/')[2])
 
     return { id: isNaN(id) ? null : id }
   }
 }
+
+module.exports = Scraper

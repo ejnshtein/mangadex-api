@@ -1,0 +1,9 @@
+{
+  "moduleFileExtensions": [
+    "js"
+  ],
+  "testRegex": [
+    "(/__tests__/.*|(\\.|/))\\.[jt]sx?$"
+  ],
+  "testEnvironment": "node"
+}

@@ -1,5 +1,4 @@
 node_modules
-_shtein
-.vscode
-test
+__ejnshtein
 *session
+.env

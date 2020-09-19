@@ -3,15 +3,27 @@
 [![NPM Version](https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
 [![npm downloads](https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square)](http://npm-stat.com/charts.html?package=mangadex-api)
 
-This is [Mangadex](https://mangadex.org) website api wrapper.
+This is [Mangadex](https://mangadex.org) website api wrapper.+
 
-## Installation
+# Migration to version 3
 
-```shell
-  npm i mangadex-api
+LRU cache was removed from package, so you'll have to implement caching by yourself.  
+[Mangadex constructor](#Mangadex) now accepts only 2 options.  
+[getManga](#getManga) and [getChapter](#getChapter) lost **normalize** argument, now it's on **by default**.
+
+# Installation
+
+```bash
+npm i mangadex-api
 ```
 
-## Example
+Or
+
+```bash
+yarn add mangadex-api
+```
+
+# Example
 
 ```js
 const Mangadex = require('mangadex-api')
@@ -45,63 +57,52 @@ Mangadex.getGroup(12).then(group => {
 
 ```
 
-## Authorization example
+# Authorization example
 
 ```js
 const Mangadex = require('mangadex-api')
 
-const client = new Mangadex({
-  host: 'https://mangadex.cc',
-  apiHost: 'https://mangadex.cc/api'
-})
+const client = new Mangadex()
 
-client.agent.login('username', 'password', false)
-  .then(async () => {
+await client.agent.login('username', 'password', false)
 
-    const result = await client.search('To Be Winner')
+const result = await client.search('To Be Winner')
 
-    console.log(result)
-
-    await client.agent.saveSession('/path/to/session')
-
-  })
-
+console.log(result) // { titles: [{ title: 'To Be Winner', ... }] }
 ```
-## Cached session example
+# Cached session example
 
 ```js
 // first you must save your session somewhere
 
-client.agent.login('username', 'password', false)
-  .then(() => client.agent.saveSession('/path/to/session'))
+await client.agent.login('username', 'password', false)
+
+await client.agent.saveSession('/path/to/session'))
 
 // now we can use it
 
-client.agent.loginWithSession('/path/to/session')
-  .then(() => client.getMe())
-  .then(me => {
-    console.log(me)
-  })
+await client.agent.loginWithSession('/path/to/session')
 
+const me = await client.getMe())
+
+console.log(me)
 ```
 
 
-## Notes
+# Notes
 
 **[Notice]:** Currently Mangadex has closed search for anonymous use, so you must login first.
 
-**[]** - optional
+**[]** - optional option
 
 **static** - static method
 
 
-## API
+# API
 
 ---
 
-### Mangadex
-
-#### constructor
+## Mangadex
 
 `const client = new Mangadex([options]): Mangadex`
 
@@ -111,33 +112,19 @@ New Mangadex Api instance.
 |-|-|-|
 | **options.host** | `string` | Mangadex host address. By default - `https://mangadex.org` |
 | **options.apiHost** | `string` | Mangadex api host address. By default - `https://mangadex.org/api` |
-| **options.cacheTimeout** | `number` | Default cache timeout for both manga and chapter data. (ms) |
-| **options.mangaCacheTimeout** | `number` | Default cache timeout for manga data. (ms) |
-| **options.chapterCacheTimeout** | `number` | Default cache timeout for chapter data. (ms) |
-| **options.cacheMangaResult** | `boolean` | Set `true` if you want to use caching for manga data. |
-| **options.cacheChapterResult** | `boolean` | Set `true` if you want to use caching for chapter data. |
-| **options.shareMangaCache** | `boolean` | If `true` will use shared manga in-memory store instead of Mangadex instance cache store. (Works with timeout **mangaCacheTimeout** option) |
-| **options.shareChapterCache** | `boolean` | If `true` will use shared chapter in-memory store instead of Mangadex instance cache store. (Works with timeout **chapterCacheTimeout** option) |
 
 Default `options` config:
 
 ```json
 {
   "host": "https://mangadex.org",
-  "apiHost": "https://mangadex.org/api",
-  "cacheTimeout": 600000,
-  "mangaCacheTimeout": 0,
-  "chapterCachetimeout": 0,
-  "cacheMangaResult": false,
-  "cacheChapterResult": false,
-  "shareMangaCache": false,
-  "shareChapterCache": false
+  "apiHost": "https://mangadex.org/api"
 }
 ```
 
 ---
 
-### properties
+## properties
 
 `client.agent: `[Agent](#Agent)
 
@@ -145,35 +132,33 @@ Current [Agent](#Agent) instance.
 
 ---
 
-#### getManga & **static** getManga
+## getManga
 
-`Mangadex.getManga(mangaId, [normalize], [params]): Promise<`[`Title`](#Title)`>`
+`Mangadex.getManga(mangaId, [params]): Promise<`[`Title`](#Title)`>`
 
 Returns Mangadex manga data.
 
 | Argument | Type | Description |
 |-|-|-|
-| **mangaId** | `number` \| `string` | Manga id |
-| **normalize=true** | `boolean` | Will transform some manga object properties. [Details](#Manga-normalize-example) |
+| **mangaId** | `number` | Manga id |
 | **params** | `RequestOptions` | [RequestOptions](#RequestOptions) |
 
 ---
 
-#### getChapter & **static** getChapter
+## getChapter
 
-`Mangadex.getChapter(chapterId, [normalize], [params]): Promise<`[`Chapter`](#Chapter)`>`
+`Mangadex.getChapter(chapterId, [params]): Promise<`[`Chapter`](#Chapter)`>`
 
 Returns Mangadex chapter data.
 
 | Argument | Type | Description |
 |-|-|-|
 | **chapterId** | `number` \| `string` | Chapter id |
-| **normalize=true** | `boolean` | Will transform some manga object properties. [Details](#Chapter-normalize-example) |
 | **params** | `RequestOptions` | [RequestOptions](#RequestOptions) |
 
 ---
 
-#### search & **static** search
+## search
 
 `Mangadex.search(query, [params]): Promise<`[`SearchResult`](#SearchResult)`>`
 
@@ -188,7 +173,7 @@ Returns search result from Mangadex.
 
 ---
 
-#### quickSearch & **static** quickSearch
+## quickSearch
 
 `Mangadex.quickSearch(title, [params]): Promise<`[`SearchResult`](#SearchResult)`>`
 
@@ -203,7 +188,7 @@ Returns quick search result from Mangadex.
 
 ---
 
-#### getUser & **static** getUser
+## getUser
 
 `Mangadex.getUser(id, [params]): Promise<`[`User`](#User)`>`
 
@@ -216,7 +201,7 @@ Returns Mangadex user data.
 
 ---
 
-#### getGroup & **static** getGroup
+## getGroup
 
 `Mangadex.getGroup(id, [params]): Promise<`[`Group`](#Group)`>`
 
@@ -229,7 +214,7 @@ Returns Mangadex group data.
 
 ---
 
-#### getHome & **static** getHome
+## getHome
 
 `Mangadex.getGroup([params]): Promise<`[`Home`](#Home)`>`
 
@@ -241,7 +226,7 @@ Returns Mangadex home page data.
 
 ---
 
-#### getMe
+## getMe
 
 `Mangadex.getMe([params]): Promise<`[`User`](#User)`>`
 
@@ -253,7 +238,7 @@ Returns user info associated with current session.
 
 ---
 
-#### getMangaFollows
+## getMangaFollows
 
 `Mangadex.getMangaFollows([params]): Promise<`[`MangaFollows[]`](#MangaFollows)`>`
 
@@ -267,9 +252,55 @@ Returns manga followed by user.
 
 ---
 
-### Agent
+## friendAdd
 
-#### constructor
+`Mangadex.friendAdd(userId, [params]): Promise<boolean>`
+
+***Authorization required***
+
+Sends 'Add friend' request to user.
+
+| Argument | Type | Description |
+|-|-|-|
+| **userId** | `number` | User id. |
+| **params** | `RequestOptions` | [RequestOptions](#RequestOptions) |
+
+---
+
+## mangaFollow
+
+`Mangadex.mangaFollow(mangaId, type, [params]): Promise<boolean>`
+
+***Authorization required***
+
+Add manga to following list.
+
+| Argument | Type | Description |
+|-|-|-|
+| **mangaId** | `number` | Manga id. |
+| **type**  | `number` | Follow list type. Lists: 1 - Reading, 2 - Completed, 3 - On hold, 4 - Plan to read, 5 - Dropped, 6 - Re-reading |
+| **params** | `RequestOptions` | [RequestOptions](#RequestOptions) |
+
+---
+
+## mangaUnfollow
+
+`Mangadex.mangaUnfollow(mangaId, [params]): Promise<boolean>`
+
+***Authorization required***
+
+Remove manga to following list.
+
+| Argument | Type | Description |
+|-|-|-|
+| **mangaId** | `number` | Manga id. |
+| **params** | `RequestOptions` | [RequestOptions](#RequestOptions) |
+
+---
+
+# Agent
+
+## constructor
 
 `const agent = new Agent([options]): Agent`
 
@@ -284,9 +315,9 @@ Returns manga followed by user.
 | **[options.getCredentials]** | `Promise` \| `function` \| `object` |  This expects 3 fields: `sessionId`, `sessionExpiration` and as optional `persistentId`. Used to replace current session when current session expires or Mangadex sends deleted cookie. |
 | **[options.loginCredentials]** | `Promise` \| `function` \| `object` | Can be used instead of passing agruments to Agent.login function. Calling Agent.login still required. Expects same fields as **options.getCredentials** |
 
-### properties
+## properties
 
-#### getCredentials example
+### getCredentials example
 
 ```js
 const client = new Agent({
@@ -300,7 +331,7 @@ const client = new Agent({
 
 ---
 
-#### loginCredentials example
+### loginCredentials example
 
 ```js
 const client = new Agent({
@@ -314,7 +345,7 @@ const client = new Agent({
 
 ---
 
-#### setSession
+## setSession
 
 `Agent.setSession(id, expiration): void`
 
@@ -325,7 +356,7 @@ const client = new Agent({
 
 ---
 
-#### setSession
+## setPersistent
 
 `Agent.setPersistent(token): void`
 
@@ -335,7 +366,7 @@ const client = new Agent({
 
 ---
 
-#### login
+## login
 
 `Agent.login(username, password, [rememberMe], [options]): Promise<boolean>`
 
@@ -343,13 +374,13 @@ const client = new Agent({
 |-|-|-|
 | **username** | `string` | User username |
 | **password** | `string` | User password |
-| **[rememberMe]** | `boolean` | Remember session. By default - `false` |
+| **[rememberMe]** | `boolean` | Remember session. Default - `false` |
 | **[options]** | `object` | Options object |
-| **[options.baseUrl]** | `string` | Mangadex host url. By default - `https://mangadex.org` |
+| **[options.baseUrl]** | `string` | Mangadex host url. Default - `https://mangadex.org` |
 
 ---
 
-#### **static** login
+## **static** login
 
 `Agent.login(username, password, [rememberMe], [options]): Promise<{ sessionId, expiration, [persistentId] }>`
 
@@ -357,13 +388,13 @@ const client = new Agent({
 |-|-|-|
 | **username** | `string` | User username |
 | **password** | `string` | User password |
-| **[rememberMe]** | `boolean` | Remember session. By default - `false` |
+| **[rememberMe]** | `boolean` | Remember session. Default - `false` |
 | **[options]** | `object` | Options object |
-| **[options.baseUrl]** | `string` | Mangadex host url. By default - `https://mangadex.org` |
+| **[options.baseUrl]** | `string` | Mangadex host url. Default - `https://mangadex.org` |
 
 ---
 
-#### loginWithSession
+## loginWithSession
 
 `Agent.loginWithSession(path): Promise<boolean>`
 
@@ -375,7 +406,7 @@ Loads and authenticate with saved in file session.
 
 ---
 
-#### saveSession
+## saveSession
 
 `Agent.saveSession(path): Promise<boolean>`
 
@@ -387,7 +418,7 @@ Saves session in local file.
 
 ---
 
-#### setCookies
+## setCookies
 
 `Agent.setCookies(cookies): boolean`
 
@@ -399,7 +430,7 @@ Sets cookies for current agent instance.
 
 ---
 
-#### getCookie
+## getCookie
 
 `Agent.getCookie(): string`
 
@@ -407,7 +438,7 @@ Return cookie for `Cookie` header in request.
 
 ---
 
-#### checkLogin
+## checkLogin
 
 `Agent.checkLogin(): Promise<boolean>`
 
@@ -415,7 +446,7 @@ Return true if current session in agent instance is valid.
 
 ---
 
-#### call
+## call
 
 `Agent.call(url, [options]): Promise<string | object>`
 
@@ -424,11 +455,11 @@ Calls Mangadex by given url with current session.
 | Property | Type | Description |
 |-|-|-|
 | **url** | `string` | Url to endpoint without host. (Example: `/search` or `search`) |
-| **options** | `RequestOptions` | [RequestOptions](#RequestOptions) with property `baseUrl` for calling host address (Example: `https://mangadex.cc). |
+| **options** | `RequestOptions` | [RequestOptions](#RequestOptions) with property `baseUrl` for calling host address (Example: `https://mangadex.org`). |
 
 ---
 
-#### callApi
+## callApi
 
 `Agent.callApi(url, [options]): Promise<object>`
 
@@ -437,273 +468,28 @@ Calls Mangadex Api by given path.
 | Property | Type | Description |
 |-|-|-|
 | **url** | `string` | Url to endpoint without host. (Example: `/search` or `search`) |
-| **options** | `RequestOptions` | [RequestOptions](#RequestOptions) with property `baseUrl` for calling host address (Example: `https://mangadex.cc/api). |
+| **options** | `RequestOptions` | [RequestOptions](#RequestOptions) with property `baseUrl` for calling host address (Example: `https://mangadex.org/api`). |
 
 ---
 
-#### **static** callApi
+## callAjaxAction
 
-`Agent.callApi(url, [options]): Promise<`[RequestResult](#RequestResult)`>`
+`Agent.callAjaxAction(params, [options]): Promise<`[RequestResult](#RequestResult)`>`
 
-Calls Mangadex Api by given path.
+Calls Mangadex ajax action with given params.
 
 | Property | Type | Description |
 |-|-|-|
-| **url** | `string` | Url to endpoint without host. (Example: `/search` or `search`) |
-| **options** | `RequestOptions` | [RequestOptions](#RequestOptions) with property `baseUrl` for calling host address (Example: `https://mangadex.cc/api). |
+| **params** | `object` | key-value params for ajax action. |
+| **options** | `RequestOptions` | [RequestOptions](#RequestOptions) with property `baseUrl` for calling host address (Example: `https://mangadex.org/api`). |
 
 ---
 
-## Types
+# Types
 
-### Title
+Types was removed from docs.  
+Use typings in your favorite code editor or use [typings](https://github.com/ejnshtein/mangadex-api/tree/dev/typings) folder.
 
-| Property name | Type |
-|-|-|
-| **manga** | [`MangaDescription`](#MangaDescription) |
-| **chapter** | `Array`<[`MangaChapter`](#MangaChapter)> \| `Map`<`string`, [`MangaChapter`](#MangaChapter)> |
-| **group** | `Array`<[`MangaGroup`](#MangaGroup)> \| `Map`<`string`, [`MangaGroup`](#MangaGroup)> |
-| **status** | `string` |
-
----
-
-### Chapter
-
-| Property name | Type |
-|-|-|
-| **id**  | `string` \| `number` |
-| **timestamp** | `number` |
-| **hash** | `string` |
-| **volume** | `string` |
-| **chapter** | `string` |
-| **title** | `string` |
-| **lang_name** | `string` |
-| **lang_code** | [`LangCode`](#LangCode) |
-| **manga_id** | `number` |
-| **group_id** | `number` |
-| **group_id_2** | `number` |
-| **group_id_3** | `number` |
-| **comments** | `number` |
-| **server** | `string` |
-| **page_array** | `Array`<`string`> |
-| **long_strip** | `number` |
-| **status** | `string` |
-
----
-
-### MangaDescription
-
-| Property name | Type |
-|-|-|
-| **cover_url** | `string` | // non-absolute
-| **description** | `string` |
-| **title** | `string` |
-| **artist** | `string` |
-| **author** | `string` |
-| **status** | `number` |
-| [**status_text**] | [`Status`](#Status) |
-| **genres** | `Array`<[`Genre`](#Genre)> \| `Array`<`number`> |
-| **last_chapter** | `string` |
-| **lang_name** | `string` |
-| **lang_flag** | [`LangCode`](#LangCode) |
-| **hentai** | `0` `|` `1` | // ( ͡~ ͜ʖ ͡°)
-| **links** | `Array`<[`Link`](#Link)> \| `Map`<`string`, `string`> |
-
----
-
-### MangaChapter
-
-| Property name | Type |
-|-|-|
-| **id** | `string` \| `number` |
-| **volume** | `string` |
-| **chapter** | `string` |
-| **title** | `string` |
-| **lang_code** | [`LangCode`](#LangCode) |
-| **group_id** | `number` |
-| **group_name** | `string` | `null` |
-| **group_id_2** | `number` |
-| **group_name_2** | `string` | `null` |
-| **group_id_3** | `number` |
-| **group_name_3** | `string` | `null` |
-| **timestamp** | `number` |
-
----
-
-### MangaGroup
-
-| Property name | Type |
-|-|-|
-| **id** | `number` |
-| **name** | `string` |
-
----
-
-### SearchResult
-
-| Property name | Type |
-|-|-|
-| **titles** | `Array`<[`SearchResultTitle`](#SearchResultTitle)> |
-| **current_page** | `number` |
-
----
-
-### SearchResultTitle
-
-| Property name | Type | Description |
-|-|-|-|
-| **id** | `number` | Manga id |
-| **title** | `string` | Manga title |
-| **image_url** | `string` | Absolute path to manga cover |
-| **description** | `string` | Manga description |
-| **views** | `number` | Manga views |
-| **follows** | `number` | Manga follows count |
-| **rating** | `Object`<{ **value**: `number`, **votes**: `number` }> | `rating.value` is average score by 10 scale, `rating.votes` is votes count |
-| **lang_name** | `string` | Manga original language | 
-
----
-
-### SearchQuery
-
-| Property name | Type | Description |
-|-|-|-|
-| **[title]**| `string` | Manga title |
-| **[author]**| `string` | Author |
-| **[artist]**| `string` | Artist |
-| **[lang_id]**| [OriginalLanguage](#OriginalLanguage) | Original language |
-| **[demos]**| `Array<number>` | Demographic |
-| **[statuses]**| `Array<number>` | Publication status |
-| **[tags]**| `Array<number>` | Tags |
-| **[tag_mode_inc_all]**| `all` \| `any` | Tag inclusion mode |
-| **[tag_mode_exc]**| `all` \| `any` | Tag exclusion mode |
-
----
-
-### Genre
-
-| Property name | Type |
-|-|-|
-| **id** | `number` |
-| **label** | `string` |
-
----
-
-### Link
-
-| Property name | Type |
-|-|-|
-| **title** | `string` |
-| **url** | `string` |
-
----
-
-### LangCode
-
-| Type |
-|-|
-| 'sa' \| 'bd' \| 'bg' \| 'mm' \| 'ct' \| 'cn' \| 'hk' \| 'cz' \| 'dk' \| 'nl' \| 'gb' \| 'ph' \| 'fi' \| 'fr' \| 'de' \| 'gr' \| 'hu' \| 'id' \| 'it' \| 'jp' \| 'kr' \| 'lt' \| 'my' \| 'mn' \| 'ir' \| 'pl' \| 'br' \| 'pt' \| 'ro' \| 'ru' \| 'rs' \| 'es' \| 'mx' \| 'se' \| 'th' \| 'tr' \| 'ua' \| 'vn' |
-
----
-
-### Status
-
-| Type |
-|-|
-| 'Ongoing' \| 'Completed' \| 'Cancelled' \| 'Hiatus' |
-
----
-
-### User
-
-| Property name | Type | Description |
-|-|-|-|
-| **username** | `string` | Username |
-| **language** | `string` | Language |
-| **joined** | `string` | Join date in format `YYYY-MM-DD` |
-| **photo_url** | `string` | User photo |
-| **[stats]** | `{ views: number, uploads: number }` | User stats |
-| **[website]** | `string` | User website |
-| **[last_online]** | `string` | Last online (relative) |
-
----
-
-### Group
-
-| Property name | Type | Description |
-|-|-|-|
-| **name** | `string` | Group name |
-| **banner** | `string` | Url to banner |
-| **[stats]** | `{ views: number, follows: number, total_chapters: number }` | Group stats |
-| **links** | `{ [string]: string }`| Group links |
-| **leader** | `{ id: number, username: string }` | Group leader info |
-| **members** | `Array<{ id: number: username: string }>`| Group members info |
-| **upload_restrictions** | `string` | Group upload restrictions |
-| **description** | `string` | Group description (in HTML format) |
-
----
-
-### Home
-
-| Property name | Type | Description |
-|-|-|-|
-| **accouncement** | `null` \| `{ text: string, [url]: string }` | Announcement info |
-| **latest_updates** | `{ all: Array<>, follows: Array<> }`| Latest updates |
-| **top_chapters** | `{ six_hours: Array<>, day: Array<>, week: Array<> }`| Chapters top |
-| **top_manga** | `{ follows: Array<>, rating: Array<> }`| Manga top |
-
----
-
-### MangaFollows
-
-| Property name | Type | Description |
-|-|-|-|
-| **title** | `string` | Manga title |
-| **manga_id** | `number`| Manga id |
-| **follow_type** | `number`| Follows type |
-| **volume** | `string`| Latest read volume |
-| **chapter** | `string`| Latest chapter chapter |
-
----
-
-### RequestOptions
-
-| Property name | Type |
-|-|-|
-| **[params]** | { [string]: string } |
-| **[headers]** | { [string]: string } |
-| **[json]** | `boolean` |
-| **[responseType]** | `string` |
-
----
-
-### RequestResult
-
-| Property name | Type |
-|-|-|
-| **data** | [Readable](https://nodejs.org/dist/latest-v12.x/docs/api/stream.html#stream_readable_streams) \| `string` \| `object` |
-| **headers** | { [string]: string } |
-| **staus** | `number` |
-| **statusText** | `string` |
-
----
-
-## Normalize examples
-
-### Manga normalize example
-
-**Manga.manga.chapter** object will became an array and chapters in array will receive **id** and **lang_name** property.  
-**Manga.manga.cover_url** will became an absolute path to image.  
-**Manga.manga.genres** will became an array of **Genre**.  
-**Manga.manga** will receive **.status_text** property with **Status** type.  
-**Manga.manga.links** will became an array of **Link**.  
-
----
-
-### Chapter normalize example
-
-**Chapter.server** will became an absolute path of server.  
-**Chapter.page_array** will became an array of images with absolute path.  
-
-## Contact
+# Contact
 
 [My telegram](https://t.me/ejnshtein) and a [group](https://t.me/nyaasi_chat) where you can as your questions or suggest something. 

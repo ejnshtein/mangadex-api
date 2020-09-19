@@ -3,19 +3,17 @@ import * as request from './request.d'
 
 export const Mangadex: MangadexConstructor
 
-export interface Mangadex extends Composer {
+export interface Mangadex {
 
   agent: Agent
 
   getManga (
-    id: string | number,
-    normalize?: Boolean,
+    id: number,
     params?: request.RequestOptions
-  ): Promise<md.Title>
+  ): Promise<md.Manga>
 
   getChapter (
-    id: string | number,
-    normalize?: boolean,
+    id: number,
     params?: request.RequestOptions
   ):Promise<md.Chapter>
 
@@ -30,12 +28,12 @@ export interface Mangadex extends Composer {
   ): Promise<md.SearchResult>
 
   getUser (
-    id: string | number,
+    id: number,
     params?: request.RequestOptions
   ): Promise<md.MangadexUser>
 
   getGroup (
-    id: string | number,
+    id: number,
     params?: request.RequestOptions
   ): Promise<md.MangadexGroup>
 
@@ -44,6 +42,12 @@ export interface Mangadex extends Composer {
   getMe (params?: request.RequestOptions): Promise<md.MangadexUser>
 
   getMangaFollows (params?: request.RequestOptions): Promise<md.MangaFollows[]>
+
+  friendAdd (userId: number, params?: request.RequestOptions): Promise<Boolean>
+
+  mangaFollow (mangaId: number, type: number, params?: request.RequestOptions): Promise<Boolean>
+
+  mangaUnfollow (mangaId: number, type: number, params?: request.RequestOptions): Promise<Boolean>
 }
 
 export interface SearchQuery {
@@ -95,7 +99,6 @@ export interface SearchQuery {
 }
 
 export interface Composer {
-
   getGenres (genre: number | string): Array<{ id: number, label: string }>
 
   getMangaLinks (links: Map<string, string>): Array<{ title: string, url: string }>
@@ -103,49 +106,12 @@ export interface Composer {
   getStatus (status: number): string
 
   getLangName (landCode: string): string
-
 }
 
 export interface MangadexOptions {
-
   host?: string
   apiHost?: string
   getCredentials?: Promise | Function | Object
-
-  /**
-   * Default cache timeout for both manga and chapter data. (ms)
-   */
-  cacheTimeout?: number
-
-  /**
-   * Default cache timeout for manga data. (ms)
-   */
-  mangaCacheTimeout?: number
-
-  /**
-   * Default cache timeout for chapter data. (ms)
-   */
-  chapterCacheTimeout?: number
-
-  /**
-   * Set `true` if you want to use caching for manga data.
-   */
-  cacheMangaResult?: boolean
-
-  /**
-   * Set `true` if you want to use caching for chapter data.
-   */
-  cacheChapterResult?: boolean
-  
-  /**
-   * If `true` will use shared manga in-memory store instead of Mangadex instance cache store. (Works with timeout **mangaCacheTimeout** option)
-   */
-  shareMangaCache?: boolean
-
-  /**
-   * If `true` will use shared chapter in-memory store instead of Mangadex instance cache store. (Works with timeout **chapterCacheTimeout** option)
-   */
-  shareChapterCache?: boolean
 }
 
 export interface MangadexConstructor {
@@ -155,14 +121,12 @@ export interface MangadexConstructor {
   new (options?: MangadexOptions): Mangadex
 
   getManga (
-    id: string | number,
-    normalize?: Boolean,
+    id: number,
     params?: request.RequestOptions
-  ): Promise<md.Title>
+  ): Promise<md.Manga>
 
   getChapter (
-    id: string | number,
-    normalize?: boolean,
+    id: number,
     params?: request.RequestOptions
   ):Promise<md.Chapter>
 
@@ -177,12 +141,12 @@ export interface MangadexConstructor {
   ): Promise<md.SearchResult>
 
   getUser (
-    id: string | number,
+    id: number,
     params?: request.RequestOptions
   ): Promise<md.MangadexUser>
 
   getGroup (
-    id: string | number,
+    id: number,
     params?: request.RequestOptions
   ): Promise<md.MangadexGroup>
 
@@ -201,6 +165,7 @@ export interface AgentConstructor {
   saveSession (path: string, session: Session): Promise<boolean>
   call (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
   callApi (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
+  callAjaxAction (params: Record<string, string>, options?: request.RequestOptions): Promise<request.RequestResult>
 }
 
 export interface AgentOptions {
@@ -223,6 +188,7 @@ export interface Agent {
   checkLogin (): Promise<boolean>
   call (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
   callApi (url: string, options?: request.RequestOptions): Promise<request.RequestResult>
+  callAjaxAction (params: Record<string, string>, options?: request.RequestOptions): Promise<request.RequestResult>
 }
 
 export default Mangadex

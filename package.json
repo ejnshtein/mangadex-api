@@ -1,10 +1,18 @@
 {
   "name": "mangadex-api",
-  "version": "2.0.10",
+  "version": "3.0.0",
   "description": "mangadex api wrapper with known apis",
-  "main": "Mangadex.js",
+  "main": "src/index.js",
   "types": "./typings/index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "eslint": "eslint ./src --cache --ignore-pattern *.test.*",
+    "test": "jest --config jest.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run eslint"
+    }
+  },
   "keywords": [
     "mangadex",
     "manga"
@@ -19,11 +27,16 @@
   "license": "MIT",
   "dependencies": {
     "@ejnshtein/smol-request": "^1.1.1",
-    "cheerio": "^1.0.0-rc.3",
-    "deepmerge": "^4.2.2",
-    "lru-cache": "^5.1.1"
+    "cheerio": "^1.0.0-rc.3"
   },
   "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "jest": "^26.4.2",
+    "prettier": "^2.1.1",
     "standard": "^14.3.4"
   }
 }

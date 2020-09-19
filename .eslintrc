@@ -1,0 +1,26 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "standard"
+  ],
+  "overrides": [
+    {
+      "files": ["__tests__/*"],
+      "globals": {
+        "expect": true,
+        "jest": true,
+        "it": true,
+        "describe": true
+      }
+    }
+  ],
+  "rules": {
+    "camelcase": "warn"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  }
+}
