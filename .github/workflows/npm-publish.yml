@@ -15,8 +15,6 @@ jobs:
           node-version: 12
       - name: Installing dependencies
         run: npm ci
-      - name: Running tests
-        run: npm test
       - name: Publishing to NPM package registry
         uses: JS-DevTools/npm-publish@v1
         with:
