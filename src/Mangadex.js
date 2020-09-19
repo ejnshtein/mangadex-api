@@ -175,7 +175,7 @@ class Mangadex {
 
   async getGroup (id, params = {}) {
     const result = await this.agent.call(`group/${id}`, params)
-    return Scraper.parseGroup(result)
+    return Scraper.parseGroup(id, result)
   }
 
   static async getGroup (id, params = {}) {

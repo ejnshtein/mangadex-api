@@ -103,13 +103,14 @@ class Scraper {
     return { isLogined }
   }
 
-  static parseGroup (html) {
+  static parseGroup (groupId, html) {
     const content = cheerio.load(html)
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
     }
 
     const group = {
+      id: groupId,
       name: content('#content > div.card > .card-header > span.mx-1').text().trim(),
       banner: content('#content > div.card > .card-img-bottom').attr('src'),
       stats: {

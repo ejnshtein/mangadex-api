@@ -362,8 +362,7 @@ export interface MangadexUser {
   last_online?: string
 }
 
-export interface MangadexGroup {
-  name: string
+export interface MangadexGroup extends MangaGroup {
   banner: string
   stats: {
     views: number
