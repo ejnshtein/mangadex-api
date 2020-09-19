@@ -1,11 +1,11 @@
 {
   "name": "mangadex-api",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "mangadex api wrapper with known apis",
   "main": "src/index.js",
   "types": "./typings/index.d.ts",
   "scripts": {
-    "eslint": "eslint ./src --cache --ignore-pattern *.test.*",
+    "eslint": "eslint ./src --ignore-pattern *.test.*",
     "test": "jest --config jest.json"
   },
   "husky": {
