@@ -2,3 +2,4 @@ node_modules
 __ejnshtein
 *session
 .env
+.eslintcache
