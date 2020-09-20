@@ -1,334 +1,334 @@
 [
   {
     "id": 1,
-    "label": "4-Koma"
+    "name": "4-Koma"
   },
   {
     "id": 2,
-    "label": "Action"
+    "name": "Action"
   },
   {
     "id": 3,
-    "label": "Adventure"
+    "name": "Adventure"
   },
   {
     "id": 4,
-    "label": "Award Winning"
+    "name": "Award Winning"
   },
   {
     "id": 5,
-    "label": "Comedy"
+    "name": "Comedy"
   },
   {
     "id": 6,
-    "label": "Cooking"
+    "name": "Cooking"
   },
   {
     "id": 7,
-    "label": "Doujinshi"
+    "name": "Doujinshi"
   },
   {
     "id": 8,
-    "label": "Drama"
+    "name": "Drama"
   },
   {
     "id": 9,
-    "label": "Ecchi"
+    "name": "Ecchi"
   },
   {
     "id": 10,
-    "label": "Fantasy"
+    "name": "Fantasy"
   },
   {
     "id": 11,
-    "label": "Gyaru"
+    "name": "Gyaru"
   },
   {
     "id": 12,
-    "label": "Harem"
+    "name": "Harem"
   },
   {
     "id": 13,
-    "label": "Historical"
+    "name": "Historical"
   },
   {
     "id": 14,
-    "label": "Horror"
+    "name": "Horror"
   },
   {
     "id": 15,
-    "label": "Josei"
+    "name": "Josei"
   },
   {
     "id": 16,
-    "label": "Martial Arts"
+    "name": "Martial Arts"
   },
   {
     "id": 17,
-    "label": "Mecha"
+    "name": "Mecha"
   },
   {
     "id": 18,
-    "label": "Medical"
+    "name": "Medical"
   },
   {
     "id": 19,
-    "label": "Music"
+    "name": "Music"
   },
   {
     "id": 20,
-    "label": "Mystery"
+    "name": "Mystery"
   },
   {
     "id": 21,
-    "label": "Oneshot"
+    "name": "Oneshot"
   },
   {
     "id": 22,
-    "label": "Psychological"
+    "name": "Psychological"
   },
   {
     "id": 23,
-    "label": "Romance"
+    "name": "Romance"
   },
   {
     "id": 24,
-    "label": "School Life"
+    "name": "School Life"
   },
   {
     "id": 25,
-    "label": "Sci-Fi"
+    "name": "Sci-Fi"
   },
   {
     "id": 26,
-    "label": "Seinen"
+    "name": "Seinen"
   },
   {
     "id": 27,
-    "label": "Shoujo"
+    "name": "Shoujo"
   },
   {
     "id": 28,
-    "label": "Shoujo Ai"
+    "name": "Shoujo Ai"
   },
   {
     "id": 29,
-    "label": "Shounen"
+    "name": "Shounen"
   },
   {
     "id": 30,
-    "label": "Shounen Ai"
+    "name": "Shounen Ai"
   },
   {
     "id": 31,
-    "label": "Slice of Life"
+    "name": "Slice of Life"
   },
   {
     "id": 32,
-    "label": "Smut"
+    "name": "Smut"
   },
   {
     "id": 33,
-    "label": "Sports"
+    "name": "Sports"
   },
   {
     "id": 34,
-    "label": "Supernatural"
+    "name": "Supernatural"
   },
   {
     "id": 35,
-    "label": "Tragedy"
+    "name": "Tragedy"
   },
   {
     "id": 36,
-    "label": "Long Strip"
+    "name": "Long Strip"
   },
   {
     "id": 37,
-    "label": "Yaoi"
+    "name": "Yaoi"
   },
   {
     "id": 38,
-    "label": "Yuri"
+    "name": "Yuri"
   },
   {
     "id": 39,
-    "label": "[no chapters]"
+    "name": "[no chapters]"
   },
   {
     "id": 40,
-    "label": "Video Games"
+    "name": "Video Games"
   },
   {
     "id": 41,
-    "label": "Isekai"
+    "name": "Isekai"
   },
   {
     "id": 42,
-    "label": "Adaptation"
+    "name": "Adaptation"
   },
   {
     "id": 43,
-    "label": "Anthology"
+    "name": "Anthology"
   },
   {
     "id": 44,
-    "label": "Web Comic"
+    "name": "Web Comic"
   },
   {
     "id": 45,
-    "label": "Full Color"
+    "name": "Full Color"
   },
   {
     "id": 46,
-    "label": "User Created"
+    "name": "User Created"
   },
   {
     "id": 47,
-    "label": "Official Colored"
+    "name": "Official Colored"
   },
   {
     "id": 48,
-    "label": "Fan Colored"
+    "name": "Fan Colored"
   },
   {
     "id": 49,
-    "label": "Gore"
+    "name": "Gore"
   },
   {
     "id": 50,
-    "label": "Sexual Violence"
+    "name": "Sexual Violence"
   },
   {
     "id": 51,
-    "label": "Crime"
+    "name": "Crime"
   },
   {
     "id": 52,
-    "label": "Magical Girls"
+    "name": "Magical Girls"
   },
   {
     "id": 53,
-    "label": "Philosophical"
+    "name": "Philosophical"
   },
   {
     "id": 54,
-    "label": "Superhero"
+    "name": "Superhero"
   },
   {
     "id": 55,
-    "label": "Thriller"
+    "name": "Thriller"
   },
   {
     "id": 56,
-    "label": "Wuxia"
+    "name": "Wuxia"
   },
   {
     "id": 57,
-    "label": "Aliens"
+    "name": "Aliens"
   },
   {
     "id": 58,
-    "label": "Animals"
+    "name": "Animals"
   },
   {
     "id": 59,
-    "label": "Crossdressing"
+    "name": "Crossdressing"
   },
   {
     "id": 60,
-    "label": "Demons"
+    "name": "Demons"
   },
   {
     "id": 61,
-    "label": "Delinquents"
+    "name": "Delinquents"
   },
   {
     "id": 62,
-    "label": "Genderswap"
+    "name": "Genderswap"
   },
   {
     "id": 63,
-    "label": "Ghosts"
+    "name": "Ghosts"
   },
   {
     "id": 64,
-    "label": "Monster Girls"
+    "name": "Monster Girls"
   },
   {
     "id": 65,
-    "label": "Loli"
+    "name": "Loli"
   },
   {
     "id": 66,
-    "label": "Magic"
+    "name": "Magic"
   },
   {
     "id": 67,
-    "label": "Military"
+    "name": "Military"
   },
   {
     "id": 68,
-    "label": "Monsters"
+    "name": "Monsters"
   },
   {
     "id": 69,
-    "label": "Ninja"
+    "name": "Ninja"
   },
   {
     "id": 70,
-    "label": "Office Workers"
+    "name": "Office Workers"
   },
   {
     "id": 71,
-    "label": "Police"
+    "name": "Police"
   },
   {
     "id": 72,
-    "label": "Post-Apocalyptic"
+    "name": "Post-Apocalyptic"
   },
   {
     "id": 73,
-    "label": "Reincarnation"
+    "name": "Reincarnation"
   },
   {
     "id": 74,
-    "label": "Reverse Harem"
+    "name": "Reverse Harem"
   },
   {
     "id": 75,
-    "label": "Samurai"
+    "name": "Samurai"
   },
   {
     "id": 76,
-    "label": "Shota"
+    "name": "Shota"
   },
   {
     "id": 77,
-    "label": "Survival"
+    "name": "Survival"
   },
   {
     "id": 78,
-    "label": "Time Travel"
+    "name": "Time Travel"
   },
   {
     "id": 79,
-    "label": "Vampires"
+    "name": "Vampires"
   },
   {
     "id": 80,
-    "label": "Traditional Games"
+    "name": "Traditional Games"
   },
   {
     "id": 81,
-    "label": "Virtual Reality"
+    "name": "Virtual Reality"
   },
   {
     "id": 82,
-    "label": "Zombies"
+    "name": "Zombies"
   },
   {
     "id": 83,
-    "label": "Incest"
+    "name": "Incest"
   }
 ]
