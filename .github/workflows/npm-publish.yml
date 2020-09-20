@@ -19,3 +19,10 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+      - name: Send notification to Telegram about release.
+        if: cancelled() == false
+        uses: xinthink/action-telegram@v1.1
+        with:
+          botToken: ${{ secrets.BOT_TOKEN }}
+          chatId: ${{ secrets.CHAT_ID }}
+          jobStatus: ${{ job.status }}
