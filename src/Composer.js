@@ -11,7 +11,7 @@ class Composer {
     } else {
       return genres.map(genre => ({
         id: genre,
-        label: `Genre#${genre}`
+        name: `Genre#${genre}`
       }))
     }
   }
