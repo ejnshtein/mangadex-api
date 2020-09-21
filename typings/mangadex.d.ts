@@ -285,7 +285,7 @@ export interface Genre {
   /**
    * Genre name
    */
-  name: string
+  label: string
 }
 
 export interface SearchResult {
