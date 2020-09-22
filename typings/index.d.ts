@@ -18,7 +18,12 @@ export interface Mangadex {
   ):Promise<md.Chapter>
 
   search (
-    query?: SearchQuery,
+    query: SearchQuery,
+    params?: request.RequestOptions
+  ): Promise<md.SearchResult>
+
+  search (
+    query: string,
     params?: request.RequestOptions
   ): Promise<md.SearchResult>
 
@@ -131,7 +136,12 @@ export interface MangadexConstructor {
   ):Promise<md.Chapter>
 
   search (
-    query?: SearchQuery,
+    query: SearchQuery,
+    params?: request.RequestOptions
+  ): Promise<md.SearchResult>
+
+  search (
+    query: string,
     params?: request.RequestOptions
   ): Promise<md.SearchResult>
 
