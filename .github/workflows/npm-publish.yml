@@ -30,4 +30,4 @@ jobs:
           to: ${{ secrets.CHAT_ID }}
           format: markdown
           message: |
-            Published new version of [mangadex-api@${{ steps.package-version.outputs.current-version}}](https://github.com/ejnshtein/mangadex-api) !.
+            Published new version of [mangadex-api@${{ steps.package-version.outputs.current-version }}](https://github.com/ejnshtein/mangadex-api) !.
