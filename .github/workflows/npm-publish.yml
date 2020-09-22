@@ -19,10 +19,15 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
       - name: Send notification to Telegram about release.
         if: cancelled() == false
-        uses: xinthink/action-telegram@v1.1
+        uses: appleboy/telegram-action@0.0.3
         with:
-          botToken: ${{ secrets.BOT_TOKEN }}
-          chatId: ${{ secrets.CHAT_ID }}
-          jobStatus: ${{ job.status }}
+          token: ${{ secrets.BOT_TOKEN }}
+          to: ${{ secrets.CHAT_ID }}
+          format: markdown
+          message: |
+            Published new version of [mangadex-api@${{ steps.package-version.outputs.current-version}}](https://github.com/ejnshtein/mangadex-api) !.
