@@ -174,6 +174,8 @@ Returns Mangadex chapter data.
 
 Returns search result from Mangadex.
 
+[Note]\: Make sure that setting "manga list view" (on search page, on top right) is set to `Detailed`. To set it via api use `Mangadex.setMangaView(0)` (See [setMangaView](#setMangaView) description.)
+
 | Argument   | Type                                    | Description                                          |
 | ---------- | --------------------------------------- | ---------------------------------------------------- |
 | **query**  | `string` \| [SearchQuery](#SearchQuery) | When it's `string` search will be only **by title**. |
