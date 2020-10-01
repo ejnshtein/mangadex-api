@@ -53,6 +53,13 @@ export interface Mangadex {
   mangaFollow (mangaId: number, type: number, params?: request.RequestOptions): Promise<Boolean>
 
   mangaUnfollow (mangaId: number, type: number, params?: request.RequestOptions): Promise<Boolean>
+
+  /**
+   * Set manga view for search, featured section and e.t.c.
+   * @param mode mode id: 0 - detailed, 1 - expanded list, 2 - simple list, 3 - grid
+   * @param params request options
+   */
+  setMangaView (mode: number, params?: request.RequestOptions): Promise<Boolean>
 }
 
 export interface SearchQuery {
