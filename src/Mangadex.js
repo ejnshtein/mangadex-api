@@ -8,6 +8,18 @@ const DefaultOptions = {
   apiHost: 'https://mangadex.org/api'
 }
 
+const DefaultSearchQuery = {
+  title: '',
+  author: '',
+  artist: '',
+  lang_id: null,
+  demos: [],
+  statuses: [],
+  tags: [],
+  tag_mode_inc_all: 'all',
+  tag_mode_exc: 'any'
+}
+
 class Mangadex {
   constructor (options = {}) {
     this.options = Object.assign({}, DefaultOptions, options)
@@ -51,31 +63,25 @@ class Mangadex {
   }
 
   async search (query, params = {}) {
-    const defaultQuery = {
-      title: '',
-      author: '',
-      artist: '',
-      lang_id: null,
-      demos: [],
-      statuses: [],
-      tags: [],
-      tag_mode_inc_all: 'all',
-      tag_mode_exc: 'any'
-    }
+    const userQuery = {}
 
     if (typeof query === 'string') {
-      defaultQuery.title = query
+      userQuery.title = query
     } else if (typeof query === 'object') {
       Object.entries(query).forEach(([name, value]) => {
-        if (typeof value === 'string' && value) {
-          defaultQuery[name] = value
-        }
         if (Array.isArray(value) && value.length > 0) {
-          defaultQuery[name] = value.join(',')
+          userQuery[name] = value.join(',')
+        } else {
+          userQuery[name] = value
         }
       })
+    } else {
+      Object.entries(DefaultSearchQuery).forEach(([key, val]) => {
+        userQuery[key] = val
+      })
     }
-    const finalParams = Object.entries(defaultQuery).reduce(
+
+    const finalParams = Object.entries(userQuery).reduce(
       (acc, [name, value]) => {
         if (typeof value === 'string' && value) {
           acc[name] = value
@@ -98,33 +104,26 @@ class Mangadex {
     return Scraper.parseSearch(result, this.options.host)
   }
 
-  static async search (query = {}, params = {}) {
-    const defaultQuery = {
-      title: '',
-      author: '',
-      artist: '',
-      lang_id: null,
-      demos: [],
-      statuses: [],
-      tags: [],
-      tag_mode_inc_all: 'all',
-      tag_mode_exc: 'any'
-    }
+  static async search (query, params = {}) {
+    const userQuery = {}
 
     if (typeof query === 'string') {
-      defaultQuery.title = query
+      userQuery.title = query
     } else if (typeof query === 'object') {
       Object.entries(query).forEach(([name, value]) => {
-        if (typeof value === 'string' && value) {
-          defaultQuery[name] = value
-        }
         if (Array.isArray(value) && value.length > 0) {
-          defaultQuery[name] = value.join(',')
+          userQuery[name] = value.join(',')
+        } else {
+          userQuery[name] = value
         }
+      })
+    } else {
+      Object.entries(DefaultSearchQuery).forEach(([key, val]) => {
+        userQuery[key] = val
       })
     }
 
-    const finalParams = Object.entries(defaultQuery).reduce(
+    const finalParams = Object.entries(userQuery).reduce(
       (acc, [name, value]) => {
         if (typeof value === 'string' && value) {
           acc[name] = value
@@ -245,6 +244,18 @@ class Mangadex {
         function: 'manga_unfollow',
         id: mangaId,
         type: mangaId
+      },
+      params
+    )
+
+    return true
+  }
+
+  async setMangaView (mode, params = {}) {
+    await this.agent.callAjaxAction(
+      {
+        function: 'set_mangas_view',
+        mode
       },
       params
     )

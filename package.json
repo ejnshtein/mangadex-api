@@ -1,6 +1,6 @@
 {
   "name": "mangadex-api",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "mangadex api wrapper with known apis",
   "main": "src/index.js",
   "types": "./typings/index.d.ts",
