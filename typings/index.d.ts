@@ -123,7 +123,7 @@ export interface Composer {
 export interface MangadexOptions {
   host?: string
   apiHost?: string
-  getCredentials?: Promise | Function | Object
+  getCredentials?: Promise<unknown> | Function | Object
 }
 
 export interface MangadexConstructor {
@@ -192,8 +192,8 @@ export interface AgentOptions {
   sessionExpiration: string
   persistantId: string
   hentai: number
-  getCredentials: Promise | Function | Object
-  loginCredentials: Promise | Function | Object
+  getCredentials: Promise<unknown> | Function | Object
+  loginCredentials: Promise<unknown> | Function | Object
 }
 
 export interface Agent {
