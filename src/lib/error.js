@@ -1,5 +1,5 @@
 class MangadexError extends Error {
-  constructor (payload = {}, response) {
+  constructor(payload = {}, response = {}) {
     super(`${response.status}: ${response.statusText}`)
     this.code = response.status
     this.response = payload

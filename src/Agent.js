@@ -18,7 +18,7 @@ const writeFile = (path, data, options) =>
   )
 
 class Agent {
-  constructor ({
+  constructor({
     host = 'https://mangadex.org',
     apiHost = 'https://mangadex.org/api',
     sessionId = null,
@@ -36,16 +36,16 @@ class Agent {
     this.getCredentials = getCredentials || (() => {})
   }
 
-  setSession (id, expiration) {
+  setSession(id, expiration) {
     this.sessionId = id
     this.sessionExpiration = new Date(expiration)
   }
 
-  setPersistent (token) {
+  setPersistent(token) {
     this.persistentId = token
   }
 
-  async login (username, password, rememberMe = false, options = {}) {
+  async login(username, password, rememberMe = false, options = {}) {
     this.sessionId = null
     this.sessionExpiration = null
     if (this.loginCredentials) {
@@ -53,10 +53,10 @@ class Agent {
         this.loginCredentials.constructor.name === 'AsyncFunction'
           ? await this.loginCredentials()
           : this.loginCredentials.constructor.name === 'Function'
-            ? this.loginCredentials()
-            : typeof this.loginCredentials === 'object'
-              ? this.loginCredentials
-              : null
+          ? this.loginCredentials()
+          : typeof this.loginCredentials === 'object'
+          ? this.loginCredentials
+          : null
       if (!session && typeof session === 'object') {
         throw new Error('Agent.credentials is wrong type')
       }
@@ -93,7 +93,7 @@ class Agent {
     return true
   }
 
-  static async login (username, password, rememberMe = false, options = {}) {
+  static async login(username, password, rememberMe = false, options = {}) {
     if (!username || !password) {
       throw new Error('Not enough login info.')
     }
@@ -130,9 +130,7 @@ class Agent {
       const [_, sessionId] = mangadexSession.match(/mangadex_session=(\S+);/i)
       session.sessionId = sessionId
       // eslint-disable-next-line no-unused-vars
-      const [__, expiration] = mangadexSession.match(
-        /expires=([\S\s]+?);/i
-      )
+      const [__, expiration] = mangadexSession.match(/expires=([\S\s]+?);/i)
       session.expiration = expiration
     }
     const persistent = headers['set-cookie'].find((cookie) =>
@@ -157,7 +155,7 @@ class Agent {
     return session
   }
 
-  async _onDeleteSession () {
+  async _onDeleteSession() {
     this.sessionId = null
     this.sessionExpiration = null
     this.persistentId = null
@@ -196,7 +194,7 @@ class Agent {
     return { result: 'logout' }
   }
 
-  async loginWithSession (path) {
+  async loginWithSession(path) {
     const file = await readFile(path, 'utf8')
 
     const [sessionId, expiration, persistentId] = file.split('\n')
@@ -222,7 +220,7 @@ class Agent {
     }
   }
 
-  async saveSession (path) {
+  async saveSession(path) {
     return Agent.saveSession(path, {
       sessionId: this.sessionId,
       sessionExpiration: this.sessionExpiration,
@@ -230,7 +228,7 @@ class Agent {
     })
   }
 
-  static async saveSession (path, session) {
+  static async saveSession(path, session) {
     await writeFile(
       path,
       `${session.sessionId}\n${session.sessionExpiration.toGMTString()}${
@@ -241,7 +239,7 @@ class Agent {
     return true
   }
 
-  setCookies (cookies) {
+  setCookies(cookies) {
     const mangadexSession = cookies.find((cookie) =>
       cookie.includes('mangadex_session')
     )
@@ -261,7 +259,7 @@ class Agent {
     }
   }
 
-  getCookie () {
+  getCookie() {
     let Cookie = ''
 
     if (this.sessionId) {
@@ -275,7 +273,7 @@ class Agent {
     return Cookie
   }
 
-  async checkLogin () {
+  async checkLogin() {
     const result = await this.call('login')
 
     const { isLogined } = Scraper.parseLogin(result)
@@ -283,7 +281,7 @@ class Agent {
     return isLogined
   }
 
-  async call (url, options = {}) {
+  async call(url, options = {}) {
     const Cookie = this.getCookie()
     const result = await Agent.call(
       url,
@@ -309,7 +307,7 @@ class Agent {
     }
   }
 
-  async callApi (url, options = {}) {
+  async callApi(url, options = {}) {
     const result = await this.call(url, {
       baseUrl: this.apiHost,
       responseType: 'json',
@@ -322,7 +320,7 @@ class Agent {
     return result
   }
 
-  static async call (url, options = {}) {
+  static async call(url, options = {}) {
     const result = await request(
       `${options.baseUrl || 'https://mangadex.org'}${
         !(url.startsWith('/') && options.baseUrl.endsWith('/')) && '/'
@@ -337,7 +335,7 @@ class Agent {
     return result
   }
 
-  static async callApi (url, options = {}) {
+  static async callApi(url, options = {}) {
     const result = await Agent.call(`api${!url.startsWith('/') && '/'}${url}`, {
       responseType: 'json',
       ...options
@@ -345,7 +343,7 @@ class Agent {
     return result
   }
 
-  async callAjaxAction (params = {}, options = {}) {
+  async callAjaxAction(params = {}, options = {}) {
     const result = await this.call('ajax/actions.ajax.php', {
       params,
       ...options
@@ -354,7 +352,7 @@ class Agent {
     return result
   }
 
-  static async callAjaxAction (params = {}, options = {}) {
+  static async callAjaxAction(params = {}, options = {}) {
     return Agent.call('ajax/actions.ajax.php', {
       params,
       ...options
