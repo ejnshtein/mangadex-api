@@ -3,7 +3,8 @@
     "node": true
   },
   "extends": [
-    "standard"
+    "standard",
+    "plugin:prettier/recommended"
   ],
   "overrides": [
     {
@@ -19,6 +20,7 @@
   "rules": {
     "camelcase": "warn"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module"
