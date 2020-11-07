@@ -86,4 +86,12 @@ describe('mangadex api', () => {
 
     expect(Object.keys(result.manga)).toEqual(expect.arrayContaining(expected))
   })
+
+  it('should get home page', async () => {
+    const client = await getTestClient()
+    const expected = ['latest_updates', 'top_chapters', 'top_manga']
+    const result = await client.getHome()
+
+    expect(Object.keys(result)).toEqual(expect.arrayContaining(expected))
+  })
 })

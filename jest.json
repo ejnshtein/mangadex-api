@@ -5,5 +5,8 @@
   "testRegex": [
     "(/__tests__/.*|(\\.|/))\\.[jt]sx?$"
   ],
-  "testEnvironment": "node"
+  "testEnvironment": "node",
+  "setupFilesAfterEnv": [
+    "./jest/defaultTimeout.js"
+]
 }
