@@ -1,0 +1,9 @@
+{
+  "out": "docs",
+  "inputFiles": [
+    "src",
+    "types"
+  ],
+  "includeDeclarations": true,
+  "excludeExternals": true
+}
