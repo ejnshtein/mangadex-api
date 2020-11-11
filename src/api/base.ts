@@ -1,5 +1,5 @@
 import { Agent } from '../Agent'
-import { MangadexOptions } from '../../types'
+import { MangadexOptions } from '../../types/agent'
 
 export interface IncludeParams {
   /**

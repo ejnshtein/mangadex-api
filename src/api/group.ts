@@ -1,5 +1,5 @@
 import { Agent } from '../Agent'
-import { MRequestOptions } from '../../types'
+import { MRequestOptions } from '../../types/agent'
 import { PartialChapters, MangadexGroup } from '../../types/mangadex'
 import { ApiBase, IncludeParams, PartialChaptersParams } from './base'
 

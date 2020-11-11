@@ -1,6 +1,6 @@
 import { Agent } from '../Agent'
 import { deepmerge } from '../lib/deepmerge'
-import { MRequestOptions } from '../../types'
+import { MRequestOptions } from '../../types/agent'
 import {
   FollowedPartialManga,
   FollowedUpdates,
@@ -37,6 +37,14 @@ export interface GetUserFollowedUpdatesParams {
    * Integer, default 0.
    */
   type?: number
+}
+
+export interface SetUserChapterReadParams {
+  /**
+   * Set or unset the chapter as read.
+   * Boolean, default true.
+   */
+  read?: boolean
 }
 
 export class UserResolver extends ApiBase {
@@ -236,12 +244,4 @@ export class UserResolver extends ApiBase {
   async getMe(options: MRequestOptions<'json'> = {}): Promise<User> {
     return this.getUser('me', options)
   }
-}
-
-export interface SetUserChapterReadParams {
-  /**
-   * Set or unset the chapter as read.
-   * Boolean, default true.
-   */
-  read?: boolean
 }

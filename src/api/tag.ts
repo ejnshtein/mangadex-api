@@ -1,5 +1,5 @@
 import { Agent } from '../Agent'
-import { MRequestOptions } from '../../types'
+import { MRequestOptions } from '../../types/agent'
 import { Tag, Tags } from '../../types/mangadex'
 import { ApiBase } from './base'
 

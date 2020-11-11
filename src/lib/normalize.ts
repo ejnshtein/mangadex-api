@@ -8,7 +8,6 @@ import {
 
 export const normalizeManga = (manga: Manga): FormattedManga => ({
   ...manga,
-  tags: Composer.getGenres(manga.tags),
   links: Composer.getMangaLinks(manga.links),
   description: Composer.parseToHTML(manga.description),
   publication: {

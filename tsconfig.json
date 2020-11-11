@@ -2,18 +2,16 @@
     "compilerOptions": {
       "module": "commonjs",
       "target": "ES6",
-      "lib": ["ESNext"],
+      "lib": ["ES6"],
       "declaration": true,
       "esModuleInterop": true,
-      "skipLibCheck": true,
+      "allowSyntheticDefaultImports": true,
       "outDir": "dist",
       "moduleResolution": "Node",
-      "baseUrl": "."
+      "baseUrl": ".",
+      "typeRoots": ["types"]
     },
     "include": [
       "src"
-    ],
-    "exclude": [
-      "types"
     ]
 }

@@ -8,9 +8,14 @@ import fs from 'fs'
 import cheerio from 'cheerio'
 import { Scraper } from './Scraper'
 import * as multipart from './lib/multipart'
-import { AgentOptions, LoginSession, MRequestOptions, Session } from '../types'
+import {
+  AgentOptions,
+  LoginSession,
+  MRequestOptions,
+  Session
+} from '../types/agent'
 import { deepmerge } from './lib/deepmerge'
-import { MangadexApiResponse } from '../types/mangadex'
+import { MangadexApiResponse, User } from '../types/mangadex'
 import { join } from 'path'
 
 const pkg = JSON.parse(
@@ -22,8 +27,8 @@ export class Agent {
   public sessionExpiration?: Date
   public persistentId?: string
   public hentai?: number
-  public host?: string
-  public apiHost?: string
+  public host: string
+  public apiHost: string
   public getCredentials?: Session | (() => Promise<Session>) | (() => Session)
   public loginCredentials?: Session | (() => Promise<Session>) | (() => Session)
 
@@ -296,11 +301,9 @@ export class Agent {
   }
 
   async checkLogin(): Promise<boolean> {
-    const result = await this.call('login')
+    const result = await this.callApi<User>('user/me')
 
-    const { isLogin } = Scraper.parseLogin(result)
-
-    return isLogin
+    return Boolean(result)
   }
 
   async call<K, T extends ResponseType = 'text'>(
@@ -344,10 +347,12 @@ export class Agent {
     options: MRequestOptions<T> = {},
     body?: Record<string, unknown>
   ): Promise<RequestResult<NonNullable<ResponseTypeMap<K>[T]>>> {
+    const requestUrl = `${options.baseUrl || 'https://mangadex.org'}${
+      !(url.startsWith('/') && options.baseUrl.endsWith('/')) && '/'
+    }${url}`
+
     const result = await request<K, T>(
-      `${options.baseUrl || 'https://mangadex.org'}${
-        !(url.startsWith('/') && options.baseUrl.endsWith('/')) && '/'
-      }${url}`,
+      requestUrl,
       deepmerge(
         {
           method: 'GET',
@@ -373,20 +378,12 @@ export class Agent {
     options: MRequestOptions<'json'> = {},
     body?: Record<string, unknown>
   ): Promise<K> {
-    const { data: response } = await this.call<
-      RequestResult<MangadexApiResponse<K>>,
-      'json'
-    >(
+    const response = await this.call<MangadexApiResponse<K>, 'json'>(
       url,
-      deepmerge(
-        {
-          baseUrl: this.apiHost
-        },
-        options,
-        {
-          responseType: 'json'
-        }
-      ),
+      deepmerge(options, {
+        baseUrl: this.apiHost,
+        responseType: 'json'
+      }),
       body
     )
 
@@ -404,9 +401,15 @@ export class Agent {
   ): Promise<T> {
     const { data: response } = await Agent.call<MangadexApiResponse<T>, 'json'>(
       `api${!url.startsWith('/') && '/'}${url}`,
-      deepmerge(options, {
-        responseType: 'json'
-      }),
+      deepmerge(
+        {
+          baseUrl: 'https://mangadex.org/api/v2'
+        },
+        options,
+        {
+          responseType: 'json'
+        }
+      ),
       body
     )
 
@@ -445,5 +448,3 @@ export class Agent {
     return result
   }
 }
-
-module.exports = Agent

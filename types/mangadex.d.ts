@@ -65,19 +65,9 @@ export interface RelatedManga {
   title: string
 
   /**
-   * Relation: Spin-off
+   * Relation: 4 - Spin-off, 8 - Doujinshi, 10 - Coloured
    */
-  type: 4
-
-  /**
-   * Relatio: Doujinshi
-   */
-  type: 8
-
-  /**
-   * Relation: Coloured
-   */
-  type: 10
+  type: number
 }
 
 export interface Group {
@@ -100,24 +90,9 @@ export interface MangaPublication {
   language: Language
 
   /**
-   * Manga ongoing
+   * Manga status: 1 - ongoing, 2 - completed, 3 - cancelled, 4 - hiatus
    */
-  status: 1
-
-  /**
-   * Manga completed
-   */
-  status: 2
-
-  /**
-   * Manga cancelled
-   */
-  status: 3
-
-  /**
-   * Manga hiatus
-   */
-  status: 4
+  status: number
 }
 
 export interface PartialManga {
@@ -246,16 +221,12 @@ export interface FormattedMangaPublication extends MangaPublication {
   languageName: string
 }
 
-export interface FormattedManga extends Manga {
+// To overwrite links and tags we need to use Omit
+export interface FormattedManga extends Omit<Manga, 'links'> {
   /**
    * Information links
    */
   links: Link[]
-
-  /**
-   * Manga genres
-   */
-  tags: PartialTag[]
 
   /**
    * Manga publication metadata

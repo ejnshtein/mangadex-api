@@ -1,7 +1,7 @@
 import { Agent } from '../Agent'
 import { deepmerge } from '../lib/deepmerge'
 import { normalizeChapter } from '../lib/normalize'
-import { MRequestOptions } from '../../types'
+import { MRequestOptions } from '../../types/agent'
 import { Chapter, FormattedChapter } from '../../types/mangadex'
 import { ApiBase } from './base'
 
@@ -36,9 +36,7 @@ export class ChapterResolver extends ApiBase {
   ): Promise<FormattedChapter> {
     const chapter = await this.agent.callApi<Chapter>(
       `chapter/${chapterId}`,
-      deepmerge(options, {
-        baseUrl: this.options.host
-      })
+      options
     )
 
     return normalizeChapter(chapter)
@@ -49,7 +47,7 @@ export class ChapterResolver extends ApiBase {
    * @param chapterId The chapter ID number, or the chapter hash.
    * @param options Request options
    */
-  public static async getChapter(
+  static async getChapter(
     chapterId: number,
     options: MRequestOptions<'json'> & {
       params?: GetChapterQueryParams

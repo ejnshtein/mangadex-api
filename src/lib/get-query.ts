@@ -1,4 +1,4 @@
-import { SearchQuery } from '../../types'
+import { SearchQuery } from '../../types/agent'
 
 const DefaultSearchQuery: SearchQuery = {
   title: '',

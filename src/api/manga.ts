@@ -1,7 +1,7 @@
 import { Agent } from '../Agent'
 import { deepmerge } from '../lib/deepmerge'
 import { normalizeManga } from '../lib/normalize'
-import { MRequestOptions } from '../../types'
+import { MRequestOptions } from '../../types/agent'
 import {
   FormattedManga,
   Manga,

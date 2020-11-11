@@ -1,4 +1,4 @@
-import { MangadexOptions, MRequestOptions, SearchQuery } from '../types'
+import { MangadexOptions, MRequestOptions, SearchQuery } from '../types/agent'
 import { MangadexHome, SearchResult } from '../types/mangadex'
 import { Agent } from './Agent'
 import { ChapterResolver } from './api/chapter'
@@ -27,11 +27,7 @@ export class Mangadex {
   constructor(options: MangadexOptions = {}) {
     this.options = Object.assign({}, DefaultOptions, options)
 
-    this.agent = new Agent({
-      host: this.options.host,
-      apiHost: this.options.apiHost,
-      getCredentials: this.options.getCredentials
-    })
+    this.agent = new Agent(this.options)
 
     const apiBaseOptions = {
       agent: this.agent,
