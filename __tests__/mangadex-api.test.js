@@ -1,4 +1,4 @@
-const Mangadex = require('../src/Mangadex')
+const { Mangadex } = require('../dist')
 require('dotenv').config('../.env')
 
 const getTestClient = async () => {
@@ -21,7 +21,7 @@ describe('mangadex api', () => {
 
   it('should get me', async () => {
     const client = await getTestClient()
-    const result = await client.getMe()
+    const result = await client.user.getMe()
 
     expect(result.username).toEqual(process.env.MANGADEX_USERNAME)
   })
@@ -51,7 +51,7 @@ describe('mangadex api', () => {
       'status',
       'server_fallback'
     ]
-    const result = await client.getChapter(300859)
+    const result = await client.chapter.getChapter(300859)
 
     expect(Object.keys(result)).toEqual(expect.arrayContaining(expected))
   })
@@ -82,7 +82,7 @@ describe('mangadex api', () => {
       'comments',
       'covers'
     ]
-    const result = await client.getManga(26293)
+    const result = await client.manga.getManga(26293)
 
     expect(Object.keys(result.manga)).toEqual(expect.arrayContaining(expected))
   })
