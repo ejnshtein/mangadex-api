@@ -11,7 +11,7 @@
     "test": "jest --config jest.json",
     "pb": "np",
     "build:docs": "typedoc",
-    "deploy": "typedoc && gh-pages -d docs -b gh-pages"
+    "deploy": "build && typedoc && gh-pages -d docs -b gh-pages"
   },
   "husky": {
     "hooks": {
