@@ -1,15 +1,37 @@
 const { Mangadex } = require('../dist')
+const fs = require('fs')
+const path = require('path')
 require('dotenv').config('../.env')
+
+const sessionPath = path.join(__dirname, '../session')
+
+const pathExists = async (path) => {
+  try {
+    await fs.promises.access(path, fs.constants.F_OK)
+    return true
+  } catch {
+    return false
+  }
+}
 
 const getTestClient = async () => {
   const client = new Mangadex()
-  await client.agent.login(
-    process.env.MANGADEX_USERNAME,
-    process.env.MANGADEX_PASSWORD,
-    false
-  )
+  if (await pathExists(sessionPath)) {
+    await client.agent.loginWithSession(sessionPath)
+  } else {
+    await client.agent.login(
+      process.env.MANGADEX_USERNAME,
+      process.env.MANGADEX_PASSWORD,
+      false
+    )
+    await client.agent.saveSession(sessionPath)
+  }
   return client
 }
+
+/**
+ * TODO add more tests
+ */
 
 describe('mangadex api', () => {
   it('should find To Be Winner', async () => {
@@ -30,26 +52,24 @@ describe('mangadex api', () => {
     const client = await getTestClient()
     const expected = [
       'id',
-      'timestamp',
       'hash',
+      'mangaId',
+      'mangaTitle',
       'volume',
       'chapter',
       'title',
-      'lang_name',
-      'lang_code',
-      'manga_id',
-      'group_id',
-      'group_name',
-      'group_id_2',
-      'group_name_2',
-      'group_id_3',
-      'group_name_3',
+      'language',
+      'groups',
+      'uploader',
+      'timestamp',
       'comments',
-      'server',
-      'page_array',
-      'long_strip',
+      'views',
       'status',
-      'server_fallback'
+      'pages',
+      'server',
+      'serverFallback',
+      'fallbackPages',
+      'languageName'
     ]
     const result = await client.chapter.getChapter(300859)
 
@@ -59,32 +79,29 @@ describe('mangadex api', () => {
   it('should get manga from api', async () => {
     const client = await getTestClient()
     const expected = [
-      'cover_url',
-      'description',
+      'id',
       'title',
-      'alt_names',
+      'altTitles',
+      'description',
       'artist',
       'author',
-      'status',
-      'demographic',
-      'genres',
-      'last_chapter',
-      'last_volume',
-      'last_updated',
-      'lang_name',
-      'lang_flag',
-      'hentai',
+      'publication',
+      'tags',
+      'lastChapter',
+      'lastVolume',
+      'isHentai',
       'links',
-      'related',
+      'relations',
       'rating',
       'views',
       'follows',
       'comments',
-      'covers'
+      'lastUploaded',
+      'mainCover'
     ]
     const result = await client.manga.getManga(26293)
 
-    expect(Object.keys(result.manga)).toEqual(expect.arrayContaining(expected))
+    expect(Object.keys(result)).toEqual(expect.arrayContaining(expected))
   })
 
   it('should get home page', async () => {
