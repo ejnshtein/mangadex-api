@@ -1,12 +1,20 @@
-const genresData = require('../genres.json')
-const langCodeData = require('../langcodes.json')
-const linksData = require('./lib/links')
+import fs from 'fs'
+import { join } from 'path'
+import { links as linksData } from './lib/links'
+import { Link, PartialTag, Status } from '../types/mangadex'
+import { Language } from '../types/language'
 
-class Composer {
-  static getGenres(genres) {
-    genres = Array.isArray(genres) ? genres : [genres]
+const genresData = JSON.parse(
+  fs.readFileSync(join(__dirname, '..', 'genres.json'), 'utf-8')
+)
+const langCodeData = JSON.parse(
+  fs.readFileSync(join(__dirname, '..', 'langcodes.json'), 'utf-8')
+)
+
+export class Composer {
+  static getGenres(genres: number[]): PartialTag[] {
     const res = genresData.filter((el) =>
-      genres.some((genreId) => el.id === Number.parseInt(genreId))
+      genres.some((genreId) => el.id === genreId)
     )
     if (res.length >= 2) {
       return res
@@ -18,7 +26,7 @@ class Composer {
     }
   }
 
-  static getMangaLinks(links) {
+  static getMangaLinks(links: Record<string, string>): Link[] {
     const formatted = Object.entries(links).map(([name, value]) => {
       const matchedLink = linksData[name]
       if (matchedLink) {
@@ -33,10 +41,11 @@ class Composer {
         }
       }
     })
+
     return formatted
   }
 
-  static getStatus(status) {
+  static getStatus(status: number): Status {
     const statuses = {
       1: 'Ongoing',
       2: 'Completed',
@@ -46,16 +55,14 @@ class Composer {
     return statuses[status] || status
   }
 
-  static getLangName(langCode) {
+  static getLangName(langCode: Language): string {
     return langCodeData[langCode] || langCode
   }
 
-  static parseToHTML(string) {
+  static parseToHTML(string: string): string {
     return string.replace(
       /\[url=(\S+?)\](\S+?)\[\/url\]/gi,
       '<a href="$1">$2</a>'
     )
   }
 }
-
-module.exports = Composer

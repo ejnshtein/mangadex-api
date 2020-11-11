@@ -4,8 +4,16 @@
   },
   "extends": [
     "standard",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
   "overrides": [
     {
       "files": ["__tests__/*"],
@@ -18,11 +26,9 @@
     }
   ],
   "rules": {
-    "camelcase": "warn"
-  },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module"
+    "camelcase": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-prototype-builtins": "off",
+    "@typescript-eslint/no-var-requires": "warn"
   }
 }

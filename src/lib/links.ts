@@ -1,4 +1,6 @@
-const links = {
+import { Link } from '../../types/mangadex'
+
+export const links: { [x: string]: Link } = {
   amz: {
     title: 'Amazon.co.jp',
     url: ''
@@ -48,5 +50,3 @@ const links = {
     url: 'https://anilist.co/manga/'
   }
 }
-
-module.export = links
