@@ -22,6 +22,10 @@
     "mangadex",
     "manga"
   ],
+  "files": [
+    "dist",
+    "types"
+  ],
   "type": "commonjs",
   "repository": "github:ejnshtein/mangadex-api",
   "author": "ejnshtein",
