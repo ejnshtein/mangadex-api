@@ -24,5 +24,8 @@ jobs:
       - name: Install dependencies 🔧
         run:  yarn
 
+      - name: ls
+        run: ls -la docs/
+
       - name: Deploy 🚀
         run: yarn deploy
