@@ -1,9 +1,13 @@
 {
+  "name": "mangadex-api",
   "out": "docs",
   "inputFiles": [
     "src",
     "types"
   ],
   "includeDeclarations": true,
-  "excludeExternals": true
+  "excludeExternals": true,
+  "includeVersion": true,
+  "plugin": ["typedoc-plugin-sourcefile-url"],
+  "sourcefile-url-prefix": "https://github.com/ejnshtein/mangadex-api/blob/master/docs/"
 }
