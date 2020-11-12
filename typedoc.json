@@ -9,5 +9,5 @@
   "excludeExternals": true,
   "includeVersion": true,
   "plugin": ["typedoc-plugin-sourcefile-url"],
-  "sourcefile-url-prefix": "https://github.com/ejnshtein/mangadex-api/blob/master/docs/"
+  "sourcefile-url-prefix": "https://github.com/ejnshtein/mangadex-api/blob/gh-pages/docs/"
 }
