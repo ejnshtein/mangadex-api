@@ -6,7 +6,6 @@ import {
 } from 'smol-request'
 import fs from 'fs'
 import cheerio from 'cheerio'
-import { Scraper } from './Scraper'
 import * as multipart from './lib/multipart'
 import {
   AgentOptions,
