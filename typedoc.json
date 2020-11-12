@@ -8,5 +8,5 @@
   "includeDeclarations": true,
   "excludeExternals": true,
   "includeVersion": true,
-  "sourcefile-url-prefix": "https://github.com/ejnshtein/mangadex-api/"
+  "sourcefile-url-prefix": "https://github.com/ejnshtein/mangadex-api/tree/master/"
 }
