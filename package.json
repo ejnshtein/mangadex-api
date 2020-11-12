@@ -28,6 +28,7 @@
   ],
   "type": "commonjs",
   "repository": "github:ejnshtein/mangadex-api",
+  "homepage": "https://ejnshtein.github.io/mangadex-api/",
   "author": "ejnshtein",
   "license": "MIT",
   "dependencies": {
