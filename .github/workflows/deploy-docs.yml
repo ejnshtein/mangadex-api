@@ -26,6 +26,3 @@ jobs:
 
       - name: Deploy 🚀
         run: yarn deploy
-
-      - name: ls
-        run: ls -la docs/
