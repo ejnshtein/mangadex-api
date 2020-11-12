@@ -1,0 +1,351 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>mangadex-api</title>
+	<meta name="description" content="Documentation for mangadex-api">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">mangadex-api</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>mangadex-api</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#mangadex-api" id="mangadex-api" style="color: inherit; text-decoration: none;">
+					<h1>Mangadex-api</h1>
+				</a>
+				<p><a href="https://www.npmjs.com/package/mangadex-api"><img src="https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square" alt="NPM Version"></a>
+				<a href="http://npm-stat.com/charts.html?package=mangadex-api"><img src="https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square" alt="npm downloads"></a></p>
+				<p>This is <a href="https://mangadex.org">Mangadex</a> website api wrapper.</p>
+				<a href="#migration-to-version-4" id="migration-to-version-4" style="color: inherit; text-decoration: none;">
+					<h1>Migration to version 4</h1>
+				</a>
+				<p>Main focuses in V4 were <a href="https://www.typescriptlang.org/">Typescript</a> and <a href="https://mangadex.org/">Mangadex</a> <a href="https://mangadex.org/thread/351011">API V2</a>.<br>So V1 support was dropped completely. If you still, for some reason, want to use API V1 then use <code>agent.callApi(endpoint, { baseUrl: &#39;https://mangadex.org/api&#39; })</code> code snippet to request data from API V1.  </p>
+				<p>So there&#39;re new api groups:</p>
+				<ul>
+					<li>chapter/{id|hash}</li>
+					<li>group/{id}<ul>
+							<li>group/{id}/chapters</li>
+						</ul>
+					</li>
+					<li>manga/{id}<ul>
+							<li>manga/{id}/chapters</li>
+							<li>manga/{id}/covers</li>
+						</ul>
+					</li>
+					<li>tag</li>
+					<li>tag/{id}</li>
+					<li>user/{id}<ul>
+							<li>user/{id}/chapters</li>
+							<li>user/{id}/followed-manga</li>
+							<li>user/{id}/followed-updates</li>
+							<li>user/{id}/manga/{mangaId}</li>
+							<li>user/{id}/ratings</li>
+							<li>user/{id}/settings</li>
+						</ul>
+					</li>
+					<li>user/{id}/marker</li>
+				</ul>
+				<p>Each of them is available on <code>Mangadex</code> instance via these properties:</p>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Mangadex()
+
+<span class="hljs-comment">// don&#x27;t forget to login</span>
+<span class="hljs-keyword">await</span> client.agent.login(username, password)
+
+<span class="hljs-comment">// and here we go</span>
+
+<span class="hljs-comment">// chapter/{id|hash}</span>
+client.chapter.getChapter(chapterId)
+
+<span class="hljs-comment">// group/{id}</span>
+client.group.getGroup(groupId)
+
+<span class="hljs-comment">// group/{id}/chapters</span>
+client.group.getGroupChapters(groupId)
+
+<span class="hljs-comment">// manga/{id}</span>
+client.manga.getManga(mangaId)
+
+<span class="hljs-comment">// manga/{id}/chapters</span>
+client.manga.getMangaChapters(mangaId)
+
+<span class="hljs-comment">// manga/{id}/covers</span>
+client.manga.getMangaCovers(mangaId)
+
+<span class="hljs-comment">// tag</span>
+client.tag.getTags()
+
+<span class="hljs-comment">// tag/{id}</span>
+client.tag.getTag(tagId)
+
+<span class="hljs-comment">// user/{id}</span>
+client.user.getUser(userId)
+
+<span class="hljs-comment">// user/{id}/chapters</span>
+client.user.getUserChapters(userId)
+
+<span class="hljs-comment">// user/{id}/followed-updates</span>
+client.user.getUserFollowedUpdates(userId)
+
+<span class="hljs-comment">// user/{id}/manga/{mangaId}</span>
+client.user.getUserManga(userId, mangaId)
+
+<span class="hljs-comment">// user/{id}/ratings</span>
+client.user.getUserRatings(userId)
+
+<span class="hljs-comment">// user/{id}/settings</span>
+client.user.getUserSettings(userId)
+
+<span class="hljs-comment">// user/{id}/followed-manga</span>
+client.user.getUserFollowedManga(userId)
+
+<span class="hljs-comment">// user/{id}/marker</span>
+client.user.setUserChapterRead(userId, chapters, read)</code></pre>
+				<a href="#migration-to-version-3" id="migration-to-version-3" style="color: inherit; text-decoration: none;">
+					<h1>Migration to version 3</h1>
+				</a>
+				<p>LRU cache was removed from package, so you&#39;ll have to implement caching by yourself.<br><a href="#Mangadex">Mangadex constructor</a> now accepts only 2 options.<br><a href="#getManga">getManga</a> and <a href="#getChapter">getChapter</a> lost <strong>normalize</strong> argument, now it&#39;s on <strong>by default</strong>.</p>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h1>Installation</h1>
+				</a>
+				<pre><code class="language-bash">npm i mangadex-api</code></pre>
+				<p>Or</p>
+				<pre><code class="language-bash">yarn add mangadex-api</code></pre>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h1>Example</h1>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
+
+Mangadex.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ manga, chapter, group }</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapter.length}</span> chapters.`</span>)
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`And contributed by <span class="hljs-subst">${group.length}</span> groups.`</span>)
+})
+
+Mangadex.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Chapter title is &quot;<span class="hljs-subst">${chapter.title}</span>&quot; and it is <span class="hljs-subst">${chapter.chapter}</span> chapter from <span class="hljs-subst">${chapter.volume}</span> volume.`</span>
+  )
+})
+
+<span class="hljs-comment">// currently requires authorization</span>
+Mangadex.search(<span class="hljs-string">&#x27;senko&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Found <span class="hljs-subst">${response.titles.length}</span> titles.`</span>)
+})
+
+Mangadex.getHome().then(<span class="hljs-function">(<span class="hljs-params">home</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (home.accouncement) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`New accouncement!\n<span class="hljs-subst">${home.accouncement.text}</span>`</span>)
+  }
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Todays top manga by follows is: <span class="hljs-subst">${home.top_manga.follows[<span class="hljs-number">0</span>].title}</span>`</span>
+  )
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Todays top chapter is from manga: <span class="hljs-subst">${home.top_chapters.day[<span class="hljs-number">0</span>].title}</span>`</span>
+  )
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Latest chapter is from manga: <span class="hljs-subst">${home.latest_updates.all[<span class="hljs-number">0</span>].title}</span>`</span>
+  )
+})
+
+Mangadex.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Group <span class="hljs-subst">${group.name}</span> has <span class="hljs-subst">${group.stats.follows}</span> followers and <span class="hljs-subst">${group.stats.total_chapters}</span> total chapters uploaded!`</span>
+  )
+})</code></pre>
+				<a href="#authorization-example" id="authorization-example" style="color: inherit; text-decoration: none;">
+					<h1>Authorization example</h1>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
+
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Mangadex()
+
+<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> client.search(<span class="hljs-string">&#x27;To Be Winner&#x27;</span>)
+
+<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// { titles: [{ title: &#x27;To Be Winner&#x27;, ... }] }</span></code></pre>
+				<a href="#cached-session-example" id="cached-session-example" style="color: inherit; text-decoration: none;">
+					<h1>Cached session example</h1>
+				</a>
+				<pre><code class="language-js"><span class="hljs-comment">// first you must save your session somewhere</span>
+
+<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
+
+<span class="hljs-keyword">await</span> client.agent.saveSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>))
+
+<span class="hljs-comment">// now we can use it</span>
+
+<span class="hljs-keyword">await</span> client.agent.loginWithSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>)
+
+<span class="hljs-keyword">const</span> me = <span class="hljs-keyword">await</span> client.getMe())
+
+<span class="hljs-built_in">console</span>.log(me)</code></pre>
+				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+					<h1>API</h1>
+				</a>
+				<p>This section is no more, use Typedoc generated site instead.</p>
+				<hr>
+				<a href="#contact" id="contact" style="color: inherit; text-decoration: none;">
+					<h1>Contact</h1>
+				</a>
+				<p><a href="https://t.me/ejnshtein">My telegram</a> and a <a href="https://t.me/nyaasi_chat">group</a> where you can as your questions or suggest something.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_agent_.html">&quot;src/<wbr>Agent&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_composer_.html">&quot;src/<wbr>Composer&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_mangadex_.html">&quot;src/<wbr>Mangadex&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_scraper_.html">&quot;src/<wbr>Scraper&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_base_.html">&quot;src/api/base&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_chapter_.html">&quot;src/api/chapter&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_group_.html">&quot;src/api/group&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_manga_.html">&quot;src/api/manga&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_tag_.html">&quot;src/api/tag&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_user_.html">&quot;src/api/user&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_index_.html">&quot;src/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_deepmerge_.html">&quot;src/lib/deepmerge&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_get_query_.html">&quot;src/lib/get-<wbr>query&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_links_.html">&quot;src/lib/links&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_multipart_.html">&quot;src/lib/multipart&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_normalize_.html">&quot;src/lib/normalize&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_sleep_.html">&quot;src/lib/sleep&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_agent_d_.html">&quot;types/agent.d&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_index_d_.html">&quot;types/index.d&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_language_d_.html">&quot;types/language.d&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_types_mangadex_d_.html">&quot;types/mangadex.d&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
