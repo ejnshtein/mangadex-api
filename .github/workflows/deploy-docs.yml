@@ -20,6 +20,9 @@ jobs:
         uses: actions/setup-node@v2-beta
         with:
           node-version: '14'
+      
+      - name: Checkout to master
+        run: git checkout -b master
 
       - name: Install and Build 🔧
         run:  yarn
