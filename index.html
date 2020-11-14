@@ -176,9 +176,13 @@ client.user.setUserChapterRead(userId, chapters, read)</code></pre>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
 
-Mangadex.manga.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ manga, chapter, group }</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapter.length}</span> chapters.`</span>)
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`And contributed by <span class="hljs-subst">${group.length}</span> groups.`</span>)
+Mangadex.manga.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">manga</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${manga.follows}</span> followers`</span>)
+
+  Mangadex.manga.getMangaChapters(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ chapters, groups }</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapters.length}</span> chapters`</span>)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${groups.length}</span> scanlated groups`</span>)
+  })
 })
 
 Mangadex.chapter.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
