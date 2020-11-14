@@ -119,12 +119,12 @@ yarn add mangadex-api
 ```js
 const { Mangadex } = require('mangadex-api')
 
-Mangadex.getManga(22723).then(({ manga, chapter, group }) => {
+Mangadex.manga.getManga(22723).then(({ manga, chapter, group }) => {
   console.log(`Manga ${manga.title} has ${chapter.length} chapters.`)
   console.log(`And contributed by ${group.length} groups.`)
 })
 
-Mangadex.getChapter(8857).then((chapter) => {
+Mangadex.chapter.getChapter(8857).then((chapter) => {
   console.log(
     `Chapter title is "${chapter.title}" and it is ${chapter.chapter} chapter from ${chapter.volume} volume.`
   )
@@ -150,7 +150,7 @@ Mangadex.getHome().then((home) => {
   )
 })
 
-Mangadex.getGroup(12).then((group) => {
+Mangadex.group.getGroup(12).then((group) => {
   console.log(
     `Group ${group.name} has ${group.stats.follows} followers and ${group.stats.total_chapters} total chapters uploaded!`
   )
