@@ -176,12 +176,12 @@ client.user.setUserChapterRead(userId, chapters, read)</code></pre>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
 
-Mangadex.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ manga, chapter, group }</span>) =&gt;</span> {
+Mangadex.manga.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ manga, chapter, group }</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapter.length}</span> chapters.`</span>)
   <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`And contributed by <span class="hljs-subst">${group.length}</span> groups.`</span>)
 })
 
-Mangadex.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
+Mangadex.chapter.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(
     <span class="hljs-string">`Chapter title is &quot;<span class="hljs-subst">${chapter.title}</span>&quot; and it is <span class="hljs-subst">${chapter.chapter}</span> chapter from <span class="hljs-subst">${chapter.volume}</span> volume.`</span>
   )
@@ -207,7 +207,7 @@ Mangadex.getHome().then(<span class="hljs-function">(<span class="hljs-params">h
   )
 })
 
-Mangadex.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
+Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
   <span class="hljs-built_in">console</span>.log(
     <span class="hljs-string">`Group <span class="hljs-subst">${group.name}</span> has <span class="hljs-subst">${group.stats.follows}</span> followers and <span class="hljs-subst">${group.stats.total_chapters}</span> total chapters uploaded!`</span>
   )
@@ -277,6 +277,9 @@ Mangadex.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-fu
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_src_api_group_.html">&quot;src/api/group&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_api_index_.html">&quot;src/api/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_src_api_manga_.html">&quot;src/api/manga&quot;</a>
