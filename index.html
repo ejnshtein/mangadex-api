@@ -66,7 +66,8 @@
 					<h1>Mangadex-api</h1>
 				</a>
 				<p><a href="https://www.npmjs.com/package/mangadex-api"><img src="https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square" alt="NPM Version"></a>
-				<a href="http://npm-stat.com/charts.html?package=mangadex-api"><img src="https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square" alt="npm downloads"></a></p>
+					<a href="http://npm-stat.com/charts.html?package=mangadex-api"><img src="https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square" alt="npm downloads"></a>
+				<a href="https://github.com/ejnshtein/mangadex-api"><img src="https://img.shields.io/npm/l/mangadex-api?style=flat-square" alt="License"></a></p>
 				<p>This is <a href="https://mangadex.org">Mangadex</a> website api wrapper.</p>
 				<a href="#migration-to-version-4" id="migration-to-version-4" style="color: inherit; text-decoration: none;">
 					<h1>Migration to version 4</h1>
@@ -75,6 +76,7 @@
 				<p>So there&#39;re new api groups:</p>
 				<ul>
 					<li>chapter/{id|hash}</li>
+					<li>follows</li>
 					<li>group/{id}<ul>
 							<li>group/{id}/chapters</li>
 						</ul>
@@ -84,6 +86,7 @@
 							<li>manga/{id}/covers</li>
 						</ul>
 					</li>
+					<li>relations</li>
 					<li>tag</li>
 					<li>tag/{id}</li>
 					<li>user/{id}<ul>
@@ -108,6 +111,9 @@
 <span class="hljs-comment">// chapter/{id|hash}</span>
 client.chapter.getChapter(chapterId)
 
+<span class="hljs-comment">// follows</span>
+client.getFollows()
+
 <span class="hljs-comment">// group/{id}</span>
 client.group.getGroup(groupId)
 
@@ -122,6 +128,9 @@ client.manga.getMangaChapters(mangaId)
 
 <span class="hljs-comment">// manga/{id}/covers</span>
 client.manga.getMangaCovers(mangaId)
+
+<span class="hljs-comment">// relations</span>
+client.getRelations()
 
 <span class="hljs-comment">// tag</span>
 client.tag.getTags()
@@ -283,6 +292,9 @@ Mangadex.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-fu
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_src_lib_deepmerge_.html">&quot;src/lib/deepmerge&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_lib_error_.html">&quot;src/lib/error&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_src_lib_get_query_.html">&quot;src/lib/get-<wbr>query&quot;</a>

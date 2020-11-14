@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ApiBase | mangadex-api - v4.0.1</title>
+	<title>ApiError | mangadex-api - v4.0.1</title>
 	<meta name="description" content="Documentation for mangadex-api - v4.0.1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,13 +54,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_src_api_base_.html">&quot;src/api/base&quot;</a>
+					<a href="../modules/_src_lib_error_.html">&quot;src/lib/error&quot;</a>
 				</li>
 				<li>
-					<a href="_src_api_base_.apibase.html">ApiBase</a>
+					<a href="_src_lib_error_.apierror.html">ApiError</a>
 				</li>
 			</ul>
-			<h1>Class ApiBase</h1>
+			<h1>Class ApiError</h1>
 		</div>
 	</div>
 </header>
@@ -71,22 +71,10 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ApiBase</span>
+						<a href="_src_lib_error_.apierror.html#error" class="tsd-signature-type">Error</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="_src_api_chapter_.chapterresolver.html" class="tsd-signature-type">ChapterResolver</a>
-							</li>
-							<li>
-								<a href="_src_api_group_.groupresolver.html" class="tsd-signature-type">GroupResolver</a>
-							</li>
-							<li>
-								<a href="_src_api_manga_.mangaresolver.html" class="tsd-signature-type">MangaResolver</a>
-							</li>
-							<li>
-								<a href="_src_api_tag_.tagresolver.html" class="tsd-signature-type">TagResolver</a>
-							</li>
-							<li>
-								<a href="_src_api_user_.userresolver.html" class="tsd-signature-type">UserResolver</a>
+								<span class="target">ApiError</span>
 							</li>
 						</ul>
 					</li>
@@ -99,14 +87,18 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_api_base_.apibase.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="_src_lib_error_.apierror.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_api_base_.apibase.html#agent" class="tsd-kind-icon">agent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_api_base_.apibase.html#options" class="tsd-kind-icon">options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_error_.apierror.html#code" class="tsd-kind-icon">code</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_lib_error_.apierror.html#message" class="tsd-kind-icon">message</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_lib_error_.apierror.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="_src_lib_error_.apierror.html#stack" class="tsd-kind-icon">stack</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="_src_lib_error_.apierror.html#url" class="tsd-kind-icon">url</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="_src_lib_error_.apierror.html#error" class="tsd-kind-icon">Error</a></li>
 							</ul>
 						</section>
 					</div>
@@ -118,30 +110,33 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Api<wbr>Base<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>agent<span class="tsd-signature-symbol">: </span><a href="_src_agent_.agent.html" class="tsd-signature-type">Agent</a><span class="tsd-signature-symbol">; </span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_agent_d_.agentoptions.html" class="tsd-signature-type">AgentOptions</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_api_base_.apibase.html" class="tsd-signature-type">ApiBase</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Api<wbr>Error<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_src_lib_error_.apierror.html" class="tsd-signature-type">ApiError</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/src/api/base.ts#L25">src/api/base.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/src/lib/error.ts#L3">src/lib/error.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>agent<span class="tsd-signature-symbol">: </span><a href="_src_agent_.agent.html" class="tsd-signature-type">Agent</a><span class="tsd-signature-symbol">; </span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_agent_d_.agentoptions.html" class="tsd-signature-type">AgentOptions</a><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter">
-											<h5>agent<span class="tsd-signature-symbol">: </span><a href="_src_agent_.agent.html" class="tsd-signature-type">Agent</a></h5>
+											<h5>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 										<li class="tsd-parameter">
-											<h5>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_types_agent_d_.agentoptions.html" class="tsd-signature-type">AgentOptions</a></h5>
+											<h5>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 										</li>
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_src_api_base_.apibase.html" class="tsd-signature-type">ApiBase</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_src_lib_error_.apierror.html" class="tsd-signature-type">ApiError</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -149,22 +144,65 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="agent" class="tsd-anchor"></a>
-					<h3>agent</h3>
-					<div class="tsd-signature tsd-kind-icon">agent<span class="tsd-signature-symbol">:</span> <a href="_src_agent_.agent.html" class="tsd-signature-type">Agent</a></div>
+					<a name="code" class="tsd-anchor"></a>
+					<h3>code</h3>
+					<div class="tsd-signature tsd-kind-icon">code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/src/api/base.ts#L24">src/api/base.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/src/lib/error.ts#L2">src/lib/error.ts:2</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="message" class="tsd-anchor"></a>
+					<h3>message</h3>
+					<div class="tsd-signature tsd-kind-icon">message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_src_lib_error_.apierror.html">ApiError</a>.<a href="_src_lib_error_.apierror.html#message">message</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/node_modules/typescript/lib/lib.es5.d.ts#L974">node_modules/typescript/lib/lib.es5.d.ts:974</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_src_lib_error_.apierror.html">ApiError</a>.<a href="_src_lib_error_.apierror.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/node_modules/typescript/lib/lib.es5.d.ts#L973">node_modules/typescript/lib/lib.es5.d.ts:973</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+					<a name="stack" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> stack</h3>
+					<div class="tsd-signature tsd-kind-icon">stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="_src_lib_error_.apierror.html">ApiError</a>.<a href="_src_lib_error_.apierror.html#stack">stack</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/node_modules/typescript/lib/lib.es5.d.ts#L975">node_modules/typescript/lib/lib.es5.d.ts:975</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="options" class="tsd-anchor"></a>
-					<h3>options</h3>
-					<div class="tsd-signature tsd-kind-icon">options<span class="tsd-signature-symbol">:</span> <a href="../modules/_types_agent_d_.html#mangadexoptions" class="tsd-signature-type">MangadexOptions</a></div>
+					<a name="url" class="tsd-anchor"></a>
+					<h3>url</h3>
+					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/src/api/base.ts#L25">src/api/base.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/src/lib/error.ts#L3">src/lib/error.ts:3</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="error" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> Error</h3>
+					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ejnshtein/mangadex-api/tree/master/node_modules/typescript/lib/lib.es5.d.ts#L984">node_modules/typescript/lib/lib.es5.d.ts:984</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -188,7 +226,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_src_scraper_.html">&quot;src/<wbr>Scraper&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_src_api_base_.html">&quot;src/api/base&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -212,7 +250,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_src_lib_deepmerge_.html">&quot;src/lib/deepmerge&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_src_lib_error_.html">&quot;src/lib/error&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -249,27 +287,33 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module">
-						<a href="_src_api_base_.apibase.html" class="tsd-kind-icon">Api<wbr>Base</a>
+						<a href="_src_lib_error_.apierror.html" class="tsd-kind-icon">Api<wbr>Error</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="_src_api_base_.apibase.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_src_lib_error_.apierror.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_api_base_.apibase.html#agent" class="tsd-kind-icon">agent</a>
+								<a href="_src_lib_error_.apierror.html#code" class="tsd-kind-icon">code</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="_src_lib_error_.apierror.html#message" class="tsd-kind-icon">message</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="_src_lib_error_.apierror.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited">
+								<a href="_src_lib_error_.apierror.html#stack" class="tsd-kind-icon">stack</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="_src_api_base_.apibase.html#options" class="tsd-kind-icon">options</a>
+								<a href="_src_lib_error_.apierror.html#url" class="tsd-kind-icon">url</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="_src_lib_error_.apierror.html#error" class="tsd-kind-icon">Error</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/_src_api_base_.includeparams.html" class="tsd-kind-icon">Include<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/_src_api_base_.partialchaptersparams.html" class="tsd-kind-icon">Partial<wbr>Chapters<wbr>Params</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
@@ -295,6 +339,12 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
 			</ul>
 		</div>
 	</div>
