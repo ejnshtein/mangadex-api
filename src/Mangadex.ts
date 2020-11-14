@@ -246,4 +246,14 @@ export class Mangadex {
   ): Promise<Relations> {
     return this.agent.callApi<Relations>('relations', options)
   }
+
+  /**
+   * Get all manga relation types.
+   * @param options Request options
+   */
+  static async getRelations(
+    options: MRequestOptions<'json'> = {}
+  ): Promise<Relations> {
+    return Agent.callApi<Relations>('relations', options)
+  }
 }
