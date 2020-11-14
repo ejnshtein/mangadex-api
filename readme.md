@@ -2,6 +2,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
 [![npm downloads](https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square)](http://npm-stat.com/charts.html?package=mangadex-api)
+[![License](https://img.shields.io/npm/l/mangadex-api?style=flat-square)](https://github.com/ejnshtein/mangadex-api)
 
 This is [Mangadex](https://mangadex.org) website api wrapper.
 
@@ -12,6 +13,7 @@ So V1 support was dropped completely. If you still, for some reason, want to use
 
 So there're new api groups:
 - chapter/{id|hash}
+- follows
 - group/{id}
   - group/{id}/chapters
 - manga/{id}
@@ -40,6 +42,9 @@ await client.agent.login(username, password)
 
 // chapter/{id|hash}
 client.chapter.getChapter(chapterId)
+
+// follows
+client.getFollows()
 
 // group/{id}
 client.group.getGroup(groupId)
