@@ -309,7 +309,7 @@ export interface PartialChapter {
 
   views: number
 
-  volume: string | null
+  volume?: string
 }
 
 export interface Chapter {
@@ -478,7 +478,7 @@ export interface User {
 
 export interface MangadexGroup extends Group {
   altNames: string
-  banner: string | null
+  banner?: string
   chapters: number
   delay: number
   description: string
