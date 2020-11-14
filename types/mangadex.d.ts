@@ -436,7 +436,7 @@ export interface Tag extends PartialTag {
 export interface Tags {
   /**
    * Tags by key as id and tag by value
-   * idk why not an array
+   * Using key-value cuz https://mangadex.org/thread/351011/5/#post_3600002
    */
   [x: string]: Tag
 }
