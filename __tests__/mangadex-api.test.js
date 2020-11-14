@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 require('dotenv').config('../.env')
 
-const sessionPath = path.join(__dirname, '../session')
+const sessionPath = path.join(__dirname, '..', 'session')
 
 const pathExists = async (path) => {
   try {
@@ -22,7 +22,7 @@ const getTestClient = async () => {
     await client.agent.login(
       process.env.MANGADEX_USERNAME,
       process.env.MANGADEX_PASSWORD,
-      false
+      true
     )
     await client.agent.saveSession(sessionPath)
   }
@@ -110,5 +110,21 @@ describe('mangadex api', () => {
     const result = await client.getHome()
 
     expect(Object.keys(result)).toEqual(expect.arrayContaining(expected))
+  })
+
+  it('should get all manga relation types', async () => {
+    const client = await getTestClient()
+    const expected = { id: 'number', name: 'string', pairId: 'number' }
+
+    const expectedKeys = Object.keys(expected)
+
+    const result = await client.getRelations()
+
+    Object.values(result).forEach((relation) => {
+      Object.entries(relation).forEach(([key, type]) => {
+        expect(expectedKeys).toContain(key)
+        expect(typeof type).toEqual(expected[key])
+      })
+    })
   })
 })
