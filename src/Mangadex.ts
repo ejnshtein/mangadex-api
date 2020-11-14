@@ -1,5 +1,10 @@
 import { MangadexOptions, MRequestOptions, SearchQuery } from '../types/agent'
-import { FollowType, MangadexHome, SearchResult } from '../types/mangadex'
+import {
+  FollowType,
+  MangadexHome,
+  Relations,
+  SearchResult
+} from '../types/mangadex'
 import { Agent } from './Agent'
 import { ChapterResolver } from './api/chapter'
 import { GroupResolver } from './api/group'
@@ -230,5 +235,15 @@ export class Mangadex {
     options: MRequestOptions<'json'> = {}
   ): Promise<FollowType[]> {
     return Agent.callApi<FollowType[]>('follows', options)
+  }
+
+  /**
+   * Get all manga relation types.
+   * @param options Request options
+   */
+  async getRelations(
+    options: MRequestOptions<'json'> = {}
+  ): Promise<Relations> {
+    return this.agent.callApi<Relations>('relations', options)
   }
 }

@@ -48,6 +48,16 @@ export interface MangaRating {
   users: number
 }
 
+export interface RelationType {
+  id: number
+  name: string
+  pairId: number
+}
+
+export interface Relations {
+  [x: string]: RelationType
+}
+
 export interface RelatedManga {
   /**
    * Related manga id

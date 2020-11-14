@@ -19,6 +19,7 @@ So there're new api groups:
 - manga/{id}
   - manga/{id}/chapters
   - manga/{id}/covers
+- relations
 - tag
 - tag/{id}
 - user/{id}
@@ -60,6 +61,9 @@ client.manga.getMangaChapters(mangaId)
 
 // manga/{id}/covers
 client.manga.getMangaCovers(mangaId)
+
+// relations
+client.getRelations()
 
 // tag
 client.tag.getTags()
