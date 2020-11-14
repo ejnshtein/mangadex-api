@@ -119,9 +119,13 @@ yarn add mangadex-api
 ```js
 const { Mangadex } = require('mangadex-api')
 
-Mangadex.manga.getManga(22723).then(({ manga, chapter, group }) => {
-  console.log(`Manga ${manga.title} has ${chapter.length} chapters.`)
-  console.log(`And contributed by ${group.length} groups.`)
+Mangadex.manga.getManga(22723).then((manga) => {
+  console.log(`Manga ${manga.title} has ${manga.follows} followers`)
+
+  Mangadex.manga.getMangaChapters(22723).then(({ chapters, groups }) => {
+    console.log(`Manga ${manga.title} has ${chapters.length} chapters`)
+    console.log(`Manga ${manga.title} has ${groups.length} scanlated groups`)
+  })
 })
 
 Mangadex.chapter.getChapter(8857).then((chapter) => {
