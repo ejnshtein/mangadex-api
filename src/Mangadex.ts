@@ -29,6 +29,12 @@ export class Mangadex {
   public tag: TagResolver
   public user: UserResolver
 
+  public static readonly chapter = ChapterResolver
+  public static readonly group = GroupResolver
+  public static readonly manga = MangaResolver
+  public static readonly tag = TagResolver
+  public static readonly user = UserResolver
+
   constructor(options: MangadexOptions = {}) {
     this.options = Object.assign({}, DefaultOptions, options)
 
