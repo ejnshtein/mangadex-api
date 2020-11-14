@@ -1,5 +1,5 @@
 import { MangadexOptions, MRequestOptions, SearchQuery } from '../types/agent'
-import { MangadexHome, SearchResult } from '../types/mangadex'
+import { FollowType, MangadexHome, SearchResult } from '../types/mangadex'
 import { Agent } from './Agent'
 import { ChapterResolver } from './api/chapter'
 import { GroupResolver } from './api/group'
@@ -45,6 +45,11 @@ export class Mangadex {
     this.user = new UserResolver(apiBaseOptions)
   }
 
+  /**
+   * Search manga on mangadex
+   * @param query Search query
+   * @param options Request options
+   */
   async search(
     query: SearchQuery | string,
     options: MRequestOptions<'text'> = {}
@@ -61,6 +66,11 @@ export class Mangadex {
     return Scraper.parseSearch(result, this.options.host)
   }
 
+  /**
+   * Search manga on mangadex
+   * @param query Search query
+   * @param options Request options
+   */
   static async search(
     query: SearchQuery | string,
     options: MRequestOptions<'text'> = {}
@@ -77,6 +87,11 @@ export class Mangadex {
     return Scraper.parseSearch(result.data, options.baseUrl)
   }
 
+  /**
+   * Quick search manga on mangadex
+   * @param query Search query
+   * @param options Request options
+   */
   async quickSearch(
     title: string,
     options: MRequestOptions<'text'> = {}
@@ -88,6 +103,11 @@ export class Mangadex {
     return Scraper.parseSearch(result)
   }
 
+  /**
+   * Quick search manga on mangadex
+   * @param query Search query
+   * @param options Request options
+   */
   static async quickSearch(
     title: string,
     options: MRequestOptions<'text'> = {}
@@ -99,12 +119,20 @@ export class Mangadex {
     return Scraper.parseSearch(result.data)
   }
 
+  /**
+   * Get home page of mangadex
+   * @param options Request options
+   */
   async getHome(options: MRequestOptions<'text'> = {}): Promise<MangadexHome> {
     const result = await this.agent.call('', options)
 
     return Scraper.parseHome(result, this.options.host)
   }
 
+  /**
+   * Get home page of mangadex
+   * @param options Request options
+   */
   static async getHome(
     options: MRequestOptions<'text'> = {}
   ): Promise<MangadexHome> {
@@ -166,46 +194,6 @@ export class Mangadex {
 
   /**
    * Set manga view for search, featured section and e.t.c.
-   * @param mode mode id: 0 - detailed
-   * @param params request options
-   */
-  async setMangaView(
-    mode: 0,
-    options: MRequestOptions<'headers'>
-  ): Promise<boolean>
-
-  /**
-   * Set manga view for search, featured section and e.t.c.
-   * @param mode mode id: 1 - expanded list
-   * @param params request options
-   */
-  async setMangaView(
-    mode: 1,
-    options: MRequestOptions<'headers'>
-  ): Promise<boolean>
-
-  /**
-   * Set manga view for search, featured section and e.t.c.
-   * @param mode mode id: 2 - simple list
-   * @param params request options
-   */
-  async setMangaView(
-    mode: 2,
-    options: MRequestOptions<'headers'>
-  ): Promise<boolean>
-
-  /**
-   * Set manga view for search, featured section and e.t.c.
-   * @param mode mode id: 3 - grid
-   * @param params request options
-   */
-  async setMangaView(
-    mode: 3,
-    options: MRequestOptions<'headers'>
-  ): Promise<boolean>
-
-  /**
-   * Set manga view for search, featured section and e.t.c.
    * @param mode mode id: 0 - detailed, 1 - expanded list, 2 - simple list, 3 - grid
    * @param params request options
    */
@@ -222,5 +210,25 @@ export class Mangadex {
     )
 
     return true
+  }
+
+  /**
+   * Get all follow types.
+   * @param options Request options
+   */
+  async getFollows(
+    options: MRequestOptions<'json'> = {}
+  ): Promise<FollowType[]> {
+    return this.agent.callApi<FollowType[]>('follows', options)
+  }
+
+  /**
+   * Get all follow types.
+   * @param options Request options
+   */
+  static async getFollows(
+    options: MRequestOptions<'json'> = {}
+  ): Promise<FollowType[]> {
+    return Agent.callApi<FollowType[]>('follows', options)
   }
 }

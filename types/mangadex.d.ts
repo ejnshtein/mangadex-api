@@ -105,7 +105,11 @@ export interface PartialManga {
    * Is hentai (18+)
    */
   isHentai: boolean
-  lastChapter?: number
+
+  /**
+   * Last chapter number
+   */
+  lastChapter?: string
   /**
    * Last volume number
    */
@@ -161,7 +165,10 @@ export interface Manga {
    */
   isHentai: boolean
 
-  lastChapter: null
+  /**
+   * Last chapter number. Is null if manga haven't finished
+   */
+  lastChapter?: string
 
   /**
    * Last uploaded (unix timestamp)
@@ -505,6 +512,11 @@ export interface PartialChapters {
   groups: Group[]
 }
 
+export interface FollowType {
+  id: number
+  name: string
+}
+
 export interface MangadexHomeUpdate {
   id: number
   chapter: string
@@ -605,6 +617,7 @@ export type MangadexApiResponse<T> =
       data: T
     }
   | {
+      code: number
       status: 'error'
       message: string
     }
