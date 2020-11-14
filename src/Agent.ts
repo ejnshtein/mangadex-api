@@ -16,6 +16,7 @@ import {
 import { deepmerge } from './lib/deepmerge'
 import { MangadexApiResponse, User } from '../types/mangadex'
 import { join } from 'path'
+import { ApiError } from './lib/error'
 
 const pkg = JSON.parse(
   fs.readFileSync(join(__dirname, '..', 'package.json'), 'utf-8')
@@ -387,7 +388,11 @@ export class Agent {
     )
 
     if (response.status === 'error') {
-      throw new Error(response.message)
+      throw new ApiError({
+        message: response.message,
+        code: response.code,
+        url
+      })
     }
 
     return response.data
@@ -413,7 +418,11 @@ export class Agent {
     )
 
     if (response.status === 'error') {
-      throw new Error(response.message)
+      throw new ApiError({
+        message: response.message,
+        code: response.code,
+        url
+      })
     }
 
     return response.data
