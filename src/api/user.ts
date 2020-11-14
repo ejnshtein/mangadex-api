@@ -1,5 +1,4 @@
 import { Agent } from '../Agent'
-import { deepmerge } from '../lib/deepmerge'
 import { MRequestOptions } from '../../types/agent'
 import {
   FollowedPartialManga,
@@ -225,9 +224,10 @@ export class UserResolver extends ApiBase {
   ): Promise<ReadChaptersStatus> {
     const result = await this.agent.callApi<ReadChaptersStatus>(
       `user/${userId}/marker`,
-      deepmerge(options, {
-        method: 'POST'
-      }),
+      {
+        method: 'POST',
+        ...options
+      },
       {
         chapters,
         read

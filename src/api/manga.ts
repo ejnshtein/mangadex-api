@@ -1,5 +1,4 @@
 import { Agent } from '../Agent'
-import { deepmerge } from '../lib/deepmerge'
 import { normalizeManga } from '../lib/normalize'
 import { MRequestOptions } from '../../types/agent'
 import {
@@ -22,12 +21,7 @@ export class MangaResolver extends ApiBase {
       params?: IncludeParams
     } = {}
   ): Promise<FormattedManga> {
-    const manga = await this.agent.callApi<Manga>(
-      `manga/${mangaId}`,
-      deepmerge(options, {
-        baseUrl: this.options.host
-      })
-    )
+    const manga = await this.agent.callApi<Manga>(`manga/${mangaId}`, options)
 
     return normalizeManga(manga)
   }

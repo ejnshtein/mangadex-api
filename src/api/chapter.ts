@@ -1,5 +1,4 @@
 import { Agent } from '../Agent'
-import { deepmerge } from '../lib/deepmerge'
 import { normalizeChapter } from '../lib/normalize'
 import { MRequestOptions } from '../../types/agent'
 import { Chapter, FormattedChapter } from '../../types/mangadex'
