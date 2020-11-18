@@ -188,7 +188,7 @@ export interface Manga {
   /**
    * Last volume number
    */
-  lastVolume?: number
+  lastVolume?: string
 
   /**
    * Information links
