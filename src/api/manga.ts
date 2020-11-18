@@ -85,7 +85,7 @@ export class MangaResolver extends ApiBase {
    * @param mangaId The manga ID number
    * @param options Request Options
    */
-  async getChapterCovers(
+  async getMangaCovers(
     mangaId: number,
     options: MRequestOptions<'json'> = {}
   ): Promise<MangaCover[]> {
@@ -102,7 +102,7 @@ export class MangaResolver extends ApiBase {
    * @param mangaId The manga ID number
    * @param options Request Options
    */
-  static async getChapterCovers(
+  static async getMangaCovers(
     mangaId: number,
     options: MRequestOptions<'json'> = {}
   ): Promise<MangaCover[]> {
