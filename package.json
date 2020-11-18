@@ -8,7 +8,7 @@
     "build": "tsc",
     "lint": "eslint ./src --ignore-pattern *.test.*",
     "lint:fix": "eslint ./src --ignore-pattern *.test.* --fix",
-    "test": "jest --config jest.json",
+    "test": "npm run build && jest --config jest.json",
     "pb": "np",
     "build:docs": "typedoc",
     "deploy": "npm run build && npm run build:docs && gh-pages -t -d docs -b gh-pages"
