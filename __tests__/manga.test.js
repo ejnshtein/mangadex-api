@@ -68,7 +68,7 @@ describe('manga api', () => {
   it('should get manga covers from api', async () => {
     const client = await getTestClient()
     const expected = ['url', 'volume']
-    const result = await client.manga.getChapterCovers(26293)
+    const result = await client.manga.getMangaCovers(26293)
 
     result.forEach((cover) => {
       Object.keys(cover).forEach((key) => {
