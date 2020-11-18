@@ -123,7 +123,7 @@ export interface PartialManga {
   /**
    * Last volume number
    */
-  lastVolume?: number
+  lastVolume?: string
   /**
    * Absolute path to cover url
    */
@@ -188,7 +188,7 @@ export interface Manga {
   /**
    * Last volume number
    */
-  lastVolume?: number
+  lastVolume?: string
 
   /**
    * Information links
