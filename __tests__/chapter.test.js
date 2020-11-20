@@ -26,6 +26,8 @@ describe('chapter api', () => {
     ]
     const result = await client.chapter.getChapter(300859)
 
-    expect(Object.keys(result)).toEqual(expect.arrayContaining(expected))
+    Object.keys(result).forEach((key) => {
+      expect(expected).toContain(key)
+    })
   })
 })
