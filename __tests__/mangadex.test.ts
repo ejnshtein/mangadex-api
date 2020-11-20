@@ -1,4 +1,4 @@
-const getTestClient = require('../jest/get-test-client')
+import { getTestClient } from '../jest/get-test-client'
 
 /**
  * TODO add more tests

@@ -1,13 +1,28 @@
 {
-  "moduleFileExtensions": [
-    "js"
-  ],
   "testRegex": [
     "(/__tests__/.*|(\\.|/))\\.[jt]sx?$"
   ],
   "testEnvironment": "node",
+  "preset": "ts-jest",
   "setupFilesAfterEnv": [
-    "./jest/defaultTimeout.js"
+    "./jest/jest.setup.ts"
   ],
-  "collectCoverage":true
+  "globals": {
+    "ts-jest": {
+      "isolatedModules": true
+    }
+  },
+  "collectCoverage":true,
+  "collectCoverageFrom": [
+    "**/*.{ts,js}"
+  ],
+  "coveragePathIgnorePatterns": [
+    "node_modules",
+    "__test__",
+    "jest",
+    "dist",
+    "coverage",
+    "docs",
+    "types"
+  ]
 }

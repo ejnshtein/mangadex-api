@@ -1,4 +1,4 @@
-const getTestClient = require('../jest/get-test-client')
+import { getTestClient } from '../jest/get-test-client'
 
 describe('tag api', () => {
   it('should get all tags from api', async () => {

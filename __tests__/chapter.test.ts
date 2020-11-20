@@ -1,4 +1,4 @@
-const getTestClient = require('../jest/get-test-client')
+import { getTestClient } from '../jest/get-test-client'
 
 describe('chapter api', () => {
   it('should get chapter from api', async () => {
