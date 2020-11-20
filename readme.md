@@ -3,6 +3,7 @@
 [![NPM Version](https://img.shields.io/npm/v/mangadex-api.svg?style=flat-square)](https://www.npmjs.com/package/mangadex-api)
 [![npm downloads](https://img.shields.io/npm/dm/mangadex-api.svg?style=flat-square)](http://npm-stat.com/charts.html?package=mangadex-api)
 [![License](https://img.shields.io/npm/l/mangadex-api?style=flat-square)](https://github.com/ejnshtein/mangadex-api)
+[![codecov](https://codecov.io/gh/ejnshtein/mangadex-api/branch/master/graph/badge.svg)](https://codecov.io/gh/ejnshtein/mangadex-api)
 
 This is [Mangadex](https://mangadex.org) website api wrapper.
 

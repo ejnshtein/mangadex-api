@@ -8,5 +8,6 @@
   "testEnvironment": "node",
   "setupFilesAfterEnv": [
     "./jest/defaultTimeout.js"
-]
+  ],
+  "collectCoverage":true
 }
