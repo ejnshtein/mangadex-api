@@ -14,17 +14,6 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "overrides": [
-    {
-      "files": ["__tests__/*"],
-      "globals": {
-        "expect": true,
-        "jest": true,
-        "it": true,
-        "describe": true
-      }
-    }
-  ],
   "rules": {
     "camelcase": "warn",
     "@typescript-eslint/no-unused-vars": "warn",

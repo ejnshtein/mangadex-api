@@ -23,6 +23,7 @@
     "dist",
     "coverage",
     "docs",
-    "types"
+    "types",
+    "src/lib"
   ]
 }
