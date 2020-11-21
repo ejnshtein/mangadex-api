@@ -12,6 +12,6 @@ jobs:
         with:
           node-version: 14
       - name: Installing dependencies
-        run: npm ci
+        run: yarn
       - name: Linting JS
-        run: npm run eslint
+        run: yarn lint
