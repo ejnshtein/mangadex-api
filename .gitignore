@@ -6,3 +6,4 @@ __ejnshtein
 .eslintcache
 docs
 coverage
+.DS_Store
