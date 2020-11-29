@@ -149,7 +149,7 @@ export class UserResolver extends ApiBase {
     } = {}
   ): Promise<FollowedUpdates> {
     const result = await this.agent.callApi<FollowedUpdates>(
-      `user/${userId}/followed-update`,
+      `user/${userId}/followed-updates`,
       options
     )
 
