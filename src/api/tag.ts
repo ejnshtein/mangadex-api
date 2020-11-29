@@ -2,7 +2,7 @@ import { Agent } from '../Agent'
 import { MRequestOptions } from '../../types/agent'
 import { Tag } from '../../types/mangadex'
 import { ApiBase } from './base'
-import { Composer } from 'src/Composer'
+import { Composer } from '../Composer'
 
 export class TagResolver extends ApiBase {
   /**
