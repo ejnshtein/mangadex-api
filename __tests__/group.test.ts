@@ -1,9 +1,8 @@
-import { getTestClient } from '../jest/get-test-client'
+import { getClient, getInstanceClient } from '../jest/get-test-client'
 
 describe('group api', () => {
-  it('should get group info', async () => {
-    const client = await getTestClient()
-    const expected = [
+  const expected = {
+    getGroup: [
       'id',
       'name',
       'altNames',
@@ -28,17 +27,8 @@ describe('group api', () => {
       'threadPosts',
       'views',
       'website'
-    ]
-    const result = await client.group.getGroup(2)
-
-    Object.keys(result).forEach((key) => {
-      expect(expected).toContain(key)
-    })
-  })
-
-  it('should get group chapters info', async () => {
-    const client = await getTestClient()
-    const expectedChapterKey = [
+    ],
+    getGroupChapters: [
       'chapter',
       'comments',
       'groups',
@@ -54,18 +44,55 @@ describe('group api', () => {
       'volume',
       'rating',
       'views'
-    ]
-    const expectedGroupKey = ['id', 'name']
+    ],
+    groupKey: ['id', 'name']
+  }
+  it('should get group info', async () => {
+    const client = await getClient()
+    const result = await client.group.getGroup(2)
+
+    Object.keys(result).forEach((key) => {
+      expect(expected.getGroup).toContain(key)
+    })
+  })
+
+  it('should get group info from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.group.getGroup(2)
+
+    Object.keys(result).forEach((key) => {
+      expect(expected.getGroup).toContain(key)
+    })
+  })
+
+  it('should get group chapters info', async () => {
+    const client = await getClient()
     const result = await client.group.getGroupChapters(2)
 
     result.chapters.forEach((chapter) => {
       Object.keys(chapter).forEach((key) => {
-        expect(expectedChapterKey).toContain(key)
+        expect(expected.getGroupChapters).toContain(key)
       })
     })
     result.groups.forEach((group) => {
       Object.keys(group).forEach((key) => {
-        expect(expectedGroupKey).toContain(key)
+        expect(expected.groupKey).toContain(key)
+      })
+    })
+  })
+
+  it('should get group chapters info from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.group.getGroupChapters(2)
+
+    result.chapters.forEach((chapter) => {
+      Object.keys(chapter).forEach((key) => {
+        expect(expected.getGroupChapters).toContain(key)
+      })
+    })
+    result.groups.forEach((group) => {
+      Object.keys(group).forEach((key) => {
+        expect(expected.groupKey).toContain(key)
       })
     })
   })

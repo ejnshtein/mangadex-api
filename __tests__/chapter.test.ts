@@ -1,9 +1,8 @@
-import { getTestClient } from '../jest/get-test-client'
+import { getInstanceClient, getClient } from '../jest/get-test-client'
 
 describe('chapter api', () => {
-  it('should get chapter from api', async () => {
-    const client = await getTestClient()
-    const expected = [
+  const expected = {
+    getChapter: [
       'id',
       'hash',
       'mangaId',
@@ -24,10 +23,22 @@ describe('chapter api', () => {
       'fallbackPages',
       'languageName'
     ]
+  }
+  it('should get chapter from api', async () => {
+    const client = await getClient()
     const result = await client.chapter.getChapter(300859)
 
     Object.keys(result).forEach((key) => {
-      expect(expected).toContain(key)
+      expect(expected.getChapter).toContain(key)
+    })
+  })
+
+  it('should get chapter from api from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.chapter.getChapter(300859)
+
+    Object.keys(result).forEach((key) => {
+      expect(expected.getChapter).toContain(key)
     })
   })
 })

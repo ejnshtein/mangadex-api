@@ -1,9 +1,8 @@
-import { getTestClient } from '../jest/get-test-client'
+import { getClient, getInstanceClient } from '../jest/get-test-client'
 
 describe('manga api', () => {
-  it('should get manga from api', async () => {
-    const client = await getTestClient()
-    const expected = [
+  const expected = {
+    getManga: [
       'id',
       'title',
       'altTitles',
@@ -23,17 +22,8 @@ describe('manga api', () => {
       'comments',
       'lastUploaded',
       'mainCover'
-    ]
-    const result = await client.manga.getManga(26293)
-
-    Object.keys(result).forEach((key) => {
-      expect(expected).toContain(key)
-    })
-  })
-
-  it('should get manga chapters from api', async () => {
-    const client = await getTestClient()
-    const expectedChapterKey = [
+    ],
+    getMangaChapters: [
       'chapter',
       'comments',
       'groups',
@@ -49,30 +39,81 @@ describe('manga api', () => {
       'volume',
       'rating',
       'views'
-    ]
-    const expectedGroupKey = ['id', 'name']
+    ],
+    groupKey: ['id', 'name'],
+    getMangaCovers: ['url', 'volume']
+  }
+
+  it('should get manga from api', async () => {
+    const client = await getClient()
+
+    const result = await client.manga.getManga(26293)
+
+    Object.keys(result).forEach((key) => {
+      expect(expected.getManga).toContain(key)
+    })
+  })
+
+  it('should get manga from api from md instance', async () => {
+    const client = getInstanceClient()
+
+    const result = await client.manga.getManga(26293)
+
+    Object.keys(result).forEach((key) => {
+      expect(expected.getManga).toContain(key)
+    })
+  })
+
+  it('should get manga chapters from api', async () => {
+    const client = await getClient()
     const result = await client.manga.getMangaChapters(26293)
 
     result.chapters.forEach((chapter) => {
       Object.keys(chapter).forEach((key) => {
-        expect(expectedChapterKey).toContain(key)
+        expect(expected.getMangaChapters).toContain(key)
       })
     })
     result.groups.forEach((group) => {
       Object.keys(group).forEach((key) => {
-        expect(expectedGroupKey).toContain(key)
+        expect(expected.groupKey).toContain(key)
+      })
+    })
+  })
+
+  it('should get manga chapters from api from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.manga.getMangaChapters(26293)
+
+    result.chapters.forEach((chapter) => {
+      Object.keys(chapter).forEach((key) => {
+        expect(expected.getMangaChapters).toContain(key)
+      })
+    })
+    result.groups.forEach((group) => {
+      Object.keys(group).forEach((key) => {
+        expect(expected.groupKey).toContain(key)
       })
     })
   })
 
   it('should get manga covers from api', async () => {
-    const client = await getTestClient()
-    const expected = ['url', 'volume']
+    const client = await getClient()
     const result = await client.manga.getMangaCovers(26293)
 
     result.forEach((cover) => {
       Object.keys(cover).forEach((key) => {
-        expect(expected).toContain(key)
+        expect(expected.getMangaCovers).toContain(key)
+      })
+    })
+  })
+
+  it('should get manga covers from api from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.manga.getMangaCovers(26293)
+
+    result.forEach((cover) => {
+      Object.keys(cover).forEach((key) => {
+        expect(expected.getMangaCovers).toContain(key)
       })
     })
   })
