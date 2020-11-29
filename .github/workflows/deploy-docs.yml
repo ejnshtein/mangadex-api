@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'src/**'
+      - '__tests__/**'
+      - 'jest/**'
+      - 'jest.json'
+      - 'package.json'
+      - 'typedoc.json'
+      - 'tsconfig.json'
 
 jobs:
   deploy:
