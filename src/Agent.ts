@@ -316,8 +316,8 @@ export class Agent {
       cookie.includes('mangadex_session')
     )
     if (mangadexSession) {
-      const [_, sessionId] = mangadexSession.match(/mangadex_session=(\S+);/i)
-      const [__, expiration] = mangadexSession.match(/expires=([\S\s]+?);/i)
+      const sessionId = mangadexSession.match(/mangadex_session=(\S+);/i)[1]
+      const expiration = mangadexSession.match(/expires=([\S\s]+?);/i)[1]
       if (sessionId === 'deleted') {
         return this._onDeleteSession()
       } else {
