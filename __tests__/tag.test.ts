@@ -9,7 +9,7 @@ describe('tag api', () => {
     const client = await getClient()
     const result = await client.tag.getTags()
 
-    Object.values(result).forEach((tag) => {
+    result.forEach((tag) => {
       Object.keys(tag).forEach((key) => {
         expect(expected.getTags).toContain(key)
       })
@@ -20,7 +20,7 @@ describe('tag api', () => {
     const client = getInstanceClient()
     const result = await client.tag.getTags()
 
-    Object.values(result).forEach((tag) => {
+    result.forEach((tag) => {
       Object.keys(tag).forEach((key) => {
         expect(expected.getTags).toContain(key)
       })
