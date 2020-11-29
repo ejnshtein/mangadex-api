@@ -404,7 +404,7 @@ export class Agent {
     body?: Record<string, unknown>
   ): Promise<T> {
     const { data: response } = await Agent.call<MangadexApiResponse<T>, 'json'>(
-      `${!url.startsWith('/') && '/'}${url}`,
+      url,
       deepmerge(
         {
           baseUrl: 'https://mangadex.org/api/v2'
