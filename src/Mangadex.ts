@@ -11,6 +11,7 @@ import { GroupResolver } from './api/group'
 import { MangaResolver } from './api/manga'
 import { TagResolver } from './api/tag'
 import { UserResolver } from './api/user'
+import { Composer } from './Composer'
 import { deepmerge } from './lib/deepmerge'
 import { getQuery } from './lib/get-query'
 import { Scraper } from './Scraper'
@@ -230,7 +231,12 @@ export class Mangadex {
   async getFollows(
     options: MRequestOptions<'json'> = {}
   ): Promise<FollowType[]> {
-    return this.agent.callApi<FollowType[]>('follows', options)
+    const result = await this.agent.callApi<{ [x: string]: FollowType }>(
+      'follows',
+      options
+    )
+
+    return Composer.formatTypeMapToArray(result)
   }
 
   /**
@@ -240,7 +246,12 @@ export class Mangadex {
   static async getFollows(
     options: MRequestOptions<'json'> = {}
   ): Promise<FollowType[]> {
-    return Agent.callApi<FollowType[]>('follows', options)
+    const result = await Agent.callApi<{ [x: string]: FollowType }>(
+      'follows',
+      options
+    )
+
+    return Composer.formatTypeMapToArray(result)
   }
 
   /**
