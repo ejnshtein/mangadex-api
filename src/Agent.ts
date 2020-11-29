@@ -34,7 +34,7 @@ export class Agent {
 
   constructor({
     host = 'https://mangadex.org',
-    apiHost = 'https://mangadex.org/api',
+    apiHost = 'https://mangadex.org/api/v2',
     sessionId = null,
     sessionExpiration = null,
     persistentId = null,
