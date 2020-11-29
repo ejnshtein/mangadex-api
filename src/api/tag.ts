@@ -1,27 +1,31 @@
 import { Agent } from '../Agent'
 import { MRequestOptions } from '../../types/agent'
-import { Tag, Tags } from '../../types/mangadex'
+import { Tag } from '../../types/mangadex'
 import { ApiBase } from './base'
+import { Composer } from 'src/Composer'
 
 export class TagResolver extends ApiBase {
   /**
    * Get all tags
    * @param options Request options
    */
-  async getTags(options: MRequestOptions<'json'> = {}): Promise<Tags> {
-    const result = await this.agent.callApi<Tags>('tag', options)
+  async getTags(options: MRequestOptions<'json'> = {}): Promise<Tag[]> {
+    const result = await this.agent.callApi<{ [x: string]: Tag }>(
+      'tag',
+      options
+    )
 
-    return result
+    return Composer.formatTypeMapToArray(result)
   }
 
   /**
    * Get all tags
    * @param options Request options
    */
-  static async getTags(options: MRequestOptions<'json'> = {}): Promise<Tags> {
-    const result = await Agent.callApi<Tags>('tag', options)
+  static async getTags(options: MRequestOptions<'json'> = {}): Promise<Tag[]> {
+    const result = await Agent.callApi<{ [x: string]: Tag }>('tag', options)
 
-    return result
+    return Composer.formatTypeMapToArray(result)
   }
 
   /**

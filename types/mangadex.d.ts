@@ -433,14 +433,6 @@ export interface Tag extends PartialTag {
   description?: string
 }
 
-export interface Tags {
-  /**
-   * Tags by key as id and tag by value
-   * Using key-value cuz https://mangadex.org/thread/351011/5/#post_3600002
-   */
-  [x: string]: Tag
-}
-
 export interface SearchResult {
   titles: SearchResultTitle[]
   current_page?: number
