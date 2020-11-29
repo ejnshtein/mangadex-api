@@ -119,7 +119,10 @@ export class Scraper {
       throw new Error('Authentication required')
     }
 
-    const parseUpdate = (id, el): MangadexHomeUpdate => {
+    const parseUpdate = (
+      id: number,
+      el: cheerio.Element
+    ): MangadexHomeUpdate => {
       const selector = cheerio.load(el)
 
       return {
@@ -142,7 +145,10 @@ export class Scraper {
       }
     }
 
-    const parseTopChapter = (id, el): MangadexHomeTopChapter => {
+    const parseTopChapter = (
+      id: number,
+      el: cheerio.Element
+    ): MangadexHomeTopChapter => {
       const selector = cheerio.load(el)
 
       return {
@@ -159,10 +165,13 @@ export class Scraper {
       }
     }
 
-    const parseTopMangaFollow = (id, el): MangadexHomeTopManga => {
+    const parseTopMangaFollow = (
+      id: number,
+      el: cheerio.Element
+    ): MangadexHomeTopManga => {
       const selector = cheerio.load(el)
 
-      const mangaUrl = selector('div:nth-child(2) > a.manga_title')
+      const mangaUrl = selector('div:nth-child(2) > a')
         .attr('href')
         .split('/')
         .map(Number)
@@ -188,10 +197,13 @@ export class Scraper {
       }
     }
 
-    const parseTopMangaRating = (id, el): MangadexHomeTopManga => {
+    const parseTopMangaRating = (
+      id: number,
+      el: cheerio.Element
+    ): MangadexHomeTopManga => {
       const selector = cheerio.load(el)
 
-      const mangaUrl = selector('div:nth-child(2) > a.manga_title')
+      const mangaUrl = selector('div:nth-child(2) > a')
         .attr('href')
         .split('/')
         .map(Number)
