@@ -1,6 +1,7 @@
 import { Mangadex } from '../src'
 import fs from 'fs'
 import path from 'path'
+export { Mangadex, Agent } from '../src'
 
 require('dotenv').config('../.env')
 
@@ -15,7 +16,7 @@ const pathExists = async (path: string): Promise<boolean> => {
   }
 }
 
-export const getTestClient = async (): Promise<Mangadex> => {
+export const getClient = async (): Promise<Mangadex> => {
   const client = new Mangadex()
   if (await pathExists(sessionPath)) {
     await client.agent.loginWithSession(sessionPath)
@@ -28,4 +29,8 @@ export const getTestClient = async (): Promise<Mangadex> => {
     await client.agent.saveSession(sessionPath)
   }
   return client
+}
+
+export const getInstanceClient = (): typeof Mangadex => {
+  return Mangadex
 }
