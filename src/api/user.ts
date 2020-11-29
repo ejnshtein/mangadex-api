@@ -11,6 +11,7 @@ import {
   UserSettings
 } from '../../types/mangadex'
 import { ApiBase, IncludeParams, PartialChaptersParams } from './base'
+import { deepmerge } from '../lib/deepmerge'
 
 export interface GetUserFollowedUpdatesParams {
   /**
@@ -88,7 +89,7 @@ export class UserResolver extends ApiBase {
     userId: number | string,
     options: MRequestOptions<'json'> & {
       params?: IncludeParams
-    }
+    } = {}
   ): Promise<PartialChapters> {
     const result = await this.agent.callApi<PartialChapters>(
       `user/${userId}/chapters`,
@@ -107,7 +108,7 @@ export class UserResolver extends ApiBase {
     userId: number | string,
     options: MRequestOptions<'json'> & {
       params?: IncludeParams
-    }
+    } = {}
   ): Promise<PartialChapters> {
     const result = await Agent.callApi<PartialChapters>(
       `user/${userId}/chapters`,
@@ -224,10 +225,9 @@ export class UserResolver extends ApiBase {
   ): Promise<ReadChaptersStatus> {
     const result = await this.agent.callApi<ReadChaptersStatus>(
       `user/${userId}/marker`,
-      {
-        method: 'POST',
-        ...options
-      },
+      deepmerge(options, {
+        method: 'POST'
+      }),
       {
         chapters,
         read
