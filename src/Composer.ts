@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { join } from 'path'
 import { links as linksData } from './lib/links'
-import { Link, PartialTag, Status } from '../types/mangadex'
+import { Link, PartialTag } from '../types/mangadex'
 import { Language } from '../types/language'
 
 const genresData = JSON.parse(
@@ -45,16 +45,6 @@ export class Composer {
     return formatted
   }
 
-  static getStatus(status: number): Status {
-    const statuses = {
-      1: 'Ongoing',
-      2: 'Completed',
-      3: 'Cancelled',
-      4: 'Hiatus'
-    }
-    return statuses[status] || status
-  }
-
   static getLangName(langCode: Language): string {
     return langCodeData[langCode] || langCode
   }
@@ -64,5 +54,9 @@ export class Composer {
       /\[url=(\S+?)\](\S+?)\[\/url\]/gi,
       '<a href="$1">$2</a>'
     )
+  }
+
+  static formatTypeMapToArray<T>(map: { [x: string]: T }): T[] {
+    return Object.values(map)
   }
 }
