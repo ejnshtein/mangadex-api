@@ -579,6 +579,7 @@ export interface FollowedPartialManga {
   chapter: string
   followType: number
   mangaId: number
+  mangaTitle: string
   rating?: number
   volume: string
 }

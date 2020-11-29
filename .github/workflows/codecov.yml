@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'src/**'
+      - '__tests__/**'
+      - 'jest/**'
+      - 'jest.json'
+      - 'package.json'
+      - 'tsconfig.json'
 
 jobs:
   lint:
@@ -14,10 +21,18 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v1
-      - name: Installing dependencies
+
+      - name: set up node 14
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '14'
+
+      - name: Install dependencies 🔧
         run: yarn
-      - name: Running tests
+
+      - name: Running tests 🚀
         run: yarn run test
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
