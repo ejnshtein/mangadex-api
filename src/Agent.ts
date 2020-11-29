@@ -41,7 +41,7 @@ export class Agent {
     hentai = 1,
     getCredentials,
     loginCredentials
-  }: AgentOptions) {
+  }: AgentOptions = {}) {
     this.setSession(sessionId, sessionExpiration)
     this.setPersistent(persistentId)
     this.hentai = hentai
@@ -179,6 +179,49 @@ export class Agent {
       throw new Error('Failed to retrieve session id.')
     }
     return session
+  }
+
+  async logout(options: MRequestOptions<'headers'> = {}): Promise<boolean> {
+    return Agent.logout(
+      {
+        sessionId: this.sessionId,
+        sessionExpiration: this.sessionExpiration,
+        persistentId: this.persistentId
+      },
+      options
+    )
+  }
+
+  static async logout(
+    session: Session,
+    options: MRequestOptions<'headers'> = {}
+  ): Promise<boolean> {
+    let Cookie = ''
+
+    if (session.sessionId) {
+      Cookie += `mangadex_session=${session.sessionId}; `
+      if (session.persistentId) {
+        Cookie += `mangadex_rememberme_token=${session.persistentId}; `
+      }
+    }
+
+    const result = await Agent.callAjaxAction(
+      { function: 'logout' },
+      deepmerge(options, {
+        headers: { Cookie },
+        method: 'POST'
+      })
+    )
+
+    if (result.status === 200) {
+      return true
+    }
+
+    throw new ApiError({
+      code: result.status,
+      message: `Unexpected status code: ${result.status}`,
+      url: `ajax/actions.ajax.php?function=logout`
+    })
   }
 
   async _onDeleteSession(): Promise<{ result: string }> {
