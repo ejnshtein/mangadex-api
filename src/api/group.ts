@@ -1,6 +1,6 @@
 import { Agent } from '../Agent'
 import { MRequestOptions } from '../../types/agent'
-import { PartialChapters, MangadexGroup } from '../../types/mangadex'
+import { PartialChapters, Group } from '../../types/mangadex'
 import { ApiBase, IncludeParams, PartialChaptersParams } from './base'
 
 export class GroupResolver extends ApiBase {
@@ -14,11 +14,8 @@ export class GroupResolver extends ApiBase {
     options: MRequestOptions<'json'> & {
       params?: IncludeParams
     } = {}
-  ): Promise<MangadexGroup> {
-    const result = await this.agent.callApi<MangadexGroup>(
-      `group/${groupId}`,
-      options
-    )
+  ): Promise<Group> {
+    const result = await this.agent.callApi<Group>(`group/${groupId}`, options)
 
     return result
   }
@@ -33,11 +30,8 @@ export class GroupResolver extends ApiBase {
     options: MRequestOptions<'json'> & {
       params?: IncludeParams
     } = {}
-  ): Promise<MangadexGroup> {
-    const result = await Agent.callApi<MangadexGroup>(
-      `group/${groupId}`,
-      options
-    )
+  ): Promise<Group> {
+    const result = await Agent.callApi<Group>(`group/${groupId}`, options)
 
     return result
   }
