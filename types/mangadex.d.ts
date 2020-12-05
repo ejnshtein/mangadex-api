@@ -48,14 +48,10 @@ export interface MangaRating {
   users: number
 }
 
-export interface RelationType {
+export interface Relation {
   id: number
   name: string
   pairId: number
-}
-
-export interface Relations {
-  [x: string]: RelationType
 }
 
 export interface RelatedManga {
@@ -80,7 +76,7 @@ export interface RelatedManga {
   type: number
 }
 
-export interface Group {
+export interface PartialGroup {
   /**
    * Group id
    */
@@ -213,7 +209,7 @@ export interface Manga {
   /**
    * Related manga
    */
-  relation: RelatedManga[]
+  relations: RelatedManga[]
 
   /**
    * Manga genres
@@ -290,7 +286,7 @@ export interface PartialChapter {
   /**
    * Manga title
    */
-  mangaTitle: string
+  mangaTitle?: string
 
   /**
    * Publication unix timestamp
@@ -321,12 +317,12 @@ export interface Chapter {
   /**
    * Comments count
    */
-  comments: number | null
+  comments?: number
 
   /**
    * Chapter released by those groups
    */
-  groups: Group[]
+  groups: PartialGroup[]
 
   /**
    * Chapter hash
@@ -384,6 +380,16 @@ export interface Chapter {
   title: string
 
   /**
+   * Uploader id
+   */
+  uploader: number
+
+  /**
+   * Views count
+   */
+  views: number
+
+  /**
    * Chapter volume
    */
   volume: string
@@ -433,12 +439,6 @@ export interface Tag extends PartialTag {
   description?: string
 }
 
-export interface SearchResult {
-  titles: SearchResultTitle[]
-  current_page?: number
-  last_page?: number
-}
-
 export interface SearchResultTitle {
   id: number
   title: string
@@ -453,8 +453,14 @@ export interface SearchResultTitle {
   lang_name: string
 }
 
+export interface SearchResult {
+  titles: SearchResultTitle[]
+  current_page?: number
+  last_page?: number
+}
+
 export interface User {
-  avatar: string
+  avatar?: string
   biography: string
   id: number
   joined: number
@@ -468,7 +474,7 @@ export interface User {
   website: string
 }
 
-export interface MangadexGroup extends Group {
+export interface Group extends PartialGroup {
   altNames: string
   banner?: string
   chapters: number
@@ -571,33 +577,35 @@ export interface FollowedPartialManga {
   chapter: string
   followType: number
   mangaId: number
-  mangaTitle: string
+  mangaTitle?: string
   rating?: number
-  volume: string
+  userId: number
+  volume?: string
 }
 
 export interface UserManga {
   chapter: string
   followType: number
   mangaId: number
+  mangaTitle?: string
   rating: number
   userId: number
-  volume: string
+  volume?: string
 }
 
 export interface UserMangaRating {
   mangaId: number
-  rating: null
+  rating?: number
 }
 
 export interface UserSettings {
-  excludeTags: string[]
+  excludedTags: { id: number }[]
   hentaiMode: number
   id: number
   latestUpdates: number
   showModeratedPosts: boolean
   showUnavailableChapters: boolean
-  shownChaptersLangs: string[]
+  shownChapterLangs: { id: string }[]
 }
 
 export interface FollowedUpdates {
@@ -606,6 +614,11 @@ export interface FollowedUpdates {
   manga: {
     [x: string]: PartialManga
   }
+}
+
+export interface FormattedFollowedUpdates
+  extends Omit<FollowedUpdates, 'manga'> {
+  manga: PartialManga[]
 }
 
 export interface ReadChaptersStatus {
