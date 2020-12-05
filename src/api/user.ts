@@ -3,6 +3,7 @@ import { MRequestOptions } from '../../types/agent'
 import {
   FollowedPartialManga,
   FollowedUpdates,
+  FormattedFollowedUpdates,
   PartialChapters,
   ReadChaptersStatus,
   User,
@@ -12,6 +13,7 @@ import {
 } from '../../types/mangadex'
 import { ApiBase, IncludeParams, PartialChaptersParams } from './base'
 import { deepmerge } from '../lib/deepmerge'
+import { Composer } from '../Composer'
 
 export interface GetUserFollowedUpdatesParams {
   /**
@@ -148,13 +150,16 @@ export class UserResolver extends ApiBase {
     options: MRequestOptions<'json'> & {
       params?: GetUserFollowedUpdatesParams
     } = {}
-  ): Promise<FollowedUpdates> {
+  ): Promise<FormattedFollowedUpdates> {
     const result = await this.agent.callApi<FollowedUpdates>(
       `user/${userId}/followed-updates`,
       options
     )
 
-    return result
+    return {
+      ...result,
+      manga: Composer.formatTypeMapToArray(result.manga)
+    }
   }
 
   /**
