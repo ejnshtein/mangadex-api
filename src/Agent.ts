@@ -155,18 +155,18 @@ export class Agent {
       cookie.includes('mangadex_session')
     )
     if (mangadexSession) {
-      const [_, sessionId] = mangadexSession.match(/mangadex_session=(\S+);/i)
+      const sessionId = mangadexSession.match(/mangadex_session=(\S+);/i)[1]
       session.sessionId = sessionId
-      const [__, expiration] = mangadexSession.match(/expires=([\S\s]+?);/i)
+      const expiration = mangadexSession.match(/expires=([\S\s]+?);/i)[1]
       session.sessionExpiration = expiration
     }
     const persistent = (headers['set-cookie'] as string[]).find((cookie) =>
       cookie.includes('mangadex_rememberme_token')
     )
     if (persistent) {
-      const [_, persistentId] = persistent.match(
+      const persistentId = persistent.match(
         /mangadex_rememberme_token=(\S+);/i
-      )
+      )[1]
       session.persistentId = persistentId
     }
 
@@ -280,13 +280,7 @@ export class Agent {
       this.setPersistent(persistentId)
     }
 
-    const isLogin = await this.checkLogin()
-
-    if (isLogin) {
-      return true
-    } else {
-      return false
-    }
+    return this.checkLogin()
   }
 
   async saveSession(path: string): Promise<boolean> {
