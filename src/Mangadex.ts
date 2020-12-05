@@ -2,7 +2,7 @@ import { MangadexOptions, MRequestOptions, SearchQuery } from '../types/agent'
 import {
   FollowType,
   MangadexHome,
-  Relations,
+  Relation,
   SearchResult
 } from '../types/mangadex'
 import { Agent } from './Agent'
@@ -260,8 +260,13 @@ export class Mangadex {
    */
   async getRelations(
     options: MRequestOptions<'json'> = {}
-  ): Promise<Relations> {
-    return this.agent.callApi<Relations>('relations', options)
+  ): Promise<Relation[]> {
+    const result = await this.agent.callApi<{ [x: string]: Relation }>(
+      'relations',
+      options
+    )
+
+    return Composer.formatTypeMapToArray(result)
   }
 
   /**
@@ -270,7 +275,12 @@ export class Mangadex {
    */
   static async getRelations(
     options: MRequestOptions<'json'> = {}
-  ): Promise<Relations> {
-    return Agent.callApi<Relations>('relations', options)
+  ): Promise<Relation[]> {
+    const result = await Agent.callApi<{ [x: string]: Relation }>(
+      'relations',
+      options
+    )
+
+    return Composer.formatTypeMapToArray(result)
   }
 }
