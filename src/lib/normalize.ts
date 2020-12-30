@@ -22,7 +22,8 @@ export const normalizeChapter = (chapter: Chapter): FormattedChapter => ({
     (page) => `${chapter.server}${chapter.hash}/${page}`
   ),
   fallbackPages: chapter.pages.map(
-    (page) => `${chapter.serverFallback}${chapter.hash}/${page}`
+    (page) =>
+      `${chapter.serverFallback || chapter.server}${chapter.hash}/${page}`
   ),
   languageName: Composer.getLangName(chapter.language)
 })

@@ -38,7 +38,7 @@ export const chapterSchema = Joi.object<FormattedChapter>({
   mangaTitle: Joi.string().allow(null).required(),
   pages: Joi.array().items(Joi.string().required()).required(),
   server: Joi.string().required(),
-  serverFallback: Joi.string().required(),
+  serverFallback: Joi.string().optional(),
   status: Joi.string().required(),
   timestamp: Joi.number().required(),
   title: Joi.string().allow('').required(),

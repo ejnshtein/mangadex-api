@@ -26,8 +26,7 @@
   "files": [
     "dist",
     "types",
-    "langcodes.json",
-    "genres.json"
+    "langcodes.json"
   ],
   "type": "commonjs",
   "repository": "github:ejnshtein/mangadex-api",

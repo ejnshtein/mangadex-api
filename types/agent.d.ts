@@ -1,5 +1,15 @@
 import * as request from 'smol-request'
 
+export interface Session {
+  sessionId?: string
+  sessionExpiration?: Date | string
+  persistentId?: string
+}
+
+export interface LoginSession extends Session {
+  sessionExpiration?: Date
+}
+
 export interface AgentOptions {
   host?: string
   apiHost?: string
@@ -63,13 +73,3 @@ export interface SearchQuery {
 }
 
 export type MangadexOptions = AgentOptions
-
-export interface Session {
-  sessionId?: string
-  sessionExpiration?: Date | string
-  persistentId?: string
-}
-
-export interface LoginSession extends Session {
-  sessionExpiration?: Date
-}

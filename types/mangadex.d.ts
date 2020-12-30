@@ -362,7 +362,7 @@ export interface Chapter {
   /**
    * Fallback server url
    */
-  serverFallback: string
+  serverFallback?: string
 
   /**
    * Chapter status
@@ -580,6 +580,7 @@ export interface FollowedPartialManga {
   mangaTitle?: string
   rating?: number
   userId: number
+  isHentai: boolean
   volume?: string
 }
 
@@ -590,6 +591,7 @@ export interface UserManga {
   mangaTitle?: string
   rating: number
   userId: number
+  isHentai: boolean
   volume?: string
 }
 
