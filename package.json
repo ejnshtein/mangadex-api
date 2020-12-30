@@ -14,6 +14,9 @@
     "build:docs": "typedoc",
     "deploy": "npm run build && npm run build:docs && gh-pages -t -d docs -b gh-pages"
   },
+  "engines": {
+    "node": ">=12"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
