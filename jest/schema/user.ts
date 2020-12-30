@@ -34,6 +34,7 @@ export const userFollowedPartialMangaSchema = Joi.array().items(
     mangaTitle: Joi.string().allow(null, '').required(),
     rating: Joi.number().allow(null).required(),
     userId: Joi.number().required(),
+    isHentai: Joi.boolean().required(),
     volume: Joi.string().allow(null, '').required()
   })
 )
@@ -51,6 +52,7 @@ export const userMangaSchema = Joi.object<UserManga>({
   mangaTitle: Joi.string().allow(null, '').required(),
   rating: Joi.number().allow(null).required(),
   userId: Joi.number().required(),
+  isHentai: Joi.boolean().required(),
   volume: Joi.string().allow(null, '').required()
 })
 
