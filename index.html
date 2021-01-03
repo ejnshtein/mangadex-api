@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>mangadex-api - v4.3.0</title>
-	<meta name="description" content="Documentation for mangadex-api - v4.3.0">
+	<title>mangadex-api - v4.4.1</title>
+	<meta name="description" content="Documentation for mangadex-api - v4.4.1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">mangadex-api - v4.3.0</a>
+					<a href="index.html" class="title">mangadex-api - v4.4.1</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>mangadex-api - v4.3.0</h1>
+			<h1>mangadex-api - v4.4.1</h1>
 		</div>
 	</div>
 </header>
@@ -70,10 +70,99 @@
 					<a href="https://github.com/ejnshtein/mangadex-api"><img src="https://img.shields.io/npm/l/mangadex-api?style=flat-square" alt="License"></a>
 				<a href="https://codecov.io/gh/ejnshtein/mangadex-api"><img src="https://codecov.io/gh/ejnshtein/mangadex-api/branch/master/graph/badge.svg" alt="codecov"></a></p>
 				<p>This is <a href="https://mangadex.org">Mangadex</a> website api wrapper.</p>
-				<a href="#migration-to-version-4" id="migration-to-version-4" style="color: inherit; text-decoration: none;">
-					<h1>Migration to version 4</h1>
+				<a href="#additional-resources" id="additional-resources" style="color: inherit; text-decoration: none;">
+					<h2>Additional resources</h2>
 				</a>
-				<p>Main focuses in V4 were <a href="https://www.typescriptlang.org/">Typescript</a> and <a href="https://mangadex.org/">Mangadex</a> <a href="https://mangadex.org/thread/351011">API V2</a>.<br>So V1 support was dropped completely. If you still, for some reason, want to use API V1 then use <code>agent.callApi(endpoint, { baseUrl: &#39;https://mangadex.org/api&#39; })</code> code snippet to request data from API V1.  </p>
+				<ul>
+					<li><a href="https://github.com/ejnshtein/mangadex-heroku">mangadex-heroku</a> is a <a href="https://graphql.org/">GraphQL</a> public endpoint.<br>Supports caching (in memory) and all public MD-API&#39;s that doesn&#39;t require authorization. (<a href="http://mangadex.herokuapp.com/graphql">playground</a>)</li>
+					<li><a href="https://codesandbox.io/s/condescending-kirch-u71ji?file=/src/index.js">Example webapp</a> that uses mangadex-heroku for API calls.</li>
+				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<pre><code class="language-bash">npm i mangadex-api
+
+<span class="hljs-comment"># or</span>
+
+yarn add mangadex-api</code></pre>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h2>Example</h2>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
+
+Mangadex.manga.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">manga</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${manga.follows}</span> followers`</span>)
+
+  Mangadex.manga.getMangaChapters(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ chapters, groups }</span>) =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapters.length}</span> chapters`</span>)
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${groups.length}</span> scanlated groups`</span>)
+  })
+})
+
+Mangadex.chapter.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Chapter title is &quot;<span class="hljs-subst">${chapter.title}</span>&quot; and it is <span class="hljs-subst">${chapter.chapter}</span> chapter from <span class="hljs-subst">${chapter.volume}</span> volume.`</span>
+  )
+})
+
+<span class="hljs-comment">// currently requires authorization</span>
+Mangadex.search(<span class="hljs-string">&#x27;senko&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Found <span class="hljs-subst">${response.titles.length}</span> titles.`</span>)
+})
+
+Mangadex.getHome().then(<span class="hljs-function">(<span class="hljs-params">home</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (home.accouncement) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`New accouncement!\n<span class="hljs-subst">${home.accouncement.text}</span>`</span>)
+  }
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Todays top manga by follows is: <span class="hljs-subst">${home.top_manga.follows[<span class="hljs-number">0</span>].title}</span>`</span>
+  )
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Todays top chapter is from manga: <span class="hljs-subst">${home.top_chapters.day[<span class="hljs-number">0</span>].title}</span>`</span>
+  )
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Latest chapter is from manga: <span class="hljs-subst">${home.latest_updates.all[<span class="hljs-number">0</span>].title}</span>`</span>
+  )
+})
+
+Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
+  <span class="hljs-built_in">console</span>.log(
+    <span class="hljs-string">`Group <span class="hljs-subst">${group.name}</span> has <span class="hljs-subst">${group.stats.follows}</span> followers and <span class="hljs-subst">${group.stats.total_chapters}</span> total chapters uploaded!`</span>
+  )
+})</code></pre>
+				<a href="#authorization-example" id="authorization-example" style="color: inherit; text-decoration: none;">
+					<h2>Authorization example</h2>
+				</a>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
+
+<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Mangadex()
+
+<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
+
+<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> client.search(<span class="hljs-string">&#x27;To Be Winner&#x27;</span>)
+
+<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// { titles: [{ title: &#x27;To Be Winner&#x27;, ... }] }</span></code></pre>
+				<a href="#cached-session-example" id="cached-session-example" style="color: inherit; text-decoration: none;">
+					<h2>Cached session example</h2>
+				</a>
+				<pre><code class="language-js"><span class="hljs-comment">// first you must save your session somewhere</span>
+
+<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
+
+<span class="hljs-keyword">await</span> client.agent.saveSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>))
+
+<span class="hljs-comment">// now we can use it</span>
+
+<span class="hljs-keyword">await</span> client.agent.loginWithSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>)
+
+<span class="hljs-keyword">const</span> me = <span class="hljs-keyword">await</span> client.getMe())
+
+<span class="hljs-built_in">console</span>.log(me)</code></pre>
+				<a href="#migration-to-version-4" id="migration-to-version-4" style="color: inherit; text-decoration: none;">
+					<h2>Migration to version 4</h2>
+				</a>
+				<p>Main focuses in V4 were <a href="https://www.typescriptlang.org/">Typescript</a> and <a href="https://mangadex.org/">Mangadex</a> <a href="https://mangadex.org/thread/351011">API V2</a>.</p>
+				<p>So V1 support was dropped completely. If you still, for some reason, want to use API V1 then use <code>agent.callApi(endpoint, { baseUrl: &#39;https://mangadex.org/api&#39; })</code> code snippet to request data from API V1.</p>
 				<p>So there&#39;re new api groups:</p>
 				<ul>
 					<li>chapter/{id|hash}</li>
@@ -163,97 +252,20 @@ client.user.getUserFollowedManga(userId)
 <span class="hljs-comment">// user/{id}/marker</span>
 client.user.setUserChapterRead(userId, chapters, read)</code></pre>
 				<a href="#migration-to-version-3" id="migration-to-version-3" style="color: inherit; text-decoration: none;">
-					<h1>Migration to version 3</h1>
+					<h2>Migration to version 3</h2>
 				</a>
-				<p>LRU cache was removed from package, so you&#39;ll have to implement caching by yourself.<br><a href="#Mangadex">Mangadex constructor</a> now accepts only 2 options.<br><a href="#getManga">getManga</a> and <a href="#getChapter">getChapter</a> lost <strong>normalize</strong> argument, now it&#39;s on <strong>by default</strong>.</p>
-				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h1>Installation</h1>
-				</a>
-				<pre><code class="language-bash">npm i mangadex-api</code></pre>
-				<p>Or</p>
-				<pre><code class="language-bash">yarn add mangadex-api</code></pre>
-				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
-					<h1>Example</h1>
-				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
-
-Mangadex.manga.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">manga</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${manga.follows}</span> followers`</span>)
-
-  Mangadex.manga.getMangaChapters(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ chapters, groups }</span>) =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapters.length}</span> chapters`</span>)
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${groups.length}</span> scanlated groups`</span>)
-  })
-})
-
-Mangadex.chapter.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Chapter title is &quot;<span class="hljs-subst">${chapter.title}</span>&quot; and it is <span class="hljs-subst">${chapter.chapter}</span> chapter from <span class="hljs-subst">${chapter.volume}</span> volume.`</span>
-  )
-})
-
-<span class="hljs-comment">// currently requires authorization</span>
-Mangadex.search(<span class="hljs-string">&#x27;senko&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Found <span class="hljs-subst">${response.titles.length}</span> titles.`</span>)
-})
-
-Mangadex.getHome().then(<span class="hljs-function">(<span class="hljs-params">home</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (home.accouncement) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`New accouncement!\n<span class="hljs-subst">${home.accouncement.text}</span>`</span>)
-  }
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Todays top manga by follows is: <span class="hljs-subst">${home.top_manga.follows[<span class="hljs-number">0</span>].title}</span>`</span>
-  )
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Todays top chapter is from manga: <span class="hljs-subst">${home.top_chapters.day[<span class="hljs-number">0</span>].title}</span>`</span>
-  )
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Latest chapter is from manga: <span class="hljs-subst">${home.latest_updates.all[<span class="hljs-number">0</span>].title}</span>`</span>
-  )
-})
-
-Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Group <span class="hljs-subst">${group.name}</span> has <span class="hljs-subst">${group.stats.follows}</span> followers and <span class="hljs-subst">${group.stats.total_chapters}</span> total chapters uploaded!`</span>
-  )
-})</code></pre>
-				<a href="#authorization-example" id="authorization-example" style="color: inherit; text-decoration: none;">
-					<h1>Authorization example</h1>
-				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
-
-<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Mangadex()
-
-<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
-
-<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> client.search(<span class="hljs-string">&#x27;To Be Winner&#x27;</span>)
-
-<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// { titles: [{ title: &#x27;To Be Winner&#x27;, ... }] }</span></code></pre>
-				<a href="#cached-session-example" id="cached-session-example" style="color: inherit; text-decoration: none;">
-					<h1>Cached session example</h1>
-				</a>
-				<pre><code class="language-js"><span class="hljs-comment">// first you must save your session somewhere</span>
-
-<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
-
-<span class="hljs-keyword">await</span> client.agent.saveSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>))
-
-<span class="hljs-comment">// now we can use it</span>
-
-<span class="hljs-keyword">await</span> client.agent.loginWithSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>)
-
-<span class="hljs-keyword">const</span> me = <span class="hljs-keyword">await</span> client.getMe())
-
-<span class="hljs-built_in">console</span>.log(me)</code></pre>
+				<p>LRU cache was removed from package, so you&#39;ll have to implement caching by yourself.</p>
+				<p><a href="#Mangadex">Mangadex constructor</a> now accepts only 2 options.</p>
+				<p><a href="#getManga">getManga</a> and <a href="#getChapter">getChapter</a> lost <strong>normalize</strong> argument, now it&#39;s on <strong>by default</strong>.</p>
 				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
-					<h1>API</h1>
+					<h2>API</h2>
 				</a>
-				<p>This section is no more, use Typedoc generated site instead.</p>
+				<p>API section is available on the <a href="https://ejnshtein.github.io/mangadex-api/">website</a>.</p>
 				<hr>
 				<a href="#contact" id="contact" style="color: inherit; text-decoration: none;">
-					<h1>Contact</h1>
+					<h2>Contact</h2>
 				</a>
-				<p><a href="https://t.me/ejnshtein">My telegram</a> and a <a href="https://t.me/nyaasi_chat">group</a> where you can as your questions or suggest something.</p>
+				<p><a href="https://t.me/ejnshtein">My telegram</a> and a <a href="https://t.me/nyaasi_chat">group</a> where you can ask your questions or suggest something.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
