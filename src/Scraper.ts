@@ -1,6 +1,7 @@
 import cheerio from 'cheerio'
+import ch from '../types/cheerio'
 // work only with cheerio@1.0.0-rc.5
-import { Element } from 'domhandler'
+import { Element } from '../types/domhandler'
 import { URL } from 'url'
 import {
   MangadexHome,
@@ -116,31 +117,56 @@ export class Scraper {
   }
 
   static parseHome(html: string, host: string): MangadexHome {
-    const content = cheerio.load(html)
+    const content = (cheerio as typeof ch).load(html)
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
     }
 
     const parseUpdate = (id: number, el: Element): MangadexHomeUpdate => {
-      const selector = cheerio.load(el)
+      const tagList = el.childNodes.filter((n) => n.type === 'tag')
 
       return {
         id: parseInt(
-          selector('div:nth-child(3) > a').attr('href').split('/')[2]
+          tagList
+            .find((tag, i) => i === 2 && tag.name === 'div')
+            .children.find((tag) => tag.name === 'a')
+            .attribs.href.split('/')[2]
         ),
-        chapter: selector('div:nth-child(3) > a').text(),
-        title: selector('div:nth-child(2) > a').attr('title').trim(),
+        chapter: tagList
+          .find((tag, i) => i === 2 && tag.name === 'div')
+          .children.find((tag) => tag.name === 'a').children[0].data, // selector('div:nth-child(3) > a').text(),
+        title: tagList
+          .find((tag, i) => i === 1 && tag.name === 'div')
+          .children.find((tag) => tag.name === 'a')
+          .attribs.title.trim(), // selector('div:nth-child(2) > a').attr('title').trim(),
         manga_id: parseInt(
-          selector('div:first-of-type > a').attr('href').split('/')[2]
+          tagList
+            .find((tag, i) => i === 0 && tag.name === 'div')
+            .children.find((tag) => tag.name === 'a')
+            .attribs.href.split('/')[2]
+          // selector('div:first-of-type > a').attr('href').split('/')[2]
         ),
-        cover_url: selector('div:first-of-type > a > img').attr('src'),
+        cover_url: tagList
+          .find((tag, i) => i === 0 && tag.name === 'div')
+          .children.find((tag) => tag.name === 'a')
+          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
         group: {
           id: parseInt(
-            selector('div:nth-child(4) > a').attr('href').split('/')[2]
+            tagList
+              .find((tag, i) => i === 3 && tag.name === 'div')
+              .children.find((tag) => tag.name === 'a')
+              .attribs.href.split('/')[2]
+            // selector('div:nth-child(4) > a').attr('href').split('/')[2]
           ),
-          name: selector('div:nth-child(4) > a').text()
+          name: tagList
+            .find((tag, i) => i === 3 && tag.name === 'div')
+            .children.find((tag) => tag.name === 'a').children[0].data // selector('div:nth-child(4) > a').text()
         },
-        uploaded: selector('div:nth-child(5)').text().trim()
+        uploaded: tagList
+          .find((tag, i) => i === 4 && tag.name === 'div')
+          .children.map((tag) => tag.data)
+          .join()
+          .trim() // selector('div:nth-child(5)').text().trim()
       }
     }
 
@@ -148,18 +174,54 @@ export class Scraper {
       id: number,
       el: Element
     ): MangadexHomeTopChapter => {
-      const selector = cheerio.load(el)
+      const tagList = el.childNodes.filter((n) => n.type === 'tag')
 
       return {
-        id: parseInt(selector('p > span > a').attr('href').split('/')[2]),
-        chapter: selector('p > span > a').text(),
-        title: selector('div:nth-child(2) > a').attr('title').trim(),
-        manga_id: parseInt(
-          selector('div:first-of-type > a').attr('href').split('/')[2]
+        id: parseInt(
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find((tag) => tag.name === 'span')
+            .children.find((tag) => tag.name === 'a')
+            .attribs.href.split('/')[2]
+          // selector('p > span > a').attr('href').split('/')[2]
         ),
-        cover_url: selector('div:first-of-type > a > img').attr('src'),
+        chapter: tagList
+          .find((tag) => tag.name === 'p')
+          .children.find((tag) => tag.name === 'span')
+          .children.find((tag) => tag.name === 'a').children[0].data,
+        // selector('p > span > a').text(),
+        title: tagList
+          .find((tag, i) => tag.name === 'div' && i === 1)
+          .children.find((tag) => tag.name === 'a')
+          .attribs.title.trim(), // selector('div:nth-child(2) > a').attr('title').trim(),
+        manga_id: parseInt(
+          tagList
+            .find((tag) => tag.name === 'div')
+            .children.find((tag) => tag.name === 'a')
+            .attribs.href.split('/')[2]
+          // selector('div:first-of-type > a').attr('href').split('/')[2]
+        ),
+        cover_url: tagList
+          .find((tag) => tag.name === 'div')
+          .children.find((tag) => tag.name === 'a')
+          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
         views: parseInt(
-          selector('p > span:last-of-type').text().replace(/,/i, '')
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find(
+              (tag, i, arr) =>
+                tag.name === 'span' &&
+                i ===
+                  arr.length -
+                    1 -
+                    Array.from(arr)
+                      .reverse()
+                      .findIndex((t) => t.name === 'span')
+            )
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
+            .replace(/,/i, '')
+          // selector('p > span:last-of-type').text().replace(/,/i, '')
         )
       }
     }
@@ -168,30 +230,74 @@ export class Scraper {
       id: number,
       el: Element
     ): MangadexHomeTopManga => {
-      const selector = cheerio.load(el)
+      const tagList = el.childNodes.filter((n) => n.type === 'tag')
+      // const selector = cheerio.load(el)
 
-      const mangaUrl = selector('div:nth-child(2) > a')
-        .attr('href')
-        .split('/')
+      const mangaUrl = tagList
+        .find((tag, i) => tag.name === 'div' && i === 1)
+        .children.find((tag) => tag.name === 'a')
+        .attribs.href.split('/')
         .map(Number)
         .filter(Boolean)
         .pop()
 
       return {
         id: mangaUrl,
-        title: selector('div:nth-child(2) > a').attr('title'),
-        cover_url: selector('div:first-of-type > a > img').attr('src'),
+        title: tagList
+          .find((tag, i) => tag.name === 'div' && i === 1)
+          .children.find((tag) => tag.name === 'a').attribs.title,
+        cover_url: tagList
+          .find((tag) => tag.name === 'div')
+          .children.find((tag) => tag.name === 'a')
+          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
         follows: parseInt(
-          selector('p > span:first-of-type').text().trim().replace(/,/i, '')
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find((tag) => tag.name === 'span')
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
+            .replace(/,/i, '')
+          // selector('p > span:first-of-type').text().trim().replace(/,/i, '')
         ),
         rating: parseFloat(
-          selector('p > span:last-of-type > span').text().trim()
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find(
+              (tag, i, arr) =>
+                tag.name === 'span' &&
+                i ===
+                  arr.length -
+                    1 -
+                    Array.from(arr)
+                      .reverse()
+                      .findIndex((t) => t.name === 'span')
+            )
+            .children.find((tag) => tag.name === 'span')
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
+          // selector('p > span:last-of-type > span').text().trim()
         ),
         users: parseInt(
-          selector('p > span:last-of-type > small')
-            .text()
-            .trim()
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find(
+              (tag, i, arr) =>
+                tag.name === 'span' &&
+                i ===
+                  arr.length -
+                    1 -
+                    Array.from(arr)
+                      .reverse()
+                      .findIndex((t) => t.name === 'span')
+            )
+            .children.find((tag) => tag.name === 'small')
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
             .replace(/,/i, '')
+          // selector('p > span:last-of-type > small')
+          //   .text()
+          //   .trim()
+          //   .replace(/,/i, '')
         )
       }
     }
@@ -200,30 +306,64 @@ export class Scraper {
       id: number,
       el: Element
     ): MangadexHomeTopManga => {
-      const selector = cheerio.load(el)
+      const tagList = el.childNodes.filter((n) => n.type === 'tag')
 
-      const mangaUrl = selector('div:nth-child(2) > a')
-        .attr('href')
-        .split('/')
+      const mangaUrl = tagList
+        .find((tag, i) => tag.name === 'div' && i === 1)
+        .children.find((tag) => tag.name === 'a')
+        .attribs.href.split('/')
         .map(Number)
         .filter(Boolean)
         .pop()
 
       return {
         id: mangaUrl,
-        title: selector('div:nth-child(2) > a').attr('title'),
-        cover_url: selector('div:first-of-type > a > img').attr('src'),
+        title: tagList
+          .find((tag, i) => tag.name === 'div' && i === 1)
+          .children.find((tag) => tag.name === 'a').attribs.title, // selector('div:nth-child(2) > a').attr('title'),
+        cover_url: tagList
+          .find((tag) => tag.name === 'div')
+          .children.find((tag) => tag.name === 'a')
+          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
         follows: parseInt(
-          selector('p > span:last-of-type').text().trim().replace(/,/i, '')
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find(
+              (tag, i, arr) =>
+                tag.name === 'span' &&
+                i ===
+                  arr.length -
+                    1 -
+                    Array.from(arr)
+                      .reverse()
+                      .findIndex((t) => t.name === 'span')
+            )
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
+            .replace(/,/i, '')
+          // selector('p > span:last-of-type').text().trim().replace(/,/i, '')
         ),
         rating: parseFloat(
-          selector('p > span:first-of-type > span').text().trim()
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find((tag) => tag.name === 'span')
+            .children.find((tag) => tag.name === 'span')
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
+          // selector('p > span:first-of-type > span').text().trim()
         ),
         users: parseInt(
-          selector('p > span:first-of-type > small')
-            .text()
-            .trim()
+          tagList
+            .find((tag) => tag.name === 'p')
+            .children.find((tag) => tag.name === 'span')
+            .children.find((tag) => tag.name === 'small')
+            .children.find((tag) => tag.type === 'text')
+            .data.trim()
             .replace(/,/i, '')
+          // selector('p > span:first-of-type > small')
+          //   .text()
+          //   .trim()
+          //   .replace(/,/i, '')
         )
       }
     }
