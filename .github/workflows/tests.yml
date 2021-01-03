@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  schedule:
+    # test daily to be sure that schema is up-to-date
+    - cron: '0 0 * * *'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      MANGADEX_USERNAME: ${{ secrets.MANGADEX_USERNAME }}
+      MANGADEX_PASSWORD: ${{ secrets.MANGADEX_PASSWORD }}
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v1
+
+      - name: Setting up Node.js
+        with:
+          node-version: 14
+
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: Install dependencies 🔧
+        run: yarn
+
+      - name: Running tests 🚀
+        run: yarn run test
+
+      - name: Send result to Telegram chat
+        if: ${{ failure() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: '@nyaasi_chat'
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: 'markdown'
+          message: |
+            Looks like [mangadex-api](https://github.com/ejnshtein/mangadex-api) v${{ steps.package-version.outputs.current-version}} schema is not up-to-date with MD-API.
+            > Check out workflow result [here](https://github.com/ejnshtein/mangadex-api/runs/${{ github.job }})
