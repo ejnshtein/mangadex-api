@@ -5,7 +5,8 @@
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
     "lint": "eslint ./src --ignore-pattern *.test.*",
     "lint:fix": "eslint ./src --ignore-pattern *.test.* --fix",
     "test": "jest --config jest.json",
@@ -37,7 +38,7 @@
   "author": "ejnshtein",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.5",
     "smol-request": "^2.1.0"
   },
   "devDependencies": {
@@ -63,6 +64,7 @@
     "joi": "^17.3.0",
     "np": "^7.0.0",
     "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
     "standard": "^16.0.3",
     "ts-jest": "^26.4.4",
     "typedoc": "^0.19.2",

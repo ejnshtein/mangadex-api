@@ -1,4 +1,6 @@
 import cheerio from 'cheerio'
+// work only with cheerio@1.0.0-rc.5
+import { Element } from 'domhandler'
 import { URL } from 'url'
 import {
   MangadexHome,
@@ -119,10 +121,7 @@ export class Scraper {
       throw new Error('Authentication required')
     }
 
-    const parseUpdate = (
-      id: number,
-      el: cheerio.Element
-    ): MangadexHomeUpdate => {
+    const parseUpdate = (id: number, el: Element): MangadexHomeUpdate => {
       const selector = cheerio.load(el)
 
       return {
@@ -147,7 +146,7 @@ export class Scraper {
 
     const parseTopChapter = (
       id: number,
-      el: cheerio.Element
+      el: Element
     ): MangadexHomeTopChapter => {
       const selector = cheerio.load(el)
 
@@ -167,7 +166,7 @@ export class Scraper {
 
     const parseTopMangaFollow = (
       id: number,
-      el: cheerio.Element
+      el: Element
     ): MangadexHomeTopManga => {
       const selector = cheerio.load(el)
 
@@ -199,7 +198,7 @@ export class Scraper {
 
     const parseTopMangaRating = (
       id: number,
-      el: cheerio.Element
+      el: Element
     ): MangadexHomeTopManga => {
       const selector = cheerio.load(el)
 
