@@ -34,7 +34,7 @@ jobs:
         if: ${{ failure() }}
         uses: appleboy/telegram-action@master
         with:
-          to: '@nyaasi_chat'
+          to: -1001299003479
           token: ${{ secrets.TELEGRAM_TOKEN }}
           format: 'markdown'
           message: |
