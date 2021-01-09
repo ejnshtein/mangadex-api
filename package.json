@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint ./src --ignore-pattern *.test.*",
     "lint:fix": "eslint ./src --ignore-pattern *.test.* --fix",
-    "test": "jest --config jest.json",
+    "test": "jest",
     "pretest": "npm run build",
     "pb": "npm run build && np",
     "build:docs": "typedoc",
