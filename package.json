@@ -71,5 +71,67 @@
     "typedoc-plugin-nojekyll": "^1.0.1",
     "typedoc-plugin-sourcefile-url": "^1.0.6",
     "typescript": "^4.1.2"
+  },
+  "eslintConfig": {
+    "ignorePatterns": [
+      "dist/*"
+    ],
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "standard",
+      "plugin:@typescript-eslint/recommended",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [],
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "rules": {
+      "camelcase": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "no-prototype-builtins": "off",
+      "@typescript-eslint/no-var-requires": "warn"
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "arrowParens": "always",
+    "trailingComma": "none"
+  },
+  "jest": {
+    "testRegex": [
+      "(/__tests__/.*|(\\.|/))\\.[jt]sx?$"
+    ],
+    "testEnvironment": "node",
+    "preset": "ts-jest",
+    "setupFilesAfterEnv": [
+      "./jest/jest.setup.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    },
+    "collectCoverage":true,
+    "collectCoverageFrom": [
+      "**/*.{ts,js}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "node_modules",
+      "__test__",
+      "jest",
+      "dist",
+      "coverage",
+      "docs",
+      "types",
+      "src/lib"
+    ]
   }
 }
