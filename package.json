@@ -1,6 +1,6 @@
 {
   "name": "mangadex-api",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "mangadex api wrapper with known apis",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -119,7 +119,7 @@
         "isolatedModules": true
       }
     },
-    "collectCoverage":true,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "**/*.{ts,js}"
     ],
