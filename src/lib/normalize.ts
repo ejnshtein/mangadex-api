@@ -18,12 +18,14 @@ export const normalizeManga = (manga: Manga): FormattedManga => ({
 
 export const normalizeChapter = (chapter: Chapter): FormattedChapter => ({
   ...chapter,
-  pages: chapter.pages.map(
-    (page) => `${chapter.server}${chapter.hash}/${page}`
-  ),
-  fallbackPages: chapter.pages.map(
-    (page) =>
-      `${chapter.serverFallback || chapter.server}${chapter.hash}/${page}`
-  ),
+  pages: Array.isArray(chapter.pages)
+    ? chapter.pages.map((page) => `${chapter.server}${chapter.hash}/${page}`)
+    : chapter.pages,
+  fallbackPages: Array.isArray(chapter.pages)
+    ? chapter.pages.map(
+        (page) =>
+          `${chapter.serverFallback || chapter.server}${chapter.hash}/${page}`
+      )
+    : null,
   languageName: Composer.getLangName(chapter.language)
 })

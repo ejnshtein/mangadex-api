@@ -351,13 +351,15 @@ export interface Chapter {
 
   /**
    * Chapter pages
+   *
+   * Is string only when status = 'external'
    */
-  pages: string[]
+  pages: string | string[]
 
   /**
    * Server url
    */
-  server: string
+  server?: string
 
   /**
    * Fallback server url
@@ -404,7 +406,7 @@ export interface FormattedChapter extends Chapter {
   /**
    * Pages on fallback server
    */
-  fallbackPages: string[]
+  fallbackPages?: string[]
 }
 
 export interface MangaCover {

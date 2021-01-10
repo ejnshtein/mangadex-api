@@ -36,8 +36,10 @@ export const chapterSchema = Joi.object<FormattedChapter>({
   language: Joi.string().required(),
   mangaId: Joi.number().required(),
   mangaTitle: Joi.string().allow(null).required(),
-  pages: Joi.array().items(Joi.string().required()).required(),
-  server: Joi.string().required(),
+  pages: Joi.alternatives()
+    .try(Joi.array().items(Joi.string().required()), Joi.string())
+    .required(),
+  server: Joi.string().optional(),
   serverFallback: Joi.string().optional(),
   status: Joi.string().required(),
   timestamp: Joi.number().required(),
@@ -45,6 +47,9 @@ export const chapterSchema = Joi.object<FormattedChapter>({
   uploader: Joi.number().required(),
   views: Joi.number().required(),
   volume: Joi.string().allow(null, '').required(),
-  fallbackPages: Joi.array().items(Joi.string().required()).required(),
+  fallbackPages: Joi.array()
+    .items(Joi.string().required())
+    .allow(null)
+    .required(),
   languageName: Joi.string().required()
 })
