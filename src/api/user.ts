@@ -6,6 +6,7 @@ import {
   FormattedFollowedUpdates,
   PartialChapters,
   ReadChaptersStatus,
+  SetHomePageSettingsArguments,
   User,
   UserManga,
   UserMangaRating,
@@ -248,5 +249,26 @@ export class UserResolver extends ApiBase {
    */
   async getMe(options: MRequestOptions<'json'> = {}): Promise<User> {
     return this.getUser('me', options)
+  }
+
+  async setHomepageSettings(
+    args: SetHomePageSettingsArguments,
+    options: MRequestOptions<'headers'> = {}
+  ): Promise<boolean> {
+    await this.agent.callAjaxAction(
+      {
+        function: 'homepage_settings'
+      },
+      deepmerge(options, {
+        method: 'POST'
+      }),
+      {
+        theme_id: args.themeId ?? 0,
+        display_lang_id: args.displayLangId ?? 1,
+        hentai_mode: args.hentaiMode ?? 0
+      }
+    )
+
+    return true
   }
 }
