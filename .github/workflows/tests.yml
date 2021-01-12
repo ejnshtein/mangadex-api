@@ -1,4 +1,4 @@
-name: Tests
+name: Daily schema tests
 
 on:
   schedule:
@@ -39,4 +39,4 @@ jobs:
           format: 'markdown'
           message: |
             Looks like [mangadex-api](https://github.com/ejnshtein/mangadex-api) v${{ steps.package-version.outputs.current-version}} schema is not up-to-date with MD-API.
-            > Check out workflow result [here](https://github.com/ejnshtein/mangadex-api/runs/${{ github.run_id }})
+            > Check out workflow result [here](https://github.com/ejnshtein/mangadex-api/actions/runs/${{ github.run_id }})
