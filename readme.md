@@ -49,6 +49,15 @@ Mangadex.search('senko').then((response) => {
   console.log(`Found ${response.titles.length} titles.`)
 })
 
+
+// Search with NSFW results
+Mangadex.search({
+  title: 'gotoubun',
+  with_hentai: true
+}).then(result => {
+  console.log(`Found ${result.titles.filter(title => title.is_hentai).length} hentai manga (☞ ͡ ͡° ͜ ʖ ͡ ͡°)☞`)
+})
+
 Mangadex.getHome().then((home) => {
   if (home.accouncement) {
     console.log(`New accouncement!\n${home.accouncement.text}`)
