@@ -125,9 +125,14 @@ export interface PartialManga {
    */
   mainCover: string
   /**
-   * Manga title
+   * Manga name
    */
   name: string
+
+  /**
+   * Manga title
+   */
+  title: string
 }
 
 export interface Manga {
@@ -289,6 +294,11 @@ export interface PartialChapter {
   mangaTitle?: string
 
   /**
+   * Chapter thread id
+   */
+  threadId?: number
+
+  /**
    * Publication unix timestamp
    */
   timestamp: number
@@ -372,6 +382,11 @@ export interface Chapter {
   status: 'OK' | 'error'
 
   /**
+   * Chapter thread id
+   */
+  threadId?: number
+
+  /**
    * Unix timestamp when chapter was published.
    */
   timestamp: number
@@ -452,6 +467,7 @@ export interface SearchResultTitle {
     value: number
     votes: number
   }
+  is_hentai: boolean
   lang_name: string
 }
 
@@ -612,8 +628,15 @@ export interface UserSettings {
   shownChapterLangs: { id: string }[]
 }
 
+export interface FollowedPartialChapter extends PartialChapter {
+  /**
+   * Chapter read status
+   */
+  read: boolean
+}
+
 export interface FollowedUpdates {
-  chapters: PartialChapter[]
+  chapters: FollowedPartialChapter[]
   groups: Group[]
   manga: {
     [x: string]: PartialManga
@@ -628,6 +651,27 @@ export interface FormattedFollowedUpdates
 export interface ReadChaptersStatus {
   read?: number[]
   unread?: number[]
+}
+
+export interface SetHomePageSettingsArguments {
+  /**
+   * Theme id
+   *
+   * 1 - Light, 2 - Dark, 3 - Light-Bronze, 4 - Dark-Bronze, 5 - Light-Slate, 6 - Dark-Slate, 7 - Abyss
+   */
+  themeId: number
+
+  /**
+   * Displaying language id
+   */
+  displayLangId: number
+
+  /**
+   * Hentai mode
+   *
+   * 0 - Hide Hentai, 1 - View All, 2 - Only Hentai
+   */
+  hentaiMode: number
 }
 
 export type MangadexApiResponse<T> =
