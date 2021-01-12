@@ -460,7 +460,7 @@ export interface SearchResultTitle {
   id: number
   title: string
   image_url: string
-  description: string
+  description?: string
   views: number
   follows: number
   rating: {

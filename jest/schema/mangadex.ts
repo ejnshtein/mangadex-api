@@ -15,7 +15,7 @@ export const searchResultTitle = Joi.object<SearchResultTitle>({
   id: Joi.number().required(),
   title: Joi.string().required(),
   image_url: Joi.string().required(),
-  description: Joi.string().required(),
+  description: Joi.string().allow('').required(),
   views: Joi.number().required(),
   follows: Joi.number().required(),
   rating: Joi.object()
