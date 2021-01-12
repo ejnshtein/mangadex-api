@@ -70,6 +70,13 @@ export interface SearchQuery {
    * Tag exclusion mode
    */
   tag_mode_exc?: 'all' | 'any'
+
+  /**
+   * Show hentai manga in search result
+   */
+  with_hentai?: boolean
 }
+
+export type SearchQueryAnonymous = Omit<SearchQuery, 'with_hentai'>
 
 export type MangadexOptions = AgentOptions

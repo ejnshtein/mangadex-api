@@ -35,7 +35,8 @@ export const relationSchema = Joi.object<RelatedManga>({
 
 export const partialMangaSchema = Joi.object<PartialManga>({
   id: Joi.number().required(),
-  name: Joi.string().required(),
+  name: Joi.string().allow('').required(),
+  title: Joi.string().allow('').required(),
   isHentai: Joi.boolean().required(),
   lastChapter: Joi.string().allow(null),
   lastVolume: Joi.string().allow(null),

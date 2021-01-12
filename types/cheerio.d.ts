@@ -27,7 +27,7 @@ declare namespace cheerio {
     attr(map: { [key: string]: unknown }): Cheerio
 
     data(): unknown
-    data(name: string): unknown
+    data(name: string): string
     data(name: string, value: unknown): unknown
 
     val(): string

@@ -15,7 +15,7 @@ export const searchResultTitle = Joi.object<SearchResultTitle>({
   id: Joi.number().required(),
   title: Joi.string().required(),
   image_url: Joi.string().required(),
-  description: Joi.string().required(),
+  description: Joi.string().allow('').required(),
   views: Joi.number().required(),
   follows: Joi.number().required(),
   rating: Joi.object()
@@ -24,7 +24,8 @@ export const searchResultTitle = Joi.object<SearchResultTitle>({
       votes: Joi.number().required()
     })
     .required(),
-  lang_name: Joi.string().required()
+  lang_name: Joi.string().required(),
+  is_hentai: Joi.boolean().required()
 })
 
 export const searchResultSchema = Joi.object<SearchResult>({
@@ -67,7 +68,7 @@ export const homeTopMangaSchema = Joi.object<MangadexHomeTopManga>({
 })
 
 export const mangadexHomeSchema = Joi.object<MangadexHome>({
-  announcement: homeAnnouncementSchema,
+  announcement: homeAnnouncementSchema.allow(null).required(),
   latest_updates: Joi.object({
     all: Joi.array().items(homeUpdateSchema.required()).required(),
     follows: Joi.alternatives([

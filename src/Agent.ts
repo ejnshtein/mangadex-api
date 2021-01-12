@@ -34,7 +34,7 @@ export class Agent {
 
   constructor({
     host = 'https://mangadex.org',
-    apiHost = 'https://mangadex.org/api/v2',
+    apiHost = 'https://api.mangadex.org/v2',
     sessionId = null,
     sessionExpiration = null,
     persistentId = null,
@@ -324,17 +324,17 @@ export class Agent {
   }
 
   getCookie(): string {
-    let Cookie = ''
+    const cookies = []
 
     if (this.sessionId) {
-      Cookie += `mangadex_session=${this.sessionId}; `
+      cookies.push(`mangadex_session=${this.sessionId}`)
       if (this.persistentId) {
-        Cookie += `mangadex_rememberme_token=${this.persistentId}; `
+        cookies.push(`mangadex_rememberme_token=${this.persistentId}`)
       }
-      Cookie += `mangadex_h_toggle=${this.hentai}`
+      cookies.push(`mangadex_h_toggle=${this.hentai}`)
     }
 
-    return Cookie
+    return cookies.join('; ')
   }
 
   async checkLogin(): Promise<boolean> {
@@ -353,14 +353,12 @@ export class Agent {
       url,
       deepmerge(
         {
-          baseUrl: this.host
-        },
-        options,
-        {
+          baseUrl: this.host,
           headers: {
             Cookie
           }
-        }
+        },
+        options
       ),
       body
     )
@@ -467,13 +465,15 @@ export class Agent {
 
   async callAjaxAction(
     params: { [k: string]: unknown },
-    options: MRequestOptions<'headers'> = {}
+    options: MRequestOptions<'headers'> = {},
+    body?: Record<string, unknown>
   ): Promise<RequestResult<never>> {
     const result = await this.call<never, 'headers'>(
       'ajax/actions.ajax.php',
       deepmerge(options, {
         params
-      })
+      }),
+      body
     )
 
     return result
@@ -481,13 +481,15 @@ export class Agent {
 
   static async callAjaxAction(
     params: { [k: string]: unknown },
-    options: MRequestOptions<'headers'> = {}
+    options: MRequestOptions<'headers'> = {},
+    body?: Record<string, unknown>
   ): Promise<RequestResult<never>> {
     const result = await Agent.call<never, 'headers'>(
       'ajax/actions.ajax.php',
       deepmerge(options, {
         params
-      })
+      }),
+      body
     )
 
     return result

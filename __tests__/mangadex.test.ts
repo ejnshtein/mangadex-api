@@ -73,4 +73,38 @@ describe('mangadex api', () => {
 
     expect(validateResult.error).toEqual(undefined)
   })
+
+  it('should search for gotoubun and find H manga', async () => {
+    const client = await getClient()
+    const result = await client.search({
+      title: 'gotoubun Doujinshi',
+      with_hentai: true
+    })
+
+    const validateResult = searchResultSchema.validate(result)
+
+    expect(validateResult.error).toEqual(undefined)
+
+    const hasHDoujinshiInResult = result.titles.some((title) => title.is_hentai)
+
+    expect(hasHDoujinshiInResult).toEqual(true)
+  })
+
+  it('should not find gotoubun H manga', async () => {
+    const client = await getClient()
+    const result = await client.search({
+      title: 'gotoubun Doujinshi',
+      with_hentai: false
+    })
+
+    const validateResult = searchResultSchema.validate(result)
+
+    expect(validateResult.error).toEqual(undefined)
+
+    const hasntHDoujinshiInResult = result.titles.every(
+      (title) => !title.is_hentai
+    )
+
+    expect(hasntHDoujinshiInResult).toEqual(true)
+  })
 })

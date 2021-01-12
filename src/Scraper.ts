@@ -14,7 +14,7 @@ import {
 
 export class Scraper {
   static parseSearch(html: string, host?: string): SearchResult {
-    const content = cheerio.load(html)
+    const content = (cheerio as typeof ch).load(html)
 
     if (/login/i.test(content('head > title').text())) {
       throw new Error('Authentication required')
@@ -23,9 +23,33 @@ export class Scraper {
     const titles: SearchResultTitle[] = content('#content > div.row.mt-1.mx-0')
       .children('div')
       .map((i, el) => {
-        const block = cheerio(el)
+        const block = (cheerio as typeof ch)(el)
+        const tags = el.children.filter((n) => n.type === 'tag')
         const id = parseInt(block.data('id'))
-        return {
+
+        const foundHMangaElement = tags
+          .find(
+            (tag) =>
+              tag.name === 'div' && tag.attribs.class.includes('text-truncate')
+          )
+          .children.filter((tag) => tag.type === 'tag')
+          .find(
+            (tag, i, arr) =>
+              tag.name === 'div' &&
+              i ===
+                arr.length -
+                  1 -
+                  Array.from(arr)
+                    .reverse()
+                    .findIndex((t) => t.name === 'div')
+          )
+        const is_hentai = foundHMangaElement
+          ? foundHMangaElement.children
+              .find((tag) => tag.name === 'span')
+              .attribs.class.includes('badge-danger')
+          : false
+
+        const title: SearchResultTitle = {
           id,
           title: block.children('div:nth-child(2)').children('a').attr('title'),
           image_url: `${host}${block
@@ -72,8 +96,11 @@ export class Scraper {
             .children('div')
             .children('span')
             .attr('class')
-            .split('-')[1]
+            .split('-')[1],
+          is_hentai
         }
+
+        return title
       })
       .get()
 

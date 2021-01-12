@@ -1,4 +1,9 @@
-import { MangadexOptions, MRequestOptions, SearchQuery } from '../types/agent'
+import {
+  MangadexOptions,
+  MRequestOptions,
+  SearchQuery,
+  SearchQueryAnonymous
+} from '../types/agent'
 import {
   FollowType,
   MangadexHome,
@@ -14,11 +19,12 @@ import { UserResolver } from './api/user'
 import { Composer } from './Composer'
 import { deepmerge } from './lib/deepmerge'
 import { getQuery } from './lib/get-query'
+import { getSearchHeaders } from './lib/get-search-headers'
 import { Scraper } from './Scraper'
 
 const DefaultOptions = {
   host: 'https://mangadex.org',
-  apiHost: 'https://mangadex.org/api/v2'
+  apiHost: 'https://api.mangadex.org/v2'
 }
 
 export class Mangadex {
@@ -63,15 +69,18 @@ export class Mangadex {
    * @param options Request options
    */
   async search(
-    query: SearchQuery | string,
+    query: string | SearchQuery,
     options: MRequestOptions<'text'> = {}
   ): Promise<SearchResult> {
     const userQuery = getQuery(query)
 
+    const headers = getSearchHeaders(query, this.agent.getCookie())
+
     const result = await this.agent.call(
       'search',
       deepmerge(options, {
-        params: userQuery as Record<string, unknown>
+        params: userQuery as Record<string, unknown>,
+        headers
       })
     )
 
@@ -84,7 +93,7 @@ export class Mangadex {
    * @param options Request options
    */
   static async search(
-    query: SearchQuery | string,
+    query: string | SearchQueryAnonymous,
     options: MRequestOptions<'text'> = {}
   ): Promise<SearchResult> {
     const userQuery = getQuery(query)
