@@ -592,22 +592,12 @@ export interface MangadexHome {
   }
 }
 
-export interface FollowedPartialManga {
-  chapter: string
-  followType: number
-  mangaId: number
-  mangaTitle?: string
-  rating?: number
-  userId: number
-  isHentai: boolean
-  volume?: string
-}
-
 export interface UserManga {
   chapter: string
   followType: number
   mangaId: number
   mangaTitle?: string
+  mainCover?: string
   rating: number
   userId: number
   isHentai: boolean

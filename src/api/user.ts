@@ -1,7 +1,6 @@
 import { Agent } from '../Agent'
 import { MRequestOptions } from '../../types/agent'
 import {
-  FollowedPartialManga,
   FollowedUpdates,
   FormattedFollowedUpdates,
   PartialChapters,
@@ -129,8 +128,8 @@ export class UserResolver extends ApiBase {
   async getUserFollowedManga(
     userId: number | string,
     options: MRequestOptions<'json'> = {}
-  ): Promise<FollowedPartialManga[]> {
-    const result = await this.agent.callApi<FollowedPartialManga[]>(
+  ): Promise<UserManga[]> {
+    const result = await this.agent.callApi<UserManga[]>(
       `user/${userId}/followed-manga`,
       options
     )

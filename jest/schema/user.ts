@@ -1,6 +1,5 @@
 import Joi from 'joi'
 import {
-  FollowedPartialManga,
   FollowedPartialChapter,
   FollowedUpdates,
   User,
@@ -46,34 +45,26 @@ export const userFollowedPartialChapterSchema = Joi.object<FollowedPartialChapte
   }
 )
 
+export const userMangaSchema = Joi.object<UserManga>({
+  chapter: Joi.string().allow('').required(),
+  followType: Joi.number().required(),
+  mangaId: Joi.number().required(),
+  mangaTitle: Joi.string().allow(null, '').required(),
+  mainCover: Joi.string().allow(null, '').required(),
+  rating: Joi.number().allow(null).required(),
+  userId: Joi.number().required(),
+  isHentai: Joi.boolean().required(),
+  volume: Joi.string().allow(null, '').required()
+})
+
 export const userFollowedPartialMangaSchema = Joi.array().items(
-  Joi.object<FollowedPartialManga>({
-    chapter: Joi.string().allow('').required(),
-    followType: Joi.number().required(),
-    mangaId: Joi.number().required(),
-    mangaTitle: Joi.string().allow(null, '').required(),
-    rating: Joi.number().allow(null).required(),
-    userId: Joi.number().required(),
-    isHentai: Joi.boolean().required(),
-    volume: Joi.string().allow(null, '').required()
-  })
+  userMangaSchema.required()
 )
 
 export const userFollowedUpdatesSchema = Joi.object<FollowedUpdates>({
   chapters: Joi.array().items(userFollowedPartialChapterSchema).required(),
   groups: Joi.array().items(partialBase).required(),
   manga: Joi.array().items(partialMangaSchema).required()
-})
-
-export const userMangaSchema = Joi.object<UserManga>({
-  chapter: Joi.string().allow('').required(),
-  followType: Joi.number().required(),
-  mangaId: Joi.number().required(),
-  mangaTitle: Joi.string().allow(null, '').required(),
-  rating: Joi.number().allow(null).required(),
-  userId: Joi.number().required(),
-  isHentai: Joi.boolean().required(),
-  volume: Joi.string().allow(null, '').required()
 })
 
 export const userMangaRatingSchema = Joi.array().items(
