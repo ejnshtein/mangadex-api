@@ -64,7 +64,7 @@ export class Scraper {
               .children('li:nth-child(3)')
               .text()
               .trim()
-              .replace(/,/i, '')
+              .replace(/,/gi, '')
           ),
           follows: parseInt(
             block
@@ -72,7 +72,7 @@ export class Scraper {
               .children('li:nth-child(2)')
               .text()
               .trim()
-              .replace(/,/i, '')
+              .replace(/,/gi, '')
           ),
           rating: {
             value: parseFloat(
@@ -161,39 +161,37 @@ export class Scraper {
         ),
         chapter: tagList
           .find((tag, i) => i === 2 && tag.name === 'div')
-          .children.find((tag) => tag.name === 'a').children[0].data, // selector('div:nth-child(3) > a').text(),
+          .children.find((tag) => tag.name === 'a').children[0].data,
         title: tagList
           .find((tag, i) => i === 1 && tag.name === 'div')
           .children.find((tag) => tag.name === 'a')
-          .attribs.title.trim(), // selector('div:nth-child(2) > a').attr('title').trim(),
+          .attribs.title.trim(),
         manga_id: parseInt(
           tagList
             .find((tag, i) => i === 0 && tag.name === 'div')
             .children.find((tag) => tag.name === 'a')
             .attribs.href.split('/')[2]
-          // selector('div:first-of-type > a').attr('href').split('/')[2]
         ),
         cover_url: tagList
           .find((tag, i) => i === 0 && tag.name === 'div')
           .children.find((tag) => tag.name === 'a')
-          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
+          .children.find((tag) => tag.name === 'img').attribs.src,
         group: {
           id: parseInt(
             tagList
               .find((tag, i) => i === 3 && tag.name === 'div')
               .children.find((tag) => tag.name === 'a')
               .attribs.href.split('/')[2]
-            // selector('div:nth-child(4) > a').attr('href').split('/')[2]
           ),
           name: tagList
             .find((tag, i) => i === 3 && tag.name === 'div')
-            .children.find((tag) => tag.name === 'a').children[0].data // selector('div:nth-child(4) > a').text()
+            .children.find((tag) => tag.name === 'a').children[0].data
         },
         uploaded: tagList
           .find((tag, i) => i === 4 && tag.name === 'div')
           .children.map((tag) => tag.data)
           .join()
-          .trim() // selector('div:nth-child(5)').text().trim()
+          .trim()
       }
     }
 
@@ -210,28 +208,25 @@ export class Scraper {
             .children.find((tag) => tag.name === 'span')
             .children.find((tag) => tag.name === 'a')
             .attribs.href.split('/')[2]
-          // selector('p > span > a').attr('href').split('/')[2]
         ),
         chapter: tagList
           .find((tag) => tag.name === 'p')
           .children.find((tag) => tag.name === 'span')
           .children.find((tag) => tag.name === 'a').children[0].data,
-        // selector('p > span > a').text(),
         title: tagList
           .find((tag, i) => tag.name === 'div' && i === 1)
           .children.find((tag) => tag.name === 'a')
-          .attribs.title.trim(), // selector('div:nth-child(2) > a').attr('title').trim(),
+          .attribs.title.trim(),
         manga_id: parseInt(
           tagList
             .find((tag) => tag.name === 'div')
             .children.find((tag) => tag.name === 'a')
             .attribs.href.split('/')[2]
-          // selector('div:first-of-type > a').attr('href').split('/')[2]
         ),
         cover_url: tagList
           .find((tag) => tag.name === 'div')
           .children.find((tag) => tag.name === 'a')
-          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
+          .children.find((tag) => tag.name === 'img').attribs.src,
         views: parseInt(
           tagList
             .find((tag) => tag.name === 'p')
@@ -247,8 +242,7 @@ export class Scraper {
             )
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-            .replace(/,/i, '')
-          // selector('p > span:last-of-type').text().replace(/,/i, '')
+            .replace(/,/gi, '')
         )
       }
     }
@@ -258,7 +252,6 @@ export class Scraper {
       el: Element
     ): MangadexHomeTopManga => {
       const tagList = el.childNodes.filter((n) => n.type === 'tag')
-      // const selector = cheerio.load(el)
 
       const mangaUrl = tagList
         .find((tag, i) => tag.name === 'div' && i === 1)
@@ -276,15 +269,14 @@ export class Scraper {
         cover_url: tagList
           .find((tag) => tag.name === 'div')
           .children.find((tag) => tag.name === 'a')
-          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
+          .children.find((tag) => tag.name === 'img').attribs.src,
         follows: parseInt(
           tagList
             .find((tag) => tag.name === 'p')
             .children.find((tag) => tag.name === 'span')
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-            .replace(/,/i, '')
-          // selector('p > span:first-of-type').text().trim().replace(/,/i, '')
+            .replace(/,/gi, '')
         ),
         rating: parseFloat(
           tagList
@@ -302,7 +294,6 @@ export class Scraper {
             .children.find((tag) => tag.name === 'span')
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-          // selector('p > span:last-of-type > span').text().trim()
         ),
         users: parseInt(
           tagList
@@ -320,11 +311,7 @@ export class Scraper {
             .children.find((tag) => tag.name === 'small')
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-            .replace(/,/i, '')
-          // selector('p > span:last-of-type > small')
-          //   .text()
-          //   .trim()
-          //   .replace(/,/i, '')
+            .replace(/,/gi, '')
         )
       }
     }
@@ -347,11 +334,11 @@ export class Scraper {
         id: mangaUrl,
         title: tagList
           .find((tag, i) => tag.name === 'div' && i === 1)
-          .children.find((tag) => tag.name === 'a').attribs.title, // selector('div:nth-child(2) > a').attr('title'),
+          .children.find((tag) => tag.name === 'a').attribs.title,
         cover_url: tagList
           .find((tag) => tag.name === 'div')
           .children.find((tag) => tag.name === 'a')
-          .children.find((tag) => tag.name === 'img').attribs.src, // selector('div:first-of-type > a > img').attr('src'),
+          .children.find((tag) => tag.name === 'img').attribs.src,
         follows: parseInt(
           tagList
             .find((tag) => tag.name === 'p')
@@ -367,8 +354,7 @@ export class Scraper {
             )
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-            .replace(/,/i, '')
-          // selector('p > span:last-of-type').text().trim().replace(/,/i, '')
+            .replace(/,/gi, '')
         ),
         rating: parseFloat(
           tagList
@@ -377,7 +363,6 @@ export class Scraper {
             .children.find((tag) => tag.name === 'span')
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-          // selector('p > span:first-of-type > span').text().trim()
         ),
         users: parseInt(
           tagList
@@ -386,11 +371,7 @@ export class Scraper {
             .children.find((tag) => tag.name === 'small')
             .children.find((tag) => tag.type === 'text')
             .data.trim()
-            .replace(/,/i, '')
-          // selector('p > span:first-of-type > small')
-          //   .text()
-          //   .trim()
-          //   .replace(/,/i, '')
+            .replace(/,/gi, '')
         )
       }
     }
