@@ -84,7 +84,8 @@
 
 <span class="hljs-comment"># or</span>
 
-yarn add mangadex-api</code></pre>
+yarn add mangadex-api
+</code></pre>
 				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
 					<h2>Example</h2>
 				</a>
@@ -138,7 +139,8 @@ Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="h
   <span class="hljs-built_in">console</span>.log(
     <span class="hljs-string">`Group <span class="hljs-subst">${group.name}</span> has <span class="hljs-subst">${group.stats.follows}</span> followers and <span class="hljs-subst">${group.stats.total_chapters}</span> total chapters uploaded!`</span>
   )
-})</code></pre>
+})
+</code></pre>
 				<a href="#authorization-example" id="authorization-example" style="color: inherit; text-decoration: none;">
 					<h2>Authorization example</h2>
 				</a>
@@ -150,7 +152,8 @@ Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="h
 
 <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> client.search(<span class="hljs-string">&#x27;To Be Winner&#x27;</span>)
 
-<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// { titles: [{ title: &#x27;To Be Winner&#x27;, ... }] }</span></code></pre>
+<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// { titles: [{ title: &#x27;To Be Winner&#x27;, ... }] }</span>
+</code></pre>
 				<a href="#cached-session-example" id="cached-session-example" style="color: inherit; text-decoration: none;">
 					<h2>Cached session example</h2>
 				</a>
@@ -166,7 +169,8 @@ Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="h
 
 <span class="hljs-keyword">const</span> me = <span class="hljs-keyword">await</span> client.getMe())
 
-<span class="hljs-built_in">console</span>.log(me)</code></pre>
+<span class="hljs-built_in">console</span>.log(me)
+</code></pre>
 				<a href="#migration-to-version-4" id="migration-to-version-4" style="color: inherit; text-decoration: none;">
 					<h2>Migration to version 4</h2>
 				</a>
@@ -259,7 +263,8 @@ client.user.getUserSettings(userId)
 client.user.getUserFollowedManga(userId)
 
 <span class="hljs-comment">// user/{id}/marker</span>
-client.user.setUserChapterRead(userId, chapters, read)</code></pre>
+client.user.setUserChapterRead(userId, chapters, read)
+</code></pre>
 				<a href="#migration-to-version-3" id="migration-to-version-3" style="color: inherit; text-decoration: none;">
 					<h2>Migration to version 3</h2>
 				</a>
