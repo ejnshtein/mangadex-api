@@ -6,22 +6,6 @@ import { User } from '../types/mangadex'
  * TODO add more tests
  */
 describe('agent api', () => {
-  it('should login and logout with user credentials', async () => {
-    const client = new Agent()
-
-    const isLoginOk = await client.login(
-      process.env.MANGADEX_USERNAME,
-      process.env.MANGADEX_PASSWORD,
-      false
-    )
-
-    expect(isLoginOk).toEqual(true)
-
-    const isLogoutOk = await client.logout()
-
-    expect(isLogoutOk).toEqual(true)
-  })
-
   it('should login, save session and login from saved session and logout', async () => {
     const client = new Agent()
 
