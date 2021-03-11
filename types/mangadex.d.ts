@@ -124,11 +124,6 @@ export interface PartialManga {
    * Absolute path to cover url
    */
   mainCover: string
-  /**
-   * Manga name
-   * @deprecated This option will be removed in future updates
-   */
-  name: string
 
   /**
    * Manga title
