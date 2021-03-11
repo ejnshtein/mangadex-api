@@ -20,12 +20,8 @@ import { Composer } from './Composer'
 import { deepmerge } from './lib/deepmerge'
 import { getQuery } from './lib/get-query'
 import { getSearchHeaders } from './lib/get-search-headers'
+import { DefaultOptions } from './lib/options'
 import { Scraper } from './Scraper'
-
-const DefaultOptions = {
-  host: 'https://mangadex.org',
-  apiHost: 'https://api.mangadex.org/v2'
-}
 
 export class Mangadex {
   private options: MangadexOptions
