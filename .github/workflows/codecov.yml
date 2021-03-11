@@ -22,18 +22,18 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v1
 
-      - name: set up node 14
+      - name: Setting up Node 14
         uses: actions/setup-node@v2
         with:
           node-version: '14'
 
-      - name: Install dependencies 🔧
+      - name: Installing dependencies 🔧
         run: yarn
 
       - name: Running tests 🚀
         run: yarn run test
 
-      - name: Upload coverage to Codecov
+      - name: Uploading coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
