@@ -13,7 +13,7 @@
     "pretest": "npm run build",
     "pb": "npm run build && np",
     "build:docs": "typedoc",
-    "deploy": "npm run build && npm run build:docs && gh-pages -t -d docs -b gh-pages"
+    "deploy": "npm run build && npm run build:docs && cp ./docs-favicon.ico ./docs/favicon.ico && gh-pages -t -d docs -b gh-pages"
   },
   "engines": {
     "node": ">=12"
