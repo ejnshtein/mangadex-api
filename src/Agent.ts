@@ -17,6 +17,7 @@ import { deepmerge } from './lib/deepmerge'
 import { MangadexApiResponse, User } from '../types/mangadex'
 import { join } from 'path'
 import { ApiError } from './lib/error'
+import { DefaultOptions } from './lib/options'
 
 const pkg = JSON.parse(
   fs.readFileSync(join(__dirname, '..', 'package.json'), 'utf-8')
@@ -228,9 +229,6 @@ export class Agent {
     this.sessionId = null
     this.sessionExpiration = null
     this.persistentId = null
-    this.hentai = 1
-    this.host = 'https://mangadex.org'
-    this.apiHost = 'https://mangadex.org/api'
     if (this.getCredentials) {
       const session: Session =
         this.getCredentials.constructor.name === 'AsyncFunction'
@@ -382,7 +380,7 @@ export class Agent {
     options: MRequestOptions<T> = {},
     body?: Record<string, unknown>
   ): Promise<RequestResult<NonNullable<ResponseTypeMap<K>[T]>>> {
-    const requestUrl = `${options.baseUrl || 'https://mangadex.org'}${
+    const requestUrl = `${options.baseUrl || DefaultOptions.host}${
       !(url.startsWith('/') && options.baseUrl.endsWith('/')) && '/'
     }${url}`
 
@@ -442,7 +440,7 @@ export class Agent {
       url,
       deepmerge(
         {
-          baseUrl: 'https://mangadex.org/api/v2'
+          baseUrl: DefaultOptions.apiHost
         },
         options,
         {

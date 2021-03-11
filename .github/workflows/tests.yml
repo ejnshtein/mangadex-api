@@ -30,7 +30,7 @@ jobs:
       - name: Running tests 🚀
         run: yarn run test
 
-      - name: Send result to Telegram chat
+      - name: If fails, send result to Telegram chat
         if: ${{ failure() }}
         uses: appleboy/telegram-action@master
         with:

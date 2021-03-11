@@ -6,12 +6,16 @@ jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Setting up Node.js
+      - name: Checkout 🛎️
+        uses: actions/checkout@v1
+
+      - name: Setting up Node 14
         uses: actions/setup-node@v2
         with:
           node-version: 14
-      - name: Installing dependencies
-        run: yarn
-      - name: Linting JS
+
+      - name: Install dependencies 🔧
+        run:  yarn
+
+      - name: Linting 🚀
         run: yarn lint
