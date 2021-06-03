@@ -37,3 +37,7 @@ export type Language =
   | 'tr'
   | 'ua'
   | 'vn'
+
+export type TranslatedField = { en: string } & {
+  [K in Exclude<Language, 'en'>]?: string
+}

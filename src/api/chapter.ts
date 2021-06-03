@@ -1,62 +1,77 @@
 import { Agent } from '../Agent'
-import { normalizeChapter } from '../lib/normalize'
-import { MRequestOptions } from '../../types/agent'
-import { Chapter, FormattedChapter } from '../../types/mangadex'
 import { ApiBase } from './base'
+import { MangaResolver } from './manga'
+import { UserResolver } from './user'
+import { ApiResponseResult } from '../../types/response'
+import { Chapter, ChapterResponse } from '../../types/chapter'
+import { ApiResponseError } from '../lib/error'
+import { getRelationshipType } from '../lib/relationship-type'
+import { GroupResolver } from './group'
 
-export interface GetChapterQueryParams {
+export interface GetChapterOptions<W extends boolean> {
   /**
-   * Mark the chapter as read.
+   * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
    */
-  mark_read?: boolean
-
-  /**
-   * Use low quality images (data saver)
-   */
-  saver?: boolean
-
-  /**
-   * Use to override location-based server assignment.
-   */
-  server?: 'na' | 'na2' | string
+  withRelationShips?: W
 }
 
 export class ChapterResolver extends ApiBase {
   /**
-   * Get a chapter. Possible error codes: 410 (deleted), 403 (restricted), 451 (unavailable)."
-   * @param chapterId The chapter ID number, or the chapter hash.
+   * Get a chapter
+   * @param chapterId The chapter ID
    * @param options request options
    */
-  async getChapter(
-    chapterId: number,
-    options: MRequestOptions<'json'> & {
-      params?: GetChapterQueryParams
-    } = {}
-  ): Promise<FormattedChapter> {
-    const chapter = await this.agent.callApi<Chapter>(
-      `chapter/${chapterId}`,
-      options
-    )
-
-    return normalizeChapter(chapter)
+  async getChapter<W extends boolean>(
+    chapterId: string,
+    options: GetChapterOptions<W> = {}
+  ): Promise<ChapterResponse<W>> {
+    return ChapterResolver.getChapter(chapterId, options)
   }
 
   /**
-   * Get a chapter. Possible error codes: 410 (deleted), 403 (restricted), 451 (unavailable)."
-   * @param chapterId The chapter ID number, or the chapter hash.
-   * @param options Request options
+   * Get a chapter
+   * @param chapterId The chapter ID
+   * @param options request options
    */
-  static async getChapter(
-    chapterId: number,
-    options: MRequestOptions<'json'> & {
-      params?: GetChapterQueryParams
-    } = {}
-  ): Promise<FormattedChapter> {
-    const chapter = await Agent.callApi<Chapter>(
-      `chapter/${chapterId}`,
-      options
+  static async getChapter<W extends boolean>(
+    chapterId: string,
+    options: GetChapterOptions<W> = {}
+  ): Promise<ChapterResponse<W>> {
+    const { data: chapter } = await Agent.call<ApiResponseResult<Chapter>>(
+      `chapter/${chapterId}`
     )
 
-    return normalizeChapter(chapter)
+    if (chapter.result === 'error') {
+      throw new ApiResponseError(chapter.errors[0])
+    }
+
+    if (!options.withRelationShips) {
+      return { chapter: chapter.data } as ChapterResponse<W>
+    }
+
+    const scanlationGroup = await Promise.all(
+      getRelationshipType('scanlation_group', chapter.relationships).map(
+        ({ id }) => GroupResolver.getGroup(id)
+      )
+    )
+
+    const manga = await Promise.all(
+      getRelationshipType('manga', chapter.relationships).map(({ id }) =>
+        MangaResolver.getManga(id)
+      )
+    )
+
+    const user = await Promise.all(
+      getRelationshipType('user', chapter.relationships).map(({ id }) =>
+        UserResolver.getUser(id)
+      )
+    )
+
+    return {
+      chapter: chapter.data,
+      manga,
+      scanlation_group: scanlationGroup,
+      user
+    } as unknown as ChapterResponse<W>
   }
 }

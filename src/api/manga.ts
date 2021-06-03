@@ -1,116 +1,135 @@
 import { Agent } from '../Agent'
-import { normalizeManga } from '../lib/normalize'
-import { MRequestOptions } from '../../types/agent'
-import {
-  FormattedManga,
-  Manga,
-  MangaCover,
-  PartialChapters
-} from '../../types/mangadex'
-import { ApiBase, IncludeParams, PartialChaptersParams } from './base'
+import { ApiBase } from './base'
+import { UserResolver } from './user'
+import { CoverArtResolver } from './cover-art'
+import { ApiResponseError } from '../lib/error'
+import { Manga, MangaFeedResponse, MangaResponse } from '../../types/manga'
+import { ApiResponseResult } from '../../types/response'
+import { getRelationshipType } from '../lib/relationship-type'
+import { CoverArtsResponse } from 'types/cover-art'
+
+export interface GetMangaOptions<W extends boolean> {
+  /**
+   * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
+   */
+  withRelationShips?: W
+}
+
+export type GetMangaFeedOptions = Partial<{
+  limit: number
+  offset: number
+  translatedLanguage: string[]
+  createdAtSince: string
+  updatedAtSince: string
+  publishAtSince: string
+  volume: string
+  chapter: string
+}>
 
 export class MangaResolver extends ApiBase {
   /**
    * Get a manga
-   * @param mangaId The manga ID number
+   * @param mangaId The manga ID
    * @param options Request options
    */
-  async getManga(
-    mangaId: number,
-    options: MRequestOptions<'json'> & {
-      params?: IncludeParams
-    } = {}
-  ): Promise<FormattedManga> {
-    const manga = await this.agent.callApi<Manga>(`manga/${mangaId}`, options)
-
-    return normalizeManga(manga)
+  async getManga<W extends boolean>(
+    mangaId: string,
+    options: GetMangaOptions<W> = {}
+  ): Promise<MangaResponse<W>> {
+    return MangaResolver.getManga(mangaId, options)
   }
 
   /**
    * Get a manga
-   * @param mangaId The manga ID number
+   * @param mangaId The manga ID
    * @param options Request options
    */
-  static async getManga(
-    mangaId: number,
-    options: MRequestOptions<'json'> & {
-      params?: IncludeParams
-    } = {}
-  ): Promise<FormattedManga> {
-    const manga = await Agent.callApi<Manga>(`manga/${mangaId}`, options)
+  static async getManga<W extends boolean>(
+    mangaId: string,
+    options: GetMangaOptions<W> = {}
+  ): Promise<MangaResponse<W>> {
+    const { data: manga } = await Agent.call<ApiResponseResult<Manga>>(
+      `manga/${mangaId}`
+    )
 
-    return normalizeManga(manga)
+    if (manga.result === 'error') {
+      throw new ApiResponseError(manga.errors[0])
+    }
+
+    if (!options.withRelationShips) {
+      return { manga: manga.data } as MangaResponse<W>
+    }
+
+    const artist = await Promise.all(
+      getRelationshipType('artist', manga.relationships).map(({ id }) =>
+        UserResolver.getUser(id)
+      )
+    )
+
+    const author = await Promise.all(
+      getRelationshipType('author', manga.relationships).map(({ id }) =>
+        UserResolver.getUser(id)
+      )
+    )
+
+    const coverArt = await Promise.all(
+      getRelationshipType('cover_art', manga.relationships).map(({ id }) =>
+        CoverArtResolver.getCoverArt(id)
+      )
+    )
+
+    return {
+      manga: manga.data,
+      artist,
+      author,
+      cover_art: coverArt
+    } as unknown as MangaResponse<W>
   }
 
   /**
-   * Get partial information about the chapters belonging to a manga
-   * @param mangaId The manga ID number
+   * Get manga feed with chapters
+   * @param mangaId The manga ID
    * @param options Request Options
    */
-  async getMangaChapters(
-    mangaId: number,
-    options: MRequestOptions<'json'> & {
-      params?: PartialChaptersParams
-    } = {}
-  ): Promise<PartialChapters> {
-    const result = await this.agent.callApi<PartialChapters>(
-      `manga/${mangaId}/chapters`,
-      options
-    )
-
-    return result
+  async getMangaFeed(
+    mangaId: string,
+    options: GetMangaFeedOptions = {}
+  ): Promise<MangaFeedResponse> {
+    return MangaResolver.getMangaFeed(mangaId, options)
   }
 
   /**
-   * Get partial information about the chapters belonging to a manga
-   * @param mangaId The manga ID number
+   * Get manga feed with chapters
+   * @param mangaId The manga ID
    * @param options Request Options
    */
-  static async getMangaChapters(
-    mangaId: number,
-    options: MRequestOptions<'json'> & {
-      params?: PartialChaptersParams
-    } = {}
-  ): Promise<PartialChapters> {
-    const result = await Agent.callApi<PartialChapters>(
-      `manga/${mangaId}/chapters`,
-      options
+  static async getMangaFeed(
+    mangaId: string,
+    options: GetMangaFeedOptions = {}
+  ): Promise<MangaFeedResponse> {
+    const { data: mangaFeed } = await Agent.call<MangaFeedResponse>(
+      `manga/${mangaId}/feed`,
+      {
+        params: options
+      }
     )
 
-    return result
+    return mangaFeed
   }
 
   /**
    * Get a list of covers belonging to a manga.
-   * @param mangaId The manga ID number
-   * @param options Request Options
+   * @param mangaId The manga ID
    */
-  async getMangaCovers(
-    mangaId: number,
-    options: MRequestOptions<'json'> = {}
-  ): Promise<MangaCover[]> {
-    const result = await this.agent.callApi<MangaCover[]>(
-      `manga/${mangaId}/covers`,
-      options
-    )
-
-    return result
+  async getMangaCovers(mangaId: string): Promise<CoverArtsResponse> {
+    return MangaResolver.getMangaCovers(mangaId)
   }
 
   /**
    * Get a list of covers belonging to a manga.
-   * @param mangaId The manga ID number
-   * @param options Request Options
+   * @param mangaId The manga ID
    */
-  static async getMangaCovers(
-    mangaId: number,
-    options: MRequestOptions<'json'> = {}
-  ): Promise<MangaCover[]> {
-    const result = await Agent.callApi<MangaCover[]>(
-      `manga/${mangaId}/covers`,
-      options
-    )
-
-    return result
+  static async getMangaCovers(mangaId: string): Promise<CoverArtsResponse> {
+    return CoverArtResolver.getCoverArts({ manga: [mangaId] })
   }
 }

@@ -1,19 +1,15 @@
-export class ApiError extends Error {
-  public code: number
-  public url: string
+import { ResponseError } from '../../types/response'
 
-  constructor({
-    message,
-    code,
-    url
-  }: {
-    message: string
-    code: number
-    url: string
-  }) {
-    super(`${code} - ${message}`)
+export class ApiResponseError extends Error {
+  public id: string
+  public detail: string
+  public context: ResponseError['context']
+  constructor({ id, status, detail, title, context }: ResponseError) {
+    super(`${status} - ${title}`)
 
-    this.code = code
-    this.url = url
+    this.id = id
+    this.detail = detail
+    this.name = title
+    this.context = context
   }
 }

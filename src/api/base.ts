@@ -1,5 +1,5 @@
 import { Agent } from '../Agent'
-import { MangadexOptions } from '../../types/agent'
+import { AgentOptions } from '../../types/agent'
 
 export interface IncludeParams {
   /**
@@ -22,8 +22,8 @@ export interface PartialChaptersParams {
 
 export class ApiBase {
   public agent: Agent
-  public options: MangadexOptions
-  constructor({ agent, options }: { agent: Agent; options: MangadexOptions }) {
+  public options: AgentOptions
+  constructor({ agent, options }: { agent: Agent; options: AgentOptions }) {
     this.agent = agent
     this.options = options
   }

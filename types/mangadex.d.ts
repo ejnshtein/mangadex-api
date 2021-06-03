@@ -1,7 +1,5 @@
 import { Language } from './language'
 
-export type Status = 'Ongoing' | 'Completed' | 'Cancelled' | 'Hiatus'
-
 export interface Link {
   /**
    * Link title
@@ -13,22 +11,6 @@ export interface Link {
    */
   url: string
 }
-
-export type OriginalLanguage =
-  | 'amz'
-  | 'mal'
-  | 'nu'
-  | 'bw'
-  | 'raw'
-  | 'mu'
-  | 'ebj'
-  | 'engtl'
-  | 'cdj'
-  | 'kt'
-  | 'ap'
-  | 'al'
-
-export type Links = { [K in OriginalLanguage]: string }
 
 export interface MangaRating {
   /**
