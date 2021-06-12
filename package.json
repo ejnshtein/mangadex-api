@@ -1,6 +1,6 @@
 {
   "name": "mangadex-api",
-  "version": "4.6.4",
+  "version": "5.0.0-alpha.0",
   "description": "mangadex api wrapper with known apis",
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
@@ -73,7 +73,9 @@
       "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "plugins": ["prettier"],
+    "plugins": [
+      "prettier"
+    ],
     "parserOptions": {
       "ecmaVersion": 2020,
       "sourceType": "module"
@@ -85,7 +87,7 @@
       "@typescript-eslint/no-var-requires": "warn",
       "prettier/prettier": "error",
       "indent": "off",
-      "space-before-function-paren":"off"
+      "space-before-function-paren": "off"
     }
   },
   "prettier": {
