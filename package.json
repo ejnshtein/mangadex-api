@@ -12,7 +12,7 @@
     "test": "jest",
     "pretest": "npm run build",
     "publish": "npm run build && np",
-    "publish:alpha": "npm run build && np --tag=alpha",
+    "publish:alpha": "npm run build && np --tag=alpha --any-branch --yolo",
     "build:docs": "typedoc",
     "deploy": "npm run build && npm run build:docs && cp ./docs-favicon.ico ./docs/favicon.ico && gh-pages -t -d docs -b gh-pages",
     "prepare": "husky install"
