@@ -34,7 +34,7 @@ export type MangaUpdates = 'mu'
 export type NovelUpdates = 'nu'
 
 /**
- * 	If integer, use id version of the URL, otherwise use slug one
+ * If integer, use id version of the URL, otherwise use slug one
  *
  * https://kitsu.io/api/edge/manga/`{id}` or https://kitsu.io/api/edge/manga?filter[slug]={slug}
  */

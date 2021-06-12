@@ -21,10 +21,9 @@ export const getClient = async (): Promise<Mangadex> => {
   if (await pathExists(sessionPath)) {
     await client.agent.loginWithSession(sessionPath)
   } else {
-    await client.agent.login(
+    await client.auth.login(
       process.env.MANGADEX_USERNAME,
-      process.env.MANGADEX_PASSWORD,
-      true
+      process.env.MANGADEX_PASSWORD
     )
     await client.agent.saveSession(sessionPath)
   }

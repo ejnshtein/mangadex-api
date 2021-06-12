@@ -1,21 +1,8 @@
-import { User } from '../../types/user'
-import { ApiResponseResult } from '../../types/response'
+import { ApiResponse } from '../../types/response'
 import { Agent } from '../Agent'
-// import { MRequestOptions } from '../../types/agent'
-// import {
-//   FollowedUpdates,
-//   FormattedFollowedUpdates,
-//   PartialChapters,
-//   ReadChaptersStatus,
-//   SetHomePageSettingsArguments,
-//   User,
-//   UserManga,
-//   UserMangaRating,
-//   UserSettings
-// } from '../../types/mangadex'
-import { ApiBase, PartialChaptersParams } from './base'
-// import { deepmerge } from '../lib/deepmerge'
-// import { Composer } from '../Composer'
+import { ApiBase } from './base'
+import { User, UserResponse } from '../../types/data-types/user'
+import { ApiResponseError } from '../lib/error'
 
 // export interface GetUserFollowedUpdatesParams {
 //   /**
@@ -57,13 +44,16 @@ export class UserResolver extends ApiBase {
    * @param userId The user ID number, or the string 'me' as an alias for the current cookie-authenticated user
    * @param options Request options
    */
-  async getUser(
-    userId: number | string,
-    options: MRequestOptions<'json'> = {}
-  ): Promise<User> {
-    const result = await this.agent.callApi<User>(`user/${userId}`, options)
+  async getUser(userId: string): Promise<UserResponse> {
+    const { data: user } = await this.agent.call<ApiResponse<{ data: User }>>(
+      `user/${userId}`
+    )
 
-    return result
+    if (user.result === 'error') {
+      throw new ApiResponseError(user.errors[0])
+    }
+
+    return user
   }
 
   /**
@@ -71,16 +61,15 @@ export class UserResolver extends ApiBase {
    * @param userId The user ID number, or the string 'me' as an alias for the current cookie-authenticated user
    * @param options Request options
    */
-  static async getUser(
-    userId: string,
-    options: MRequestOptions<'json'> = {}
-  ): Promise<User> {
-    const result = await Agent.call<ApiResponseResult<User>>(
-      `user/${userId}`,
-      options
+  static async getUser(userId: string): Promise<UserResponse> {
+    const { data: user } = await Agent.call<ApiResponse<{ data: User }>>(
+      `user/${userId}`
     )
+    if (user.result === 'error') {
+      throw new ApiResponseError(user.errors[0])
+    }
 
-    return result
+    return user
   }
 
   // /**

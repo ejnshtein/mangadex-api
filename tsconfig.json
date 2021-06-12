@@ -7,9 +7,7 @@
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
       "outDir": "dist",
-      "moduleResolution": "Node",
-      "baseUrl": ".",
-      "typeRoots": ["types"]
+      "moduleResolution": "Node"
     },
     "include": [
       "src"

@@ -13,15 +13,11 @@
     "pretest": "npm run build",
     "pb": "npm run build && np",
     "build:docs": "typedoc",
-    "deploy": "npm run build && npm run build:docs && cp ./docs-favicon.ico ./docs/favicon.ico && gh-pages -t -d docs -b gh-pages"
+    "deploy": "npm run build && npm run build:docs && cp ./docs-favicon.ico ./docs/favicon.ico && gh-pages -t -d docs -b gh-pages",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=12"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
   },
   "keywords": [
     "mangadex",
@@ -38,39 +34,31 @@
   "author": "ejnshtein",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.5",
-    "smol-request": "^2.1.0"
+    "smol-request": "^2.1.1"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.22",
-    "@types/eslint": "^7.2.6",
-    "@types/jest": "^26.0.16",
-    "@types/node": "^14.14.10",
-    "@typescript-eslint/eslint-plugin": "^4.9.0",
-    "@typescript-eslint/parser": "^4.9.0",
-    "babel-plugin-add-import-extension": "^1.4.3",
-    "dotenv": "^8.2.0",
-    "eslint": "^7.14.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.2.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^5.0.0",
-    "gh-pages": "^3.1.0",
-    "husky": "^4.3.0",
-    "jest": "^26.6.3",
-    "joi": "^17.3.0",
-    "np": "^7.0.0",
-    "prettier": "^2.2.1",
+    "@types/eslint": "^7.2.13",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.28.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-prettier": "^3.4.0",
+    "gh-pages": "^3.2.0",
+    "husky": "^6.0.0",
+    "jest": "^27.0.4",
+    "joi": "^17.4.0",
+    "np": "^7.5.0",
+    "prettier": "^2.3.1",
     "rimraf": "^3.0.2",
     "standard": "^16.0.3",
-    "ts-jest": "^26.4.4",
-    "typedoc": "^0.19.2",
+    "ts-jest": "^27.0.3",
+    "typedoc": "^0.20.36",
     "typedoc-plugin-nojekyll": "^1.0.1",
     "typedoc-plugin-sourcefile-url": "^1.0.6",
-    "typescript": "^4.1.2"
+    "typescript": "^4.3.2"
   },
   "eslintConfig": {
     "ignorePatterns": [
@@ -81,12 +69,10 @@
     },
     "extends": [
       "standard",
-      "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
+      "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
-    "plugins": [],
+    "plugins": ["prettier"],
     "parserOptions": {
       "ecmaVersion": 2020,
       "sourceType": "module"
@@ -95,7 +81,10 @@
       "camelcase": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
       "no-prototype-builtins": "off",
-      "@typescript-eslint/no-var-requires": "warn"
+      "@typescript-eslint/no-var-requires": "warn",
+      "prettier/prettier": "error",
+      "indent": "off",
+      "space-before-function-paren":"off"
     }
   },
   "prettier": {

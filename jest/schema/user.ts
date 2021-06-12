@@ -25,8 +25,8 @@ export const userSchema = Joi.object<User>({
   website: Joi.string().allow('').required()
 })
 
-export const userFollowedPartialChapterSchema = Joi.object<FollowedPartialChapter>(
-  {
+export const userFollowedPartialChapterSchema =
+  Joi.object<FollowedPartialChapter>({
     chapter: Joi.string().allow('').required(),
     comments: Joi.number().required(),
     groups: Joi.array().items(Joi.number().required()).required(),
@@ -42,8 +42,7 @@ export const userFollowedPartialChapterSchema = Joi.object<FollowedPartialChapte
     uploader: Joi.number().required(),
     views: Joi.number().required(),
     volume: Joi.string().allow(null, '').required()
-  }
-)
+  })
 
 export const userMangaSchema = Joi.object<UserManga>({
   chapter: Joi.string().allow('').required(),

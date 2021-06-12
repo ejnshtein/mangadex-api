@@ -1,10 +1,11 @@
-import { Relationship } from './relationship'
+import { Relationship } from './data-types/relationship'
 
-export interface SuccessfulResponse<T> {
+export type SuccessfulResponse<
+  T extends Record<'data' | string, string | unknown> = { data: unknown }
+> = {
   result: 'ok'
-  data: T
   relationships?: Relationship[]
-}
+} & T
 
 export interface ResponseError {
   id: string
@@ -19,10 +20,14 @@ export interface FailureResponse {
   errors: ResponseError[]
 }
 
-export type ApiResponseResult<T> = SuccessfulResponse<T> | FailureResponse
+export type ApiResponse<T extends Record<'data' | string, string | unknown>> =
+  | SuccessfulResponse<T>
+  | FailureResponse
 
-export interface ApiResponse<T> {
-  results: ApiResponseResult<T>
+export interface ApiResponseList<
+  T extends Record<'data' | string, string | unknown>
+> {
+  results: ApiResponse<T>[]
   limit: number
   offset: number
   total: number

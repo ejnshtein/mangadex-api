@@ -3,22 +3,27 @@ import { ApiBase } from './base'
 import { UserResolver } from './user'
 import { CoverArtResolver } from './cover-art'
 import { ApiResponseError } from '../lib/error'
-import { Manga, MangaFeedResponse, MangaResponse } from '../../types/manga'
-import { ApiResponseResult } from '../../types/response'
+import {
+  MangaExtended,
+  MangaExtendedResponse,
+  MangaFeedResponse,
+  MangaResponse,
+  MangaRatingContent,
+  MangaList
+} from '../../types/data-types/manga'
 import { getRelationshipType } from '../lib/relationship-type'
-import { CoverArtsResponse } from 'types/cover-art'
-
-export interface GetMangaOptions<W extends boolean> {
-  /**
-   * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
-   */
-  withRelationShips?: W
-}
+import { CoverArtsResponse } from '../../types/data-types/cover-art'
+import { Language } from '../../types/data-types/language'
+import { ApiResponse } from '../../types/response'
+import { MangaStatus } from '../../types/data-types/manga-status'
+import { MangaPublicationDemographic } from '../../types/data-types/manga-publication-demographic'
+import { formatQueryParams } from '../lib/format-query-params'
+import { Tag, TagResponse } from '../../types/data-types/tag'
 
 export type GetMangaFeedOptions = Partial<{
   limit: number
   offset: number
-  translatedLanguage: string[]
+  translatedLanguage: Language[]
   createdAtSince: string
   updatedAtSince: string
   publishAtSince: string
@@ -26,64 +31,187 @@ export type GetMangaFeedOptions = Partial<{
   chapter: string
 }>
 
-export class MangaResolver extends ApiBase {
+export type TagsMode = 'AND' | 'OR'
+
+export type SearchMangaOptions = Partial<{
   /**
-   * Get a manga
-   * @param mangaId The manga ID
-   * @param options Request options
+   * @default 10
    */
-  async getManga<W extends boolean>(
-    mangaId: string,
-    options: GetMangaOptions<W> = {}
-  ): Promise<MangaResponse<W>> {
-    return MangaResolver.getManga(mangaId, options)
+  limit: number
+
+  offset: number
+
+  title: string
+
+  authors: string[]
+  artists: string[]
+
+  /**
+   * Year of release
+   */
+  year: number
+  includedTags: string[]
+
+  /**
+   * @default 'AND'
+   */
+  includedTagsMode: TagsMode
+
+  excludedTags: string[]
+
+  /**
+   * @default 'OR'
+   */
+  excludedTagsMode: TagsMode
+
+  status: MangaStatus
+
+  originalLanguage: Language[]
+
+  publicationDemographic: MangaPublicationDemographic | 'none'
+
+  /**
+   * Manga ids (limited to 100 per request)
+   */
+  ids: string[]
+
+  contentRating: (MangaRatingContent | 'none')[]
+
+  /**
+   * DateTime string with following format: YYYY-MM-DDTHH:MM:SS
+   */
+  createdAtSince: string
+
+  /**
+   * DateTime string with following format: YYYY-MM-DDTHH:MM:SS
+   */
+  updatedAtSince: string
+
+  order: {
+    createdAt: string
+    updatedAt: string
   }
+}>
+
+export class MangaResolver extends ApiBase {
+  async getManga(
+    mangaId: string,
+    options?: {
+      /**
+       * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
+       */
+      withRelationShips?: true
+    }
+  ): Promise<MangaExtendedResponse>
+
+  async getManga(
+    mangaId: string,
+    options?: {
+      /**
+       * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
+       */
+      withRelationShips?: false
+    }
+  ): Promise<MangaResponse>
 
   /**
    * Get a manga
    * @param mangaId The manga ID
    * @param options Request options
    */
-  static async getManga<W extends boolean>(
+  async getManga(
     mangaId: string,
-    options: GetMangaOptions<W> = {}
-  ): Promise<MangaResponse<W>> {
-    const { data: manga } = await Agent.call<ApiResponseResult<Manga>>(
-      `manga/${mangaId}`
-    )
+    options: {
+      withRelationShips?: boolean
+    } = {}
+  ): Promise<unknown> {
+    const { data: manga } = await this.agent.call<
+      ApiResponse<{ data: MangaExtended }>
+    >(`manga/${mangaId}`)
 
     if (manga.result === 'error') {
       throw new ApiResponseError(manga.errors[0])
     }
 
+    const artists = getRelationshipType('artist', manga.relationships)
+    const author = getRelationshipType('author', manga.relationships)[0]
+    const coverArts = getRelationshipType('cover_art', manga.relationships)
+
     if (!options.withRelationShips) {
-      return { manga: manga.data } as MangaResponse<W>
+      return manga as MangaResponse
     }
 
-    const artist = await Promise.all(
-      getRelationshipType('artist', manga.relationships).map(({ id }) =>
-        UserResolver.getUser(id)
+    manga.data.attributes.artist = await Promise.all(
+      artists.map(({ id }) => UserResolver.getUser(id).then(({ data }) => data))
+    )
+    manga.data.attributes.author = (await UserResolver.getUser(author.id)).data
+    manga.data.attributes.cover_art = await Promise.all(
+      coverArts.map(({ id }) =>
+        CoverArtResolver.getCoverArt(id).then(({ data }) => data)
       )
     )
 
-    const author = await Promise.all(
-      getRelationshipType('author', manga.relationships).map(({ id }) =>
-        UserResolver.getUser(id)
+    return manga
+  }
+
+  static async getManga(
+    mangaId: string,
+    options?: {
+      /**
+       * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
+       */
+      withRelationShips?: true
+    }
+  ): Promise<MangaExtendedResponse>
+
+  static async getManga(
+    mangaId: string,
+    options?: {
+      /**
+       * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
+       */
+      withRelationShips?: false
+    }
+  ): Promise<MangaResponse>
+
+  /**
+   * Get a manga
+   * @param mangaId The manga ID
+   * @param options Request options
+   */
+  static async getManga(
+    mangaId: string,
+    options: {
+      withRelationShips?: boolean
+    } = {}
+  ): Promise<unknown> {
+    const { data: manga } = await Agent.call<
+      ApiResponse<{ data: MangaExtended }>
+    >(`manga/${mangaId}`)
+
+    if (manga.result === 'error') {
+      throw new ApiResponseError(manga.errors[0])
+    }
+
+    const artists = getRelationshipType('artist', manga.relationships)
+    const author = getRelationshipType('author', manga.relationships)[0]
+    const coverArts = getRelationshipType('cover_art', manga.relationships)
+
+    if (!options.withRelationShips) {
+      return manga
+    }
+
+    manga.data.attributes.artist = await Promise.all(
+      artists.map(({ id }) => UserResolver.getUser(id).then(({ data }) => data))
+    )
+    manga.data.attributes.author = (await UserResolver.getUser(author.id)).data
+    manga.data.attributes.cover_art = await Promise.all(
+      coverArts.map(({ id }) =>
+        CoverArtResolver.getCoverArt(id).then(({ data }) => data)
       )
     )
 
-    const coverArt = await Promise.all(
-      getRelationshipType('cover_art', manga.relationships).map(({ id }) =>
-        CoverArtResolver.getCoverArt(id)
-      )
-    )
-
-    return {
-      manga: manga.data,
-      artist,
-      author,
-      cover_art: coverArt
-    } as unknown as MangaResponse<W>
+    return manga
   }
 
   /**
@@ -95,7 +223,14 @@ export class MangaResolver extends ApiBase {
     mangaId: string,
     options: GetMangaFeedOptions = {}
   ): Promise<MangaFeedResponse> {
-    return MangaResolver.getMangaFeed(mangaId, options)
+    const { data: mangaFeed } = await this.agent.call<MangaFeedResponse>(
+      `manga/${mangaId}/feed`,
+      {
+        params: options
+      }
+    )
+
+    return mangaFeed
   }
 
   /**
@@ -117,6 +252,22 @@ export class MangaResolver extends ApiBase {
     return mangaFeed
   }
 
+  async search(options: SearchMangaOptions): Promise<MangaList> {
+    const { data } = await this.agent.call<MangaList>('manga', {
+      params: formatQueryParams(options)
+    })
+
+    return data
+  }
+
+  static async search(options: SearchMangaOptions): Promise<MangaList> {
+    const { data } = await Agent.call<MangaList>('manga', {
+      params: formatQueryParams(options)
+    })
+
+    return data
+  }
+
   /**
    * Get a list of covers belonging to a manga.
    * @param mangaId The manga ID
@@ -131,5 +282,13 @@ export class MangaResolver extends ApiBase {
    */
   static async getMangaCovers(mangaId: string): Promise<CoverArtsResponse> {
     return CoverArtResolver.getCoverArts({ manga: [mangaId] })
+  }
+
+  static async getTags(): Promise<ApiResponse<{ data: Tag }>[]> {
+    const { data: tags } = await Agent.call<ApiResponse<{ data: Tag }>[]>(
+      'manga/tag'
+    )
+
+    return tags
   }
 }

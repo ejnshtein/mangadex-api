@@ -29,11 +29,15 @@ yarn add mangadex-api
 ```js
 const { Mangadex } = require('mangadex-api')
 
-Mangadex.manga.getManga(22723).then((manga) => {
+Mangadex.manga.viewManga('c26269c7-0f5d-4966-8cd5-b79acb86fb7a', { withRelationShips: true }).then(({ manga, author, artist, cover_art }) => {
   console.log(`Manga ${manga.title} has ${manga.follows} followers`)
 
-  Mangadex.manga.getMangaChapters(22723).then(({ chapters, groups }) => {
-    console.log(`Manga ${manga.title} has ${chapters.length} chapters`)
+  Mangadex.manga.viewMangaFeed('c26269c7-0f5d-4966-8cd5-b79acb86fb7a', {
+    limit: 10
+  }).then(({ chapters, total }) => {
+    console.log(`Manga ${manga.title} has ${total} chapters`)
+    const { volume, chapter} = chapters[0].data.attributes
+    console.log(`Latest chapter: Vol ${volume} Ch ${chapter}`)
     console.log(`Manga ${manga.title} has ${groups.length} scanlated groups`)
   })
 })

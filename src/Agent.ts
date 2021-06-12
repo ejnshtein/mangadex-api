@@ -1,51 +1,68 @@
 import { request, RequestResult, ResponseTypeMap } from 'smol-request'
 import fs from 'fs'
-// import cheerio from 'cheerio'
-// import * as multipart from './lib/multipart'
-import { AgentOptions, MRequestOptions } from '../types/agent'
-import { deepmerge } from './lib/deepmerge'
-// import { MangadexApiResponse, User } from '../types/mangadex'
 import { join } from 'path'
-import { DefaultOptions } from './lib/options'
-// import { Auth } from './api/autSessioh'
+import { AgentOptions, MRequestOptions, Session } from '../types/agent'
+import { deepmerge } from './lib/deepmerge'
+import { AuthResolver } from './api/auth'
+import { getBearerTokenHeader } from './lib/get-bearer-auth'
 
 const pkg = JSON.parse(
   fs.readFileSync(join(__dirname, '..', 'package.json'), 'utf-8')
 )
 
+export const DefaultOptions = {
+  apiHost: 'https://api.mangadex.org'
+}
+
 export class Agent {
-  public session?: string
-  public refreshToken?: string
+  public session?: Session
   public apiHost: string
 
   constructor({
     apiHost = 'https://api.mangadex.org',
-    session,
-    refreshToken
+    session
   }: AgentOptions = {}) {
     this.apiHost = apiHost
     this.session = session
-    this.refreshToken = refreshToken
   }
 
-  // async saveSession(path: string): Promise<boolean> {
-  //   return Agent.saveSession(path, {
-  //     sessionId: this.sessionId,
-  //     sessionExpiration: this.sessionExpiration,
-  //     persistentId: this.persistentId
-  //   })
-  // }
+  setSession(session: Session): void {
+    this.session = session
+  }
 
-  // static async saveSession(path: string, session: Session): Promise<boolean> {
-  //   await fs.promises.writeFile(
-  //     path,
-  //     `${session.session}\n${session.refreshToken}${
-  //       session.persistentId ? `\n${session.persistentId}` : ''
-  //     }`,
-  //     'utf8'
-  //   )
-  //   return true
-  // }
+  async saveSession(path: string): Promise<boolean> {
+    return Agent.saveSession(path, this.session)
+  }
+
+  static async saveSession(path: string, session: Session): Promise<boolean> {
+    await fs.promises.writeFile(
+      path,
+      `${session.session}\n${session.refresh}`,
+      'utf-8'
+    )
+    return true
+  }
+
+  async loginWithSession(path: string): Promise<boolean> {
+    const file = await fs.promises.readFile(path, 'utf8')
+
+    const [session, refresh] = file.split('\n')
+
+    if (!session || !refresh) {
+      throw new Error(
+        `Lost "${(!session && 'session') || (!refresh && 'refresh')}"`
+      )
+    }
+
+    await AuthResolver.checkToken({ session, refresh })
+
+    this.session = {
+      session,
+      refresh
+    }
+
+    return true
+  }
 
   async call<K>(
     url: string,
@@ -56,7 +73,8 @@ export class Agent {
       url,
       deepmerge(
         {
-          baseUrl: this.apiHost
+          baseUrl: this.apiHost,
+          headers: getBearerTokenHeader(this.session)
         },
         options
       ),
@@ -97,58 +115,4 @@ export class Agent {
 
     return result
   }
-
-  // async callApi<K>(
-  //   url: string,
-  //   options: MRequestOptions<'json'> = {},
-  //   body?: Record<string, unknown>
-  // ): Promise<K> {
-  //   const response = await this.call<MangadexApiResponse<K>, 'json'>(
-  //     url,
-  //     deepmerge(options, {
-  //       baseUrl: this.apiHost
-  //     }),
-  //     body
-  //   )
-
-  //   if (response.status === 'error') {
-  //     throw new ApiError({
-  //       message: response.message,
-  //       code: response.code,
-  //       url
-  //     })
-  //   }
-
-  //   return response.data
-  // }
-
-  // static async callApi<T>(
-  //   url: string,
-  //   options: MRequestOptions<'json'> = {},
-  //   body?: Record<string, unknown>
-  // ): Promise<T> {
-  //   const { data: response } = await Agent.call<MangadexApiResponse<T>, 'json'>(
-  //     url,
-  //     deepmerge(
-  //       {
-  //         baseUrl: DefaultOptions.apiHost
-  //       },
-  //       options,
-  //       {
-  //         responseType: 'json'
-  //       }
-  //     ),
-  //     body
-  //   )
-
-  //   if (response.status === 'error') {
-  //     throw new ApiError({
-  //       message: response.message,
-  //       code: response.code,
-  //       url
-  //     })
-  //   }
-
-  //   return response.data
-  // }
 }

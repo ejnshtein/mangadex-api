@@ -3,9 +3,3 @@ export interface ApiBase<Name, T> {
   type: Name
   attributes: T
 }
-
-export type ApiResponseWithRelationships<
-  WithRelationShips extends boolean,
-  T,
-  K
-> = T & (WithRelationShips extends true ? K : never)

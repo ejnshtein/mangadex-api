@@ -2,21 +2,17 @@ import { Agent } from '../Agent'
 import { ApiBase } from './base'
 import {
   CoverArt,
+  CoverArtExtended,
+  CoverArtExtendedResponse,
   CoverArtResponse,
   CoverArtsResponse
-} from '../../types/cover-art'
-import { ApiResponseResult } from 'types/response'
-import { ApiResponseError } from 'src/lib/error'
-import { getRelationshipType } from 'src/lib/relationship-type'
+} from '../../types/data-types/cover-art'
+import { ApiResponseError } from '../lib/error'
+import { getRelationshipType } from '../lib/relationship-type'
 import { MangaResolver } from './manga'
 import { UserResolver } from './user'
-
-export interface GetCoverArtOptions<W extends boolean> {
-  /**
-   * If true, will additionally fetch data in relationships. (manga, user)
-   */
-  withRelationShips?: W
-}
+import { formatQueryParams } from '../lib/format-query-params'
+import { ApiResponse } from '../../types/response'
 
 export type GetCoverArtsOptions = Partial<{
   limit: number
@@ -30,46 +26,125 @@ export type GetCoverArtsOptions = Partial<{
 }>
 
 export class CoverArtResolver extends ApiBase {
-  static async getCoverArt<W extends boolean>(
+  async getCoverArt(
     coverArtId: string,
-    options: GetCoverArtOptions<W> = {}
-  ): Promise<CoverArtResponse<W>> {
-    const { data: cover } = await Agent.call<ApiResponseResult<CoverArt>>(
-      `cover/${coverArtId}`
-    )
+    options?: {
+      withRelationShips?: true
+    }
+  ): Promise<CoverArtExtended>
+
+  async getCoverArt(
+    coverArtId: string,
+    options?: {
+      withRelationShips?: false
+    }
+  ): Promise<CoverArt>
+
+  async getCoverArt(
+    coverArtId: string,
+    options: {
+      /**
+       * If true, will additionally fetch data in relationships. (manga, user)
+       */
+      withRelationShips?: boolean
+    } = {}
+  ): Promise<unknown> {
+    const { data: cover } = await this.agent.call<
+      ApiResponse<{ data: CoverArtExtended }>
+    >(`cover/${coverArtId}`)
 
     if (cover.result === 'error') {
       throw new ApiResponseError(cover.errors[0])
     }
 
+    const manga = getRelationshipType('manga', cover.relationships)[0]
+    const user = getRelationshipType('user', cover.relationships)[0]
+
+    cover.data.attributes.urls = [
+      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}`,
+      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}.256.jpg`,
+      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}.512.jpg`
+    ]
+
     if (!options.withRelationShips) {
-      return { cover_art: cover.data } as CoverArtResponse<W>
+      return cover
     }
 
-    const manga = await Promise.all(
-      getRelationshipType('manga', cover.relationships).map((manga) =>
-        MangaResolver.getManga(manga.id)
-      )
-    )
+    cover.data.attributes.manga = (await MangaResolver.getManga(manga.id)).data
+    cover.data.attributes.uploader = (await UserResolver.getUser(user.id)).data
 
-    const user = await Promise.all(
-      getRelationshipType('user', cover.relationships).map((user) =>
-        UserResolver.getUser(user.id)
-      )
-    )
+    return cover
+  }
 
-    return {
-      cover_art: cover.data,
-      manga,
-      user
-    } as unknown as CoverArtResponse<W>
+  static async getCoverArt(
+    coverArtId: string,
+    options?: {
+      /**
+       * If true, will additionally fetch data in relationships. (manga, user)
+       */
+      withRelationShips?: true
+    }
+  ): Promise<CoverArtExtendedResponse>
+
+  static async getCoverArt(
+    coverArtId: string,
+    options?: {
+      /**
+       * If true, will additionally fetch data in relationships. (manga, user)
+       */
+      withRelationShips?: false
+    }
+  ): Promise<CoverArtResponse>
+
+  static async getCoverArt(
+    coverArtId: string,
+    options: {
+      /**
+       * If true, will additionally fetch data in relationships. (manga, user)
+       */
+      withRelationShips?: boolean
+    } = {}
+  ): Promise<unknown> {
+    const { data: cover } = await Agent.call<
+      ApiResponse<{ data: CoverArtExtended }>
+    >(`cover/${coverArtId}`)
+
+    if (cover.result === 'error') {
+      throw new ApiResponseError(cover.errors[0])
+    }
+
+    const manga = getRelationshipType('manga', cover.relationships)[0]
+    const user = getRelationshipType('user', cover.relationships)[0]
+
+    cover.data.attributes.urls = [
+      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}`,
+      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}.256.jpg`,
+      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}.512.jpg`
+    ]
+
+    if (!options.withRelationShips) {
+      return cover
+    }
+
+    cover.data.attributes.manga = (await MangaResolver.getManga(manga.id)).data
+    cover.data.attributes.uploader = (await UserResolver.getUser(user.id)).data
+
+    return cover
+  }
+
+  async getCoverArts(options: GetCoverArtsOptions): Promise<CoverArtsResponse> {
+    const { data: covers } = await this.agent.call<CoverArtsResponse>('cover', {
+      params: formatQueryParams(options)
+    })
+
+    return covers
   }
 
   static async getCoverArts(
     options: GetCoverArtsOptions
   ): Promise<CoverArtsResponse> {
-    const { data: covers } = await Agent.call<CoverArtsResponse>(`cover`, {
-      params: options
+    const { data: covers } = await Agent.call<CoverArtsResponse>('cover', {
+      params: formatQueryParams(options)
     })
 
     return covers

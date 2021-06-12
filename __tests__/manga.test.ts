@@ -2,11 +2,18 @@ import { getClient, getInstanceClient } from '../jest/get-test-client'
 import { partialChaptersSchema } from '../jest/schema/chapter'
 import { mangaCoversSchema, mangaSchema } from '../jest/schema/manga'
 
+/**
+ * senko-san new id - c26269c7-0f5d-4966-8cd5-b79acb86fb7a
+ * old id - 26293
+ */
+
+const senkoSanMangaId = 'c26269c7-0f5d-4966-8cd5-b79acb86fb7a'
+
 describe('manga api', () => {
   it('should get manga from api', async () => {
     const client = await getClient()
 
-    const result = await client.manga.getManga(26293)
+    const result = await client.manga.getManga(senkoSanMangaId)
 
     const validateResult = mangaSchema.validate(result)
 
@@ -16,7 +23,7 @@ describe('manga api', () => {
   it('should get manga from api from md instance', async () => {
     const client = getInstanceClient()
 
-    const result = await client.manga.getManga(26293)
+    const result = await client.manga.getManga(senkoSanMangaId)
 
     const validateResult = mangaSchema.validate(result)
 
@@ -26,7 +33,7 @@ describe('manga api', () => {
   it('should get manga chapters from api', async () => {
     const client = await getClient()
 
-    const result = await client.manga.getMangaChapters(26293)
+    const result = await client.manga.getMangaFeed(senkoSanMangaId)
 
     const validateResult = partialChaptersSchema.validate(result)
 
@@ -35,7 +42,7 @@ describe('manga api', () => {
 
   it('should get manga chapters from api from md instance', async () => {
     const client = getInstanceClient()
-    const result = await client.manga.getMangaChapters(26293)
+    const result = await client.manga.getMangaFeed(senkoSanMangaId)
 
     const validateResult = partialChaptersSchema.validate(result)
 
@@ -45,7 +52,7 @@ describe('manga api', () => {
   it('should get manga covers from api', async () => {
     const client = await getClient()
 
-    const result = await client.manga.getMangaCovers(26293)
+    const result = await client.manga.getMangaCovers(senkoSanMangaId)
 
     const validateResult = mangaCoversSchema.validate(result)
 
@@ -55,7 +62,7 @@ describe('manga api', () => {
   it('should get manga covers from api from md instance', async () => {
     const client = getInstanceClient()
 
-    const result = await client.manga.getMangaCovers(26293)
+    const result = await client.manga.getMangaCovers(senkoSanMangaId)
 
     const validateResult = mangaCoversSchema.validate(result)
 

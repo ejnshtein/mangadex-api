@@ -1,14 +1,16 @@
 import Joi from 'joi'
+import { TranslatedField } from '../../types/data-types/language'
 import {
-  FormattedManga,
-  FormattedMangaPublication,
-  Link,
-  MangaRating,
-  PartialManga,
-  RelatedManga
-} from '../../types/mangadex'
+  MangaAttributes,
+  MangaAttributesExtended,
+  OptionalMangaAttributes
+} from '../../types/data-types/manga'
 
-export const mangaPublicationSchema = Joi.object<FormattedMangaPublication>({
+export const translatedFieldSchema = Joi.defaults(schema => schema.options({ allowUnknown: true })).object<TranslatedField>({
+  en: Joi.string().required(),
+})
+
+export const mangaPublicationSchema = Joi.object<>({
   demographic: Joi.number().required(),
   language: Joi.string().required(),
   languageName: Joi.string().required(),
@@ -43,26 +45,10 @@ export const partialMangaSchema = Joi.object<PartialManga>({
   mainCover: Joi.string().required()
 })
 
-export const mangaSchema = Joi.object<FormattedManga>({
-  altTitles: Joi.array().items(Joi.string().required()),
-  artist: Joi.array().items(Joi.string().required()).required(),
-  author: Joi.array().items(Joi.string().required()).required(),
-  comments: Joi.number().required(),
-  description: Joi.string().required(),
-  follows: Joi.number().required(),
-  id: Joi.number().required(),
-  isHentai: Joi.boolean().required(),
-  lastChapter: Joi.string().allow(null).required(),
-  lastUploaded: Joi.number().required(),
-  lastVolume: Joi.string().allow(null).required(),
-  links: Joi.array().items(linkSchema).required(),
-  mainCover: Joi.string().required(),
-  publication: mangaPublicationSchema.required(),
-  rating: ratingSchema.required(),
-  relations: Joi.array().items(relationSchema).required(),
-  tags: Joi.array().items(Joi.number().required()).required(),
-  title: Joi.string().required(),
-  views: Joi.number().required()
+export const mangaAttributesSchema = Joi.object<
+  MangaAttributesExtended<keyof OptionalMangaAttributes>
+>({
+  altTitles: 
 })
 
 export const mangaCoversSchema = Joi.array().items(

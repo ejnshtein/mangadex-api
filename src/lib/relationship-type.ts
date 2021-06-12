@@ -1,4 +1,7 @@
-import { Relationship, RelationshipType } from 'types/relationship'
+import {
+  Relationship,
+  RelationshipType
+} from '../../types/data-types/relationship'
 
 export const getRelationshipType = (
   type: RelationshipType,

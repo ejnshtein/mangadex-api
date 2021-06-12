@@ -2,15 +2,12 @@ import { RequestOptions } from 'smol-request'
 
 export interface Session {
   session?: string
-  refreshToken?: string
+  refresh?: string
 }
 
 export interface AgentOptions {
   apiHost?: string
-  session?: string
-  refreshToken?: string
-  getCredentials?: Session | (() => Promise<Session>) | (() => Session)
-  loginCredentials?: Session | (() => Promise<Session>) | (() => Session)
+  session?: Session
 }
 
 export interface MRequestOptions<T = 'json'> extends RequestOptions<T> {
