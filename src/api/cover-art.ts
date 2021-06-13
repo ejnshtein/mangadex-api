@@ -1,13 +1,11 @@
 import { Agent } from '../Agent'
 import { ApiBase } from './base'
 import {
-  CoverArt,
   CoverArtExtended,
   CoverArtExtendedResponse,
   CoverArtResponse,
   CoverArtsResponse
 } from '../../types/data-types/cover-art'
-import { ApiResponseError } from '../lib/error'
 import { getRelationshipType } from '../lib/relationship-type'
 import { MangaResolver } from './manga'
 import { UserResolver } from './user'
@@ -29,16 +27,16 @@ export class CoverArtResolver extends ApiBase {
   async getCoverArt(
     coverArtId: string,
     options?: {
-      withRelationShips?: true
+      withRelationShips?: false
     }
-  ): Promise<CoverArtExtended>
+  ): Promise<CoverArtResponse>
 
   async getCoverArt(
     coverArtId: string,
     options?: {
-      withRelationShips?: false
+      withRelationShips?: true
     }
-  ): Promise<CoverArt>
+  ): Promise<CoverArtExtendedResponse>
 
   async getCoverArt(
     coverArtId: string,
@@ -54,7 +52,7 @@ export class CoverArtResolver extends ApiBase {
     >(`cover/${coverArtId}`)
 
     if (cover.result === 'error') {
-      throw new ApiResponseError(cover.errors[0])
+      return cover
     }
 
     const manga = getRelationshipType('manga', cover.relationships)[0]
@@ -70,8 +68,8 @@ export class CoverArtResolver extends ApiBase {
       return cover
     }
 
-    cover.data.attributes.manga = (await MangaResolver.getManga(manga.id)).data
-    cover.data.attributes.uploader = (await UserResolver.getUser(user.id)).data
+    cover.data.attributes.manga = await MangaResolver.getManga(manga.id)
+    cover.data.attributes.uploader = await UserResolver.getUser(user.id)
 
     return cover
   }
@@ -82,9 +80,9 @@ export class CoverArtResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (manga, user)
        */
-      withRelationShips?: true
+      withRelationShips?: false
     }
-  ): Promise<CoverArtExtendedResponse>
+  ): Promise<CoverArtResponse>
 
   static async getCoverArt(
     coverArtId: string,
@@ -92,9 +90,9 @@ export class CoverArtResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (manga, user)
        */
-      withRelationShips?: false
+      withRelationShips?: true
     }
-  ): Promise<CoverArtResponse>
+  ): Promise<CoverArtExtendedResponse>
 
   static async getCoverArt(
     coverArtId: string,
@@ -110,24 +108,24 @@ export class CoverArtResolver extends ApiBase {
     >(`cover/${coverArtId}`)
 
     if (cover.result === 'error') {
-      throw new ApiResponseError(cover.errors[0])
+      return cover
     }
 
     const manga = getRelationshipType('manga', cover.relationships)[0]
     const user = getRelationshipType('user', cover.relationships)[0]
 
     cover.data.attributes.urls = [
-      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}`,
-      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}.256.jpg`,
-      `https://uploads.mangadex.org/cover/${manga[0].id}/${cover.data.attributes.fileName}.512.jpg`
+      `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}`,
+      `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}.256.jpg`,
+      `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}.512.jpg`
     ]
 
     if (!options.withRelationShips) {
       return cover
     }
 
-    cover.data.attributes.manga = (await MangaResolver.getManga(manga.id)).data
-    cover.data.attributes.uploader = (await UserResolver.getUser(user.id)).data
+    cover.data.attributes.manga = await MangaResolver.getManga(manga.id)
+    cover.data.attributes.uploader = await UserResolver.getUser(user.id)
 
     return cover
   }

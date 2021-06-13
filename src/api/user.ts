@@ -1,8 +1,6 @@
-import { ApiResponse } from '../../types/response'
 import { Agent } from '../Agent'
 import { ApiBase } from './base'
-import { User, UserResponse } from '../../types/data-types/user'
-import { ApiResponseError } from '../lib/error'
+import { UserResponse } from '../../types/data-types/user'
 
 // export interface GetUserFollowedUpdatesParams {
 //   /**
@@ -45,13 +43,7 @@ export class UserResolver extends ApiBase {
    * @param options Request options
    */
   async getUser(userId: string): Promise<UserResponse> {
-    const { data: user } = await this.agent.call<ApiResponse<{ data: User }>>(
-      `user/${userId}`
-    )
-
-    if (user.result === 'error') {
-      throw new ApiResponseError(user.errors[0])
-    }
+    const { data: user } = await this.agent.call<UserResponse>(`user/${userId}`)
 
     return user
   }
@@ -62,12 +54,7 @@ export class UserResolver extends ApiBase {
    * @param options Request options
    */
   static async getUser(userId: string): Promise<UserResponse> {
-    const { data: user } = await Agent.call<ApiResponse<{ data: User }>>(
-      `user/${userId}`
-    )
-    if (user.result === 'error') {
-      throw new ApiResponseError(user.errors[0])
-    }
+    const { data: user } = await Agent.call<UserResponse>(`user/${userId}`)
 
     return user
   }

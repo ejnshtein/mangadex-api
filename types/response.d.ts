@@ -1,12 +1,5 @@
 import { Relationship } from './data-types/relationship'
 
-export type SuccessfulResponse<
-  T extends Record<'data' | string, string | unknown> = { data: unknown }
-> = {
-  result: 'ok'
-  relationships?: Relationship[]
-} & T
-
 export interface ResponseError {
   id: string
   status: number
@@ -15,14 +8,11 @@ export interface ResponseError {
   context?: Record<string, string>
 }
 
-export interface FailureResponse {
-  result: 'error'
+export type ApiResponse<T extends Record<'data' | string, string | unknown>> = {
+  result: 'error' | 'ok'
   errors: ResponseError[]
-}
-
-export type ApiResponse<T extends Record<'data' | string, string | unknown>> =
-  | SuccessfulResponse<T>
-  | FailureResponse
+  relationships?: Relationship[]
+} & T
 
 export interface ApiResponseList<
   T extends Record<'data' | string, string | unknown>

@@ -2,7 +2,6 @@ import { Agent } from '../Agent'
 import { ApiBase } from './base'
 import { UserResolver } from './user'
 import { CoverArtResolver } from './cover-art'
-import { ApiResponseError } from '../lib/error'
 import {
   MangaExtended,
   MangaExtendedResponse,
@@ -18,7 +17,7 @@ import { ApiResponse } from '../../types/response'
 import { MangaStatus } from '../../types/data-types/manga-status'
 import { MangaPublicationDemographic } from '../../types/data-types/manga-publication-demographic'
 import { formatQueryParams } from '../lib/format-query-params'
-import { Tag, TagResponse } from '../../types/data-types/tag'
+import { Tag } from '../../types/data-types/tag'
 
 export type GetMangaFeedOptions = Partial<{
   limit: number
@@ -100,9 +99,9 @@ export class MangaResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
        */
-      withRelationShips?: true
+      withRelationShips?: false
     }
-  ): Promise<MangaExtendedResponse>
+  ): Promise<MangaResponse>
 
   async getManga(
     mangaId: string,
@@ -110,9 +109,9 @@ export class MangaResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
        */
-      withRelationShips?: false
+      withRelationShips?: true
     }
-  ): Promise<MangaResponse>
+  ): Promise<MangaExtendedResponse>
 
   /**
    * Get a manga
@@ -125,12 +124,12 @@ export class MangaResolver extends ApiBase {
       withRelationShips?: boolean
     } = {}
   ): Promise<unknown> {
-    const { data: manga } = await this.agent.call<
-      ApiResponse<{ data: MangaExtended }>
-    >(`manga/${mangaId}`)
+    const { data: manga } = await this.agent.call<MangaExtendedResponse>(
+      `manga/${mangaId}`
+    )
 
     if (manga.result === 'error') {
-      throw new ApiResponseError(manga.errors[0])
+      return manga
     }
 
     const artists = getRelationshipType('artist', manga.relationships)
@@ -138,17 +137,15 @@ export class MangaResolver extends ApiBase {
     const coverArts = getRelationshipType('cover_art', manga.relationships)
 
     if (!options.withRelationShips) {
-      return manga as MangaResponse
+      return manga
     }
 
     manga.data.attributes.artist = await Promise.all(
-      artists.map(({ id }) => UserResolver.getUser(id).then(({ data }) => data))
+      artists.map(({ id }) => UserResolver.getUser(id))
     )
-    manga.data.attributes.author = (await UserResolver.getUser(author.id)).data
+    manga.data.attributes.author = await UserResolver.getUser(author.id)
     manga.data.attributes.cover_art = await Promise.all(
-      coverArts.map(({ id }) =>
-        CoverArtResolver.getCoverArt(id).then(({ data }) => data)
-      )
+      coverArts.map(({ id }) => CoverArtResolver.getCoverArt(id))
     )
 
     return manga
@@ -160,9 +157,9 @@ export class MangaResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
        */
-      withRelationShips?: true
+      withRelationShips?: false
     }
-  ): Promise<MangaExtendedResponse>
+  ): Promise<MangaResponse>
 
   static async getManga(
     mangaId: string,
@@ -170,9 +167,9 @@ export class MangaResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, artist, author)
        */
-      withRelationShips?: false
+      withRelationShips?: true
     }
-  ): Promise<MangaResponse>
+  ): Promise<MangaExtendedResponse>
 
   /**
    * Get a manga
@@ -190,7 +187,7 @@ export class MangaResolver extends ApiBase {
     >(`manga/${mangaId}`)
 
     if (manga.result === 'error') {
-      throw new ApiResponseError(manga.errors[0])
+      return manga
     }
 
     const artists = getRelationshipType('artist', manga.relationships)
@@ -202,13 +199,11 @@ export class MangaResolver extends ApiBase {
     }
 
     manga.data.attributes.artist = await Promise.all(
-      artists.map(({ id }) => UserResolver.getUser(id).then(({ data }) => data))
+      artists.map(({ id }) => UserResolver.getUser(id))
     )
-    manga.data.attributes.author = (await UserResolver.getUser(author.id)).data
+    manga.data.attributes.author = await UserResolver.getUser(author.id)
     manga.data.attributes.cover_art = await Promise.all(
-      coverArts.map(({ id }) =>
-        CoverArtResolver.getCoverArt(id).then(({ data }) => data)
-      )
+      coverArts.map(({ id }) => CoverArtResolver.getCoverArt(id))
     )
 
     return manga

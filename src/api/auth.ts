@@ -16,7 +16,10 @@ export type CheckTokenResponse = {
 }
 
 export class AuthResolver extends ApiBase {
-  async login(username: string, password: string): Promise<boolean> {
+  async login(
+    username: string,
+    password: string
+  ): Promise<ApiResponse<{ token: Session }>> {
     if (!username || !password) {
       throw new Error('Not enough login info.')
     }
@@ -32,15 +35,18 @@ export class AuthResolver extends ApiBase {
     )
 
     if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
+      return data
     }
 
     this.agent.setSession(data.token)
 
-    return true
+    return data
   }
 
-  static async login(username: string, password: string): Promise<Session> {
+  static async login(
+    username: string,
+    password: string
+  ): Promise<ApiResponse<{ token: Session }>> {
     if (!username || !password) {
       throw new Error('Not enough login info.')
     }
@@ -55,14 +61,10 @@ export class AuthResolver extends ApiBase {
       }
     )
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return data.token
+    return data
   }
 
-  async logout(): Promise<boolean> {
+  async logout(): Promise<ApiResponse<Record<string, never>>> {
     const { data } = await this.agent.call<ApiResponse<Record<string, never>>>(
       'auth/logout',
       {
@@ -71,15 +73,17 @@ export class AuthResolver extends ApiBase {
     )
 
     if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
+      return data
     }
 
     this.agent.session = null
 
-    return true
+    return data
   }
 
-  static async logout(session: Session): Promise<boolean> {
+  static async logout(
+    session: Session
+  ): Promise<ApiResponse<Record<string, never>>> {
     const { data } = await Agent.call<ApiResponse<Record<string, never>>>(
       'auth/logout',
       {
@@ -88,28 +92,22 @@ export class AuthResolver extends ApiBase {
       }
     )
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return true
+    return data
   }
 
-  async refresh(): Promise<Session> {
+  async refresh(): Promise<ApiResponse<{ token: Session; message: string }>> {
     const { data } = await this.agent.call<
       ApiResponse<{ token: Session; message: string }>
     >('auth/refresh', {
       method: 'POST'
     })
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return data.token
+    return data
   }
 
-  static async refresh(session: Session): Promise<Session> {
+  static async refresh(
+    session: Session
+  ): Promise<ApiResponse<{ token: Session; message: string }>> {
     const { data } = await Agent.call<
       ApiResponse<{ token: Session; message: string }>
     >('auth/refresh', {
@@ -117,24 +115,18 @@ export class AuthResolver extends ApiBase {
       headers: getBearerRefreshTokenHeader(session)
     })
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return data.token
+    return data
   }
 
-  static async checkToken(session: Session): Promise<CheckTokenResponse> {
+  static async checkToken(
+    session: Session
+  ): Promise<ApiResponse<CheckTokenResponse>> {
     const { data } = await Agent.call<ApiResponse<CheckTokenResponse>>(
       'auth/check',
       {
         headers: getBearerTokenHeader(session)
       }
     )
-
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
 
     return data
   }

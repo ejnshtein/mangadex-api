@@ -40,13 +40,15 @@ export class AccountResolver extends ApiBase {
     )
 
     if (user.result === 'error') {
-      throw new ApiResponseError(user.errors[0])
+      return user
     }
 
     return user
   }
 
-  static async resendActivation(email: string): Promise<boolean> {
+  static async resendActivation(
+    email: string
+  ): Promise<ApiResponse<Record<string, never>>> {
     const { data } = await Agent.call<ApiResponse<Record<string, never>>>(
       'account/activate/resend',
       {
@@ -57,31 +59,25 @@ export class AccountResolver extends ApiBase {
       }
     )
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return true
+    return data
   }
 
-  static async recover(email: string): Promise<boolean> {
+  static async recover(
+    email: string
+  ): Promise<ApiResponse<Record<string, never>>> {
     const { data } = await Agent.call<ApiResponse<Record<string, never>>>(
       'account/recover',
       { method: 'POST' },
       { email }
     )
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return true
+    return data
   }
 
   static async completeRecover(
     code: string,
     newPassword: string
-  ): Promise<boolean> {
+  ): Promise<ApiResponse<Record<string, never>>> {
     const { data } = await Agent.call<ApiResponse<Record<string, never>>>(
       `account/recover/${code}`,
       {
@@ -90,10 +86,6 @@ export class AccountResolver extends ApiBase {
       { newPassword }
     )
 
-    if (data.result === 'error') {
-      throw new ApiResponseError(data.errors[0])
-    }
-
-    return true
+    return data
   }
 }

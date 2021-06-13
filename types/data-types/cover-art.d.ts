@@ -1,12 +1,12 @@
-import { Manga } from './manga'
-import { User } from './user'
+import { MangaResponse } from './manga'
+import { UserResponse } from './user'
 import { ApiBase } from '../api'
 import { AttributeBase } from '../base'
-import { SuccessfulResponse } from '../response'
+import { ApiResponse } from '../response'
 
 export interface OptionalCoverArtAttributes {
-  manga?: Manga
-  uploader?: User
+  manga?: MangaResponse
+  uploader?: UserResponse
 }
 
 export interface CoverArtAttributes extends AttributeBase {
@@ -20,13 +20,13 @@ export type CoverArtAttributesExtended = CoverArtAttributes &
   OptionalCoverArtAttributes
 
 export type CoverArt = ApiBase<'cover_art', CoverArtAttributes>
-export type CoverArtResponse = SuccessfulResponse<{
+export type CoverArtResponse = ApiResponse<{
   data: CoverArt
 }>
 
 export type CoverArtExtended = ApiBase<'cover_art', CoverArtAttributesExtended>
-export type CoverArtExtendedResponse = SuccessfulResponse<{
+export type CoverArtExtendedResponse = ApiResponse<{
   data: CoverArtExtended
 }>
 
-export type CoverArtsResponse = SuccessfulResponse<{ data: CoverArt }>
+export type CoverArtsResponse = ApiResponse<{ data: CoverArt }>

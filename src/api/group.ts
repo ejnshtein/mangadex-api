@@ -7,7 +7,6 @@ import {
   GroupList,
   GroupResponse
 } from '../../types/data-types/group'
-import { ApiResponseError } from '../lib/error'
 import { getRelationshipType } from '../lib/relationship-type'
 import { ApiResponse } from '../../types/response'
 import { formatQueryParams } from '../lib/format-query-params'
@@ -29,16 +28,16 @@ export class GroupResolver extends ApiBase {
   async getGroup(
     groupId: string,
     options: {
-      withRelationShips?: true
+      withRelationShips?: false
     }
-  ): Promise<GroupExtendedResponse>
+  ): Promise<GroupResponse>
 
   async getGroup(
     groupId: string,
     options: {
-      withRelationShips?: false
+      withRelationShips?: true
     }
-  ): Promise<GroupResponse>
+  ): Promise<GroupExtendedResponse>
 
   /**
    * Get a group.
@@ -56,18 +55,18 @@ export class GroupResolver extends ApiBase {
     >(`group/${groupId}`)
 
     if (group.result === 'error') {
-      throw new ApiResponseError(group.errors[0])
-    }
-
-    if (!options.withRelationShips) {
       return group
     }
 
-    group.data.attributes.members = await Promise.all(
-      getRelationshipType('user', group.relationships).map(({ id }) =>
-        UserResolver.getUser(id).then(({ data }) => data)
-      )
-    )
+    // if (!options.withRelationShips) {
+    //   return group
+    // }
+
+    // group.data.attributes.members = await Promise.all(
+    //   getRelationshipType('user', group.relationships).map(({ id }) =>
+    //     UserResolver.getUser(id)
+    //   )
+    // )
 
     return group
   }
@@ -78,9 +77,9 @@ export class GroupResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (user)
        */
-      withRelationShips?: true
+      withRelationShips?: false
     }
-  ): Promise<GroupExtendedResponse>
+  ): Promise<GroupResponse>
 
   static async getGroup(
     groupId: string,
@@ -88,9 +87,9 @@ export class GroupResolver extends ApiBase {
       /**
        * If true, will additionally fetch data in relationships. (user)
        */
-      withRelationShips?: false
+      withRelationShips?: true
     }
-  ): Promise<GroupResponse>
+  ): Promise<GroupExtendedResponse>
 
   /**
    * Get a group.
@@ -111,18 +110,14 @@ export class GroupResolver extends ApiBase {
     >(`group/${groupId}`)
 
     if (group.result === 'error') {
-      throw new ApiResponseError(group.errors[0])
+      return group
     }
 
-    const members = getRelationshipType('user', group.relationships)
+    // const members = getRelationshipType('user', group.relationships)
 
     if (!options.withRelationShips) {
       return group
     }
-
-    group.data.attributes.members = await Promise.all(
-      members.map(({ id }) => UserResolver.getUser(id).then(({ data }) => data))
-    )
 
     return group
   }

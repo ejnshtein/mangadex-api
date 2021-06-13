@@ -14,7 +14,6 @@ import {
 } from '../types/data-types/legacy'
 
 import { ApiResponse } from '../types/response'
-import { ApiResponseError } from './lib/error'
 
 export class Mangadex {
   private options: AgentOptions
@@ -61,6 +60,13 @@ export class Mangadex {
     this.user = new UserResolver(apiBaseOptions)
   }
 
+  async convertLegacyId(
+    ids: number[],
+    type: LegacyType
+  ): Promise<MappingIdResponse> {
+    return Mangadex.convertLegacyId(ids, type)
+  }
+
   static async convertLegacyId(
     ids: number[],
     type: LegacyType
@@ -77,10 +83,6 @@ export class Mangadex {
         ids
       }
     )
-
-    if (mappingId.result === 'error') {
-      throw new ApiResponseError(mappingId.errors[0])
-    }
 
     return mappingId
   }

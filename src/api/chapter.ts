@@ -4,13 +4,11 @@ import { MangaResolver } from './manga'
 import { UserResolver } from './user'
 import { ApiResponse } from '../../types/response'
 import {
-  Chapter,
   ChapterExtended,
   ChapterExtendedResponse,
   ChapterList,
   ChapterResponse
 } from '../../types/data-types/chapter'
-import { ApiResponseError } from '../lib/error'
 import { getRelationshipType } from '../lib/relationship-type'
 import { GroupResolver } from './group'
 import { Language } from '../../types/data-types/language'
@@ -64,11 +62,11 @@ export class ChapterResolver extends ApiBase {
    */
   async getChapter(
     chapterId: string,
-    options: {
+    options?: {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
        */
-      withRelationShips?: true
+      withRelationShips?: false
     }
   ): Promise<ChapterResponse>
 
@@ -79,11 +77,11 @@ export class ChapterResolver extends ApiBase {
    */
   async getChapter(
     chapterId: string,
-    options: {
+    options?: {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
        */
-      withRelationShips?: false
+      withRelationShips?: true
     }
   ): Promise<ChapterExtendedResponse>
 
@@ -103,7 +101,7 @@ export class ChapterResolver extends ApiBase {
     >(`chapter/${chapterId}`)
 
     if (chapter.result === 'error') {
-      throw new ApiResponseError(chapter.errors[0])
+      return chapter
     }
 
     const scanlationGroup = getRelationshipType(
@@ -118,22 +116,14 @@ export class ChapterResolver extends ApiBase {
     }
 
     chapter.data.attributes.scanlation_group = await Promise.all(
-      scanlationGroup.map(({ id }) =>
-        GroupResolver.getGroup(id).then(({ data }) => data)
-      )
+      scanlationGroup.map(({ id }) => GroupResolver.getGroup(id))
     )
 
     chapter.data.attributes.manga = (
-      await Promise.all(
-        manga.map(({ id }) =>
-          MangaResolver.getManga(id).then(({ data }) => data)
-        )
-      )
+      await Promise.all(manga.map(({ id }) => MangaResolver.getManga(id)))
     )[0]
 
-    chapter.data.attributes.uploader = (
-      await UserResolver.getUser(uploader.id)
-    ).data
+    chapter.data.attributes.uploader = await UserResolver.getUser(uploader.id)
 
     return chapter
   }
@@ -145,11 +135,11 @@ export class ChapterResolver extends ApiBase {
    */
   static async getChapter(
     chapterId: string,
-    options: {
+    options?: {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
        */
-      withRelationShips?: true
+      withRelationShips?: false
     }
   ): Promise<ChapterResponse>
 
@@ -160,11 +150,11 @@ export class ChapterResolver extends ApiBase {
    */
   static async getChapter(
     chapterId: string,
-    options: {
+    options?: {
       /**
        * If true, will additionally fetch data in relationships. (scanlation_group, manga, user)
        */
-      withRelationShips?: false
+      withRelationShips?: true
     }
   ): Promise<ChapterExtendedResponse>
 
@@ -184,7 +174,7 @@ export class ChapterResolver extends ApiBase {
     >(`chapter/${chapterId}`)
 
     if (chapter.result === 'error') {
-      throw new ApiResponseError(chapter.errors[0])
+      return chapter
     }
 
     const scanlationGroup = getRelationshipType(
@@ -199,22 +189,14 @@ export class ChapterResolver extends ApiBase {
     }
 
     chapter.data.attributes.scanlation_group = await Promise.all(
-      scanlationGroup.map(({ id }) =>
-        GroupResolver.getGroup(id).then(({ data }) => data)
-      )
+      scanlationGroup.map(({ id }) => GroupResolver.getGroup(id))
     )
 
     chapter.data.attributes.manga = (
-      await Promise.all(
-        manga.map(({ id }) =>
-          MangaResolver.getManga(id).then(({ data }) => data)
-        )
-      )
+      await Promise.all(manga.map(({ id }) => MangaResolver.getManga(id)))
     )[0]
 
-    chapter.data.attributes.uploader = (
-      await UserResolver.getUser(uploader.id)
-    ).data
+    chapter.data.attributes.uploader = await UserResolver.getUser(uploader.id)
 
     return chapter
   }

@@ -20,6 +20,11 @@ export type AnimePlanet = 'ap'
 export type Bookwalker = 'bw'
 
 /**
+ * Stored as full URL
+ */
+export type CDJapan = 'cdj'
+
+/**
  * Stored has id
  *
  * https://www.mangaupdates.com/series.html?id=`{id}`
@@ -71,6 +76,7 @@ export type MangaLink =
   | Anilist
   | AnimePlanet
   | Bookwalker
+  | CDJapan
   | MangaUpdates
   | NovelUpdates
   | KitsuIO

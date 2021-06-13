@@ -1,35 +1,26 @@
 import Joi from 'joi'
-import {
-  ChapterAttributes,
-  ChapterAttributesExtended
-} from '../../types/data-types/chapter'
+import { ChapterAttributesExtended } from '../../types/data-types/chapter'
+import { apiBase, apiResponse } from './base'
 
-export const chapterAttributesSchema = Joi.object<ChapterAttributes>({
-  chapter: Joi.string().allow('').required(),
-  volume: Joi.string().allow(null).required(),
+export const chapterAttributesSchema = Joi.object<ChapterAttributesExtended>({
   title: Joi.string().allow('').required(),
+  volume: Joi.string().required(),
+  chapter: Joi.string().required(),
   translatedLanguage: Joi.string().required(),
   hash: Joi.string().required(),
   data: Joi.array().items(Joi.string().required()).required(),
   dataSaver: Joi.array().items(Joi.string().required()).required(),
-  version: Joi.number().required(),
   createdAt: Joi.string().required(),
-  updatedAt: Joi.string().required()
+  publishAt: Joi.string().required(),
+  updatedAt: Joi.string().required(),
+  version: Joi.number().required()
 })
 
-export const chapterAttributesExtendedSchema =
-  Joi.object<ChapterAttributesExtended>({
-    chapter: Joi.string().allow('').required(),
-    volume: Joi.string().allow(null).required(),
-    title: Joi.string().allow('').required(),
-    translatedLanguage: Joi.string().required(),
-    hash: Joi.string().required(),
-    data: Joi.array().items(Joi.string().required()).required(),
-    dataSaver: Joi.array().items(Joi.string().required()).required(),
-    version: Joi.number().required(),
-    createdAt: Joi.string().required(),
-    updatedAt: Joi.string().required(),
-    manga: MangaSchema.required(),
-    scanlation_group: ScanlationGroupSchema.required(),
-    uploader: UserSchema.required()
-  })
+export const chapterSchema = apiBase(
+  'chapter',
+  chapterAttributesSchema.required()
+)
+
+export const chapterResponseSchema = apiResponse({
+  data: chapterSchema.required()
+})
