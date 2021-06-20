@@ -1,42 +1,44 @@
 import { Agent } from '../Agent'
 import { ApiBase } from './base'
-import { UserResponse } from '../../types/data-types/user'
+import {
+  UpdateEmailResponse,
+  UpdatePasswordResponse,
+  UserFollowedGroupsResponse,
+  UserFollowedMangaResponse,
+  UserFollowedUsersResponse,
+  UserResponse,
+  UsersResponse
+} from '../../types/data-types/user'
+import { SearchOrder } from '../../types/base'
+import { formatQueryParams } from '../lib/format-query-params'
 
-// export interface GetUserFollowedUpdatesParams {
-//   /**
-//    * Include delayed chapters in the results.
-//    * Default `false`
-//    */
-//   delayed?: boolean
+export type SearchUsersOptions = Partial<{
+  /**
+   * @default 10
+   */
+  limit: number
 
-//   /**
-//    * Filter results based on whether the titles are marked as hentai.
-//    * 0 = Hide H, 1 = Show all, 2 = Show H only. Integer, default 0.
-//    */
-//   hentai?: number
+  offset: number
 
-//   /**
-//    * The current page of the paginated results.
-//    * Integer, default 1.
-//    */
-//   p?: number
+  ids: string[]
 
-//   /**
-//    * Filter the results by the follow type ID (i.e. 1 = Reading, 2 = Completed etc). Use 0 to remove filtering.
-//    * Integer, default 0.
-//    */
-//   type?: number
-// }
+  username: string
 
-// export interface SetUserChapterReadParams {
-//   /**
-//    * Set or unset the chapter as read.
-//    * Boolean, default true.
-//    */
-//   read?: boolean
-// }
+  order: Record<'username', SearchOrder>
+}>
 
 export class UserResolver extends ApiBase {
+  /**
+   * User list
+   */
+  async search(options: SearchUsersOptions): Promise<UsersResponse> {
+    const { data } = await this.agent.call<UsersResponse>('user', {
+      params: formatQueryParams(options)
+    })
+
+    return data
+  }
+
   /**
    * Get a user
    * @param userId The user ID number, or the string 'me' as an alias for the current cookie-authenticated user
@@ -57,6 +59,88 @@ export class UserResolver extends ApiBase {
     const { data: user } = await Agent.call<UserResponse>(`user/${userId}`)
 
     return user
+  }
+
+  /**
+   * Logged User details
+   */
+  async getMe(): Promise<UserResponse> {
+    const user = await this.getUser('me')
+
+    return user
+  }
+
+  /**
+   * Get logged User followed User list
+   */
+  async getUserFollowedUsers(): Promise<UserFollowedUsersResponse> {
+    const { data } = await this.agent.call<UserFollowedUsersResponse>(
+      'user/follows/user'
+    )
+
+    return data
+  }
+
+  /**
+   * Get logged User followed Manga list
+   */
+  async getUserFollowedManga(): Promise<UserFollowedMangaResponse> {
+    const { data } = await this.agent.call<UserFollowedMangaResponse>(
+      'user/follows/manga'
+    )
+
+    return data
+  }
+
+  /**
+   * Get logged User followed Groups
+   */
+  async getUserFollowedGroups(): Promise<UserFollowedGroupsResponse> {
+    const { data } = await this.agent.call<UserFollowedGroupsResponse>(
+      'user/follows/group'
+    )
+
+    return data
+  }
+
+  /**
+   * Update User password
+   * @param oldPassword 8-1024 characters
+   * @param newPassword 8-1024 characters
+   */
+  async updatePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<UpdatePasswordResponse> {
+    const { data } = await this.agent.call<UpdatePasswordResponse>(
+      'user/password',
+      {
+        method: 'POST'
+      },
+      {
+        oldPassword,
+        newPassword
+      }
+    )
+
+    return data
+  }
+
+  /**
+   * Update User email
+   */
+  async updateEmail(email: string): Promise<UpdateEmailResponse> {
+    const { data } = await this.agent.call<UpdateEmailResponse>(
+      'user/email',
+      {
+        method: 'POST'
+      },
+      {
+        email
+      }
+    )
+
+    return data
   }
 
   // /**

@@ -60,7 +60,7 @@ export const mangaAttributesSchema = Joi.object<MangaAttributesExtended>({
   title: translatedFieldSchema.required(),
   altTitles: Joi.array().items(translatedFieldSchema.required()).required(),
   description: translatedFieldSchema.required(),
-  isLocked: Joi.boolean().required(),
+  isLocked: Joi.boolean(),
   originalLanguage: Joi.string().required(),
   links: mangaLinkSchema.required(),
   lastVolume: Joi.string().allow(null, '').required(),

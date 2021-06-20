@@ -34,7 +34,7 @@ export interface MangaAttributes extends AttributeBase {
   title: TranslatedField
   altTitles: TranslatedField[]
   description: TranslatedField
-  isLocked: boolean
+  isLocked?: boolean
   links: Links
   originalLanguage: Language
   lastVolume?: string

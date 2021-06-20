@@ -12,7 +12,6 @@ export const userSchema = apiBase('user', userAttributesSchema.required())
 export const userResponseSchema = apiResponse({
   data: userSchema
 })
-
 // export const userSchema = Joi.object<User>({
 //   avatar: Joi.string().allow(null).required(),
 //   biography: Joi.string().allow('').required(),

@@ -13,8 +13,7 @@ import { getRelationshipType } from '../lib/relationship-type'
 import { GroupResolver } from './group'
 import { Language } from '../../types/data-types/language'
 import { formatQueryParams } from '../lib/format-query-params'
-
-export type SearchOrder = 'asc' | 'desc'
+import { SearchOrder } from '../../types/base'
 
 export type SearchChapterOptions = Partial<{
   limit: number

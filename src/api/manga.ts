@@ -18,6 +18,7 @@ import { MangaStatus } from '../../types/data-types/manga-status'
 import { MangaPublicationDemographic } from '../../types/data-types/manga-publication-demographic'
 import { formatQueryParams } from '../lib/format-query-params'
 import { Tag } from '../../types/data-types/tag'
+import { TagsMode } from '../../types/base'
 
 export type GetMangaFeedOptions = Partial<{
   limit: number
@@ -29,8 +30,6 @@ export type GetMangaFeedOptions = Partial<{
   volume: string
   chapter: string
 }>
-
-export type TagsMode = 'AND' | 'OR'
 
 export type SearchMangaOptions = Partial<{
   /**
@@ -221,7 +220,7 @@ export class MangaResolver extends ApiBase {
     const { data: mangaFeed } = await this.agent.call<MangaFeedResponse>(
       `manga/${mangaId}/feed`,
       {
-        params: options
+        params: formatQueryParams(options)
       }
     )
 
@@ -240,7 +239,7 @@ export class MangaResolver extends ApiBase {
     const { data: mangaFeed } = await Agent.call<MangaFeedResponse>(
       `manga/${mangaId}/feed`,
       {
-        params: options
+        params: formatQueryParams(options)
       }
     )
 
