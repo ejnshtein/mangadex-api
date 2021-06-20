@@ -7,11 +7,8 @@
 
 This is [Mangadex](https://mangadex.org) website api wrapper.
 
+>[WIP on V5 version](https://github.com/ejnshtein/mangadex-api/issues/34)
 
-## Additional resources
-- [mangadex-heroku](https://github.com/ejnshtein/mangadex-heroku) is a [GraphQL](https://graphql.org/) public endpoint.  
-Supports caching (in memory) and all public MD-API's that doesn't require authorization. ([playground](http://mangadex.herokuapp.com/graphql))
-- [Example webapp](https://codesandbox.io/s/condescending-kirch-u71ji?file=/src/index.js) that uses mangadex-heroku for API calls.
 
 ## Installation
 
@@ -27,60 +24,93 @@ yarn add mangadex-api
 ## Example
 
 ```js
-const { Mangadex } = require('mangadex-api')
+// In V5 Mangadex switched id type from number to string.
+// So if you need to convert it, call the convertLegacyId method.
+// Soon will be added to usual methods, maybe.
 
-Mangadex.manga.viewManga('c26269c7-0f5d-4966-8cd5-b79acb86fb7a', { withRelationShips: true }).then(({ manga, author, artist, cover_art }) => {
-  console.log(`Manga ${manga.title} has ${manga.follows} followers`)
+Mangadex.convertLegacyId([12], 'group')
+  .then((result) => {
+    if (result.result === 'error') {
+      console.log(
+        `Got error on convertLegacyId request! ${result.errors
+          .map((err) => err.title)
+          .join(', ')}`
+      )
+      return
+    }
 
-  Mangadex.manga.viewMangaFeed('c26269c7-0f5d-4966-8cd5-b79acb86fb7a', {
-    limit: 10
-  }).then(({ chapters, total }) => {
-    console.log(`Manga ${manga.title} has ${total} chapters`)
-    const { volume, chapter} = chapters[0].data.attributes
-    console.log(`Latest chapter: Vol ${volume} Ch ${chapter}`)
-    console.log(`Manga ${manga.title} has ${groups.length} scanlated groups`)
+    const { newId } = result.data.attributes
+
+    console.log(`New group id: ${newId}`)
   })
-})
+
+Mangadex.manga
+  .getManga(
+    'c26269c7-0f5d-4966-8cd5-b79acb86fb7a',
+    {
+      // will fetch additionally scanlation_group, artist, author attributes
+      withRelationShips: true
+    }
+  )
+  .then(({ result, data, errors }) => {
+    if (result === 'error') {
+      // oh no! something went wrong!
+      // here we can handle errors array.
+    }
+
+    const { title, originalLanguage } = data.attributes
+    console.log(`Manga ${title.en} published in ${originalLanguage}`)
+
+    Mangadex.manga
+      .getMangaFeed('c26269c7-0f5d-4966-8cd5-b79acb86fb7a', {
+        limit: 10
+      })
+      .then(({ results: chapters }) => {
+        console.log(`Manga ${title.en} has ${chapters.length} chapters`)
+        const { volume, chapter } = chapters[0].data.attributes
+        console.log(`Latest chapter: Vol ${volume} Ch ${chapter}`)
+      })
+  })
 
 Mangadex.chapter.getChapter(8857).then((chapter) => {
+  if (chapter.result === 'error') {
+    console.log(
+      `Got errors on chapter request! ${chapter.errors
+        .map((err) => err.title)
+        .join(', ')}`
+    )
+    return
+  }
   console.log(
-    `Chapter title is "${chapter.title}" and it is ${chapter.chapter} chapter from ${chapter.volume} volume.`
+    `Chapter title is "${chapter.data.attributes.title}" and it is ${chapter.data.attributes.chapter} chapter from ${chapter.volume} volume.`
   )
 })
 
 // currently requires authorization
-Mangadex.search('senko').then((response) => {
-  console.log(`Found ${response.titles.length} titles.`)
+Mangadex.manga.search({ title: 'senko' }).then(({ total }) => {
+  console.log(`Found ${total} titles.`)
 })
-
-
 // Search with NSFW results
-Mangadex.search({
-  title: 'gotoubun',
-  with_hentai: true
-}).then(result => {
-  console.log(`Found ${result.titles.filter(title => title.is_hentai).length} hentai manga (☞ ͡ ͡° ͜ ʖ ͡ ͡°)☞`)
-})
-
-Mangadex.getHome().then((home) => {
-  if (home.accouncement) {
-    console.log(`New accouncement!\n${home.accouncement.text}`)
-  }
-  console.log(
-    `Todays top manga by follows is: ${home.top_manga.follows[0].title}`
-  )
-  console.log(
-    `Todays top chapter is from manga: ${home.top_chapters.day[0].title}`
-  )
-  console.log(
-    `Latest chapter is from manga: ${home.latest_updates.all[0].title}`
-  )
-})
+Mangadex.manga
+  .search({
+    title: 'gotoubun',
+    contentRating: ['pornographic']
+  })
+  .then((result) => {
+    console.log(`Found ${result.results.length} hentai manga (☞ ͡ ͡° ͜ ʖ ͡ ͡°)☞`)
+  })
 
 Mangadex.group.getGroup(12).then((group) => {
-  console.log(
-    `Group ${group.name} has ${group.stats.follows} followers and ${group.stats.total_chapters} total chapters uploaded!`
-  )
+  if (group.result === 'error') {
+    console.log(
+      `Got errors from group request! ${group.errors
+        .map((err) => err.title)
+        .join(', ')}`
+    )
+    return
+  }
+  const { name, members } = group.data.attributes
+  console.log(`Group ${name} has ${members} members`)
 })
 ```
 
@@ -91,11 +121,15 @@ const { Mangadex } = require('mangadex-api')
 
 const client = new Mangadex()
 
-await client.agent.login('username', 'password', false)
+const loginResult = await client.auth.login('username', 'password')
 
-const result = await client.search('To Be Winner')
+if (loginResult.result === 'error') {
+  // oh no! it's login error!
+}
 
-console.log(result) // { titles: [{ title: 'To Be Winner', ... }] }
+const result = await client.manga.search('To Be Winner')
+
+console.log(result)
 ```
 
 ## Cached session example
@@ -103,7 +137,11 @@ console.log(result) // { titles: [{ title: 'To Be Winner', ... }] }
 ```js
 // first you must save your session somewhere
 
-await client.agent.login('username', 'password', false)
+const loginResult = await client.auth.login('username', 'password')
+
+if (loginResult.result === 'error') {
+  // oh no! it's login error!
+}
 
 await client.agent.saveSession('/path/to/session'))
 
@@ -111,115 +149,20 @@ await client.agent.saveSession('/path/to/session'))
 
 await client.agent.loginWithSession('/path/to/session')
 
-const me = await client.getMe())
+const me = await client.user.getMe()
 
 console.log(me)
 ```
-
-## Migration to version 4
-
-Main focuses in V4 were [Typescript](https://www.typescriptlang.org/) and [Mangadex](https://mangadex.org/) [API V2](https://mangadex.org/thread/351011).
-
-So V1 support was dropped completely. If you still, for some reason, want to use API V1 then use `agent.callApi(endpoint, { baseUrl: 'https://mangadex.org/api' })` code snippet to request data from API V1.
-
-So there're new api groups:
-- chapter/{id|hash}
-- follows
-- group/{id}
-  - group/{id}/chapters
-- manga/{id}
-  - manga/{id}/chapters
-  - manga/{id}/covers
-- relations
-- tag
-- tag/{id}
-- user/{id}
-  - user/{id}/chapters
-  - user/{id}/followed-manga
-  - user/{id}/followed-updates
-  - user/{id}/manga/{mangaId}
-  - user/{id}/ratings
-  - user/{id}/settings
-- user/{id}/marker
-
-Each of them is available on `Mangadex` instance via these properties:
-
-```js
-const client = new Mangadex()
-
-// don't forget to login
-await client.agent.login(username, password)
-
-// and here we go
-
-// chapter/{id|hash}
-client.chapter.getChapter(chapterId)
-
-// follows
-client.getFollows()
-
-// group/{id}
-client.group.getGroup(groupId)
-
-// group/{id}/chapters
-client.group.getGroupChapters(groupId)
-
-// manga/{id}
-client.manga.getManga(mangaId)
-
-// manga/{id}/chapters
-client.manga.getMangaChapters(mangaId)
-
-// manga/{id}/covers
-client.manga.getMangaCovers(mangaId)
-
-// relations
-client.getRelations()
-
-// tag
-client.tag.getTags()
-
-// tag/{id}
-client.tag.getTag(tagId)
-
-// user/{id}
-client.user.getUser(userId)
-
-// user/{id}/chapters
-client.user.getUserChapters(userId)
-
-// user/{id}/followed-updates
-client.user.getUserFollowedUpdates(userId)
-
-// user/{id}/manga/{mangaId}
-client.user.getUserManga(userId, mangaId)
-
-// user/{id}/ratings
-client.user.getUserRatings(userId)
-
-// user/{id}/settings
-client.user.getUserSettings(userId)
-
-// user/{id}/followed-manga
-client.user.getUserFollowedManga(userId)
-
-// user/{id}/marker
-client.user.setUserChapterRead(userId, chapters, read)
-```
-
-## Migration to version 3
-
-LRU cache was removed from package, so you'll have to implement caching by yourself.
-
-[Mangadex constructor](#Mangadex) now accepts only 2 options.
-
-[getManga](#getManga) and [getChapter](#getChapter) lost **normalize** argument, now it's on **by default**.
-
 
 ## API
 
 API section is available on the [website](https://ejnshtein.github.io/mangadex-api/).
 
+
+## Additional resources
+- [mangadex-heroku](https://github.com/ejnshtein/mangadex-heroku) is a [GraphQL](https://graphql.org/) public endpoint. (not updated to V5 yet)  
+Supports caching (in memory) and all public MD-API's that doesn't require authorization. ([playground](http://mangadex.herokuapp.com/graphql))
+- [Example webapp](https://codesandbox.io/s/condescending-kirch-u71ji?file=/src/index.js) that uses mangadex-heroku for API calls. (not updated to V5 yet)
 
 ---
 
