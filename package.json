@@ -35,6 +35,7 @@
   "author": "ejnshtein",
   "license": "MIT",
   "dependencies": {
+    "form-data": "^3.0.1",
     "smol-request": "^2.1.1"
   },
   "devDependencies": {

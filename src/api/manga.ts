@@ -8,7 +8,8 @@ import {
   MangaFeedResponse,
   MangaResponse,
   MangaRatingContent,
-  MangaList
+  MangaList,
+  MangaVolumesAndChaptersResponse
 } from '../../types/data-types/manga'
 import { getRelationshipType } from '../lib/relationship-type'
 import { CoverArtsResponse } from '../../types/data-types/cover-art'
@@ -19,6 +20,7 @@ import { MangaPublicationDemographic } from '../../types/data-types/manga-public
 import { formatQueryParams } from '../lib/format-query-params'
 import { Tag } from '../../types/data-types/tag'
 import { TagsMode } from '../../types/base'
+import { Links } from '../../types/data-types/manga-link'
 
 export type GetMangaFeedOptions = Partial<{
   limit: number
@@ -90,6 +92,24 @@ export type SearchMangaOptions = Partial<{
     updatedAt: string
   }
 }>
+
+export type CreateMangaOptions = {
+  title: Record<Language, string>
+  altTitles: Record<Language, string>[]
+  description: Record<Language, string>
+  authors: string[]
+  artists: string[]
+  links: Links
+  originalLanguage: Language
+  lastVolume?: string
+  lastChapter?: string
+  publicationDemographic?: MangaPublicationDemographic
+  status?: MangaStatus
+  year?: number
+  contentRating?: MangaRatingContent
+  modNotes?: string
+  version: number
+}
 
 export class MangaResolver extends ApiBase {
   async getManga(
@@ -267,7 +287,7 @@ export class MangaResolver extends ApiBase {
    * @param mangaId The manga ID
    */
   async getMangaCovers(mangaId: string): Promise<CoverArtsResponse> {
-    return MangaResolver.getMangaCovers(mangaId)
+    return CoverArtResolver.getCoverArts({ manga: [mangaId] })
   }
 
   /**
@@ -278,11 +298,58 @@ export class MangaResolver extends ApiBase {
     return CoverArtResolver.getCoverArts({ manga: [mangaId] })
   }
 
+  async getTags(): Promise<ApiResponse<{ data: Tag }>[]> {
+    const { data: tags } = await this.agent.call<ApiResponse<{ data: Tag }>[]>(
+      'manga/tag'
+    )
+
+    return tags
+  }
+
   static async getTags(): Promise<ApiResponse<{ data: Tag }>[]> {
     const { data: tags } = await Agent.call<ApiResponse<{ data: Tag }>[]>(
       'manga/tag'
     )
 
     return tags
+  }
+
+  /**
+   * Create Manga
+   * @description Create a new Manga
+   *
+   * **WARNING this API does not have test, cannot guarantee that it's working as expected**
+   *
+   * If you have permissions and can test it, please report to [github](https://github.com/ejnshtein/mangadex-api)!
+   */
+  async create(createMangaOptions: CreateMangaOptions): Promise<MangaResponse> {
+    const { data } = await this.agent.call<MangaResponse>(
+      'manga',
+      {
+        method: 'POST'
+      },
+      createMangaOptions
+    )
+
+    return data
+  }
+
+  /**
+   * Get Manga volumes & chapters
+   */
+  async getMangaVolumesChapters(
+    mangaId: string,
+    translatedLanguage?: Language[]
+  ): Promise<MangaVolumesAndChaptersResponse> {
+    const { data } = await this.agent.call<MangaVolumesAndChaptersResponse>(
+      `manga/${mangaId}/aggregate`,
+      {
+        params: formatQueryParams({
+          translatedLanguage: translatedLanguage || []
+        })
+      }
+    )
+
+    return data
   }
 }

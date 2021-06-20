@@ -11,6 +11,8 @@ import { MangaResolver } from './manga'
 import { UserResolver } from './user'
 import { formatQueryParams } from '../lib/format-query-params'
 import { ApiResponse } from '../../types/response'
+import { ReadStream } from 'fs'
+import FormData from 'form-data'
 
 export type GetCoverArtsOptions = Partial<{
   limit: number
@@ -135,6 +137,22 @@ export class CoverArtResolver extends ApiBase {
       params: formatQueryParams(options)
     })
 
+    covers.results = covers.results.map((cover) => {
+      if (cover.result === 'error') {
+        return cover
+      }
+
+      const manga = getRelationshipType('manga', cover.relationships)[0]
+
+      cover.data.attributes.urls = [
+        `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}`,
+        `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}.256.jpg`,
+        `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}.512.jpg`
+      ]
+
+      return cover
+    })
+
     return covers
   }
 
@@ -145,6 +163,47 @@ export class CoverArtResolver extends ApiBase {
       params: formatQueryParams(options)
     })
 
+    covers.results = covers.results.map((cover) => {
+      if (cover.result === 'error') {
+        return cover
+      }
+
+      const manga = getRelationshipType('manga', cover.relationships)[0]
+
+      cover.data.attributes.urls = [
+        `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}`,
+        `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}.256.jpg`,
+        `https://uploads.mangadex.org/cover/${manga.id}/${cover.data.attributes.fileName}.512.jpg`
+      ]
+
+      return cover
+    })
+
     return covers
+  }
+
+  /**
+   * Upload Cover
+   *
+   * **WARNING this API does not have test, cannot guarantee that it's working as expected**
+   *
+   * If you have permissions and can test it, please report to [github](https://github.com/ejnshtein/mangadex-api)!
+   */
+  async uploadCover(
+    mangaId: string,
+    coverFile: ReadStream
+  ): Promise<CoverArtResponse> {
+    const form = new FormData()
+    form.append('file', coverFile)
+    const { data: coverArt } = await this.agent.call<CoverArtResponse>(
+      `cover/${mangaId}`,
+      {
+        method: 'POST',
+        headers: form.getHeaders()
+      },
+      form as unknown as Record<string, unknown>
+    )
+
+    return coverArt
   }
 }

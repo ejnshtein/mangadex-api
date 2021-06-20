@@ -2,7 +2,7 @@ import { MangaResponse } from './manga'
 import { UserResponse } from './user'
 import { ApiBase } from '../api'
 import { AttributeBase } from '../base'
-import { ApiResponse } from '../response'
+import { ApiResponse, ApiResponseList } from '../response'
 
 export interface OptionalCoverArtAttributes {
   manga?: MangaResponse
@@ -29,4 +29,4 @@ export type CoverArtExtendedResponse = ApiResponse<{
   data: CoverArtExtended
 }>
 
-export type CoverArtsResponse = ApiResponse<{ data: CoverArt }>
+export type CoverArtsResponse = ApiResponseList<{ data: CoverArt }>

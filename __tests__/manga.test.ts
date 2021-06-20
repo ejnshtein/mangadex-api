@@ -1,5 +1,14 @@
 import { getClient, getInstanceClient } from '../jest/get-test-client'
-import { mangaFeedSchema, mangaResponseSchema } from '../jest/schema/manga'
+import {
+  coverArtResponseSchema,
+  coverArtsResponseSchema
+} from '../jest/schema/cover-art'
+import {
+  mangaFeedSchema,
+  mangaResponseSchema,
+  mangaVolumesAndChaptersResponse,
+  tagResponseSchema
+} from '../jest/schema/manga'
 import { mangaResponseExtendedSchema } from '../jest/schema/manga-extended'
 
 /**
@@ -71,23 +80,53 @@ describe('manga api', () => {
     expect(validateResult.error).toEqual(undefined)
   })
 
-  // it('should get manga covers from api', async () => {
-  //   const client = await getClient()
+  it('should get all manga tags from api', async () => {
+    const client = await getClient()
+    const result = await client.manga.getTags()
 
-  //   const result = await client.manga.getMangaCovers(senkoSanMangaId)
+    const validateResult = tagResponseSchema.validate(result)
 
-  //   const validateResult = mangaCoversSchema.validate(result)
+    expect(validateResult.error).toEqual(undefined)
+  })
 
-  //   expect(validateResult.error).toEqual(undefined)
-  // })
+  it('should get all manga tags from api from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.manga.getTags()
 
-  // it('should get manga covers from api from md instance', async () => {
-  //   const client = getInstanceClient()
+    const validateResult = tagResponseSchema.validate(result)
 
-  //   const result = await client.manga.getMangaCovers(senkoSanMangaId)
+    expect(validateResult.error).toEqual(undefined)
+  })
 
-  //   const validateResult = mangaCoversSchema.validate(result)
+  it('should get manga covers from api', async () => {
+    const client = await getClient()
 
-  //   expect(validateResult.error).toEqual(undefined)
-  // })
+    const result = await client.manga.getMangaCovers(senkoSanMangaId)
+
+    const validateResult = coverArtsResponseSchema.validate(result)
+
+    expect(validateResult.error).toEqual(undefined)
+  })
+
+  it('should get manga covers from api from md instance', async () => {
+    const client = getInstanceClient()
+
+    const result = await client.manga.getMangaCovers(senkoSanMangaId)
+
+    const validateResult = coverArtsResponseSchema.validate(result)
+
+    expect(validateResult.error).toEqual(undefined)
+  })
+
+  it('should get manga volumes and covers from api', async () => {
+    const client = await getClient()
+
+    const result = await client.manga.getMangaVolumesChapters(senkoSanMangaId)
+
+    expect(result.result).toEqual('ok')
+
+    const validateResult = mangaVolumesAndChaptersResponse.validate(result)
+
+    expect(validateResult.error).toEqual(undefined)
+  })
 })

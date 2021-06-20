@@ -1,6 +1,11 @@
 import Joi from 'joi'
-import { MangaAttributesExtended } from '../../types/data-types/manga'
+import {
+  MangaAttributesExtended,
+  MangaChapter,
+  MangaVolume
+} from '../../types/data-types/manga'
 import { Links, MangaLink } from '../../types/data-types/manga-link'
+import { TagAttributes } from '../../types/data-types/tag'
 import {
   apiBase,
   apiResponse,
@@ -8,7 +13,27 @@ import {
   translatedFieldSchema
 } from './base'
 import { chapterSchema } from './chapter'
-import { tagSchema } from './tag'
+
+export const tagAttributesSchema = Joi.object<
+  TagAttributes & { createdAt?: string; updatedAt?: string }
+>({
+  name: translatedFieldSchema.required(),
+  description: Joi.array().items(translatedFieldSchema).required(),
+  group: Joi.string().required(),
+  version: Joi.number().required(),
+  createdAt: Joi.string(),
+  updatedAt: Joi.string()
+})
+
+export const tagSchema = apiBase('tag', tagAttributesSchema.required())
+
+export const tagResponseSchema = Joi.array().items(
+  apiResponse({
+    data: tagSchema
+  })
+)
+
+export const tagsSchema = Joi.array().items(tagSchema.required())
 
 export const mangaPublicationDemographicSchema = Joi.string().valid(
   'shounen',
@@ -83,4 +108,42 @@ export const mangaResponseSchema = apiResponse({
 
 export const mangaFeedSchema = apiResponseList({
   data: chapterSchema.required()
+})
+
+export const mangaChapterSchema = Joi.object<MangaChapter>({
+  chapter: Joi.string().required(),
+  count: Joi.number().required()
+})
+
+export const mangaVolumeSchema = Joi.object<MangaVolume>({
+  volume: Joi.string().required(),
+  count: Joi.number().required(),
+  chapters: Joi.object()
+    .custom((value) => {
+      const chapters = Object.values(value)
+      const result = Joi.array().items(mangaChapterSchema).validate(chapters)
+
+      if (result.error) {
+        return result.error
+      }
+
+      return result.value
+    })
+    .required()
+})
+
+export const mangaVolumesSchema = Joi.object().custom((value) => {
+  const volumes = Object.values(value)
+
+  const result = Joi.array().items(mangaVolumeSchema).validate(volumes)
+
+  if (result.error) {
+    return result.error
+  }
+
+  return result.value
+})
+
+export const mangaVolumesAndChaptersResponse = apiResponse({
+  volumes: mangaVolumesSchema.required()
 })

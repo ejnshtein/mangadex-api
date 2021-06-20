@@ -27,14 +27,14 @@ export type SearchGroupOptions = Partial<{
 export class GroupResolver extends ApiBase {
   async getGroup(
     groupId: string,
-    options: {
+    options?: {
       withRelationShips?: false
     }
   ): Promise<GroupResponse>
 
   async getGroup(
     groupId: string,
-    options: {
+    options?: {
       withRelationShips?: true
     }
   ): Promise<GroupExtendedResponse>

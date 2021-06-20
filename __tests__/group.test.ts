@@ -1,41 +1,51 @@
-// import { getClient, getInstanceClient } from '../jest/get-test-client'
-// import { partialChaptersSchema } from '../jest/schema/chapter'
-// import { groupSchema } from '../jest/schema/group'
+import { getClient, getInstanceClient } from '../jest/get-test-client'
+import { groupResponseSchema } from '../jest/schema/group'
 
-// describe('group api', () => {
-//   it('should get group info', async () => {
-//     const client = await getClient()
-//     const result = await client.group.getGroup(2)
+/**
+ * Old id - 2
+ * New id - 145f9110-0a6c-4b71-8737-6acb1a3c5da4
+ */
 
-//     const validateResult = groupSchema.validate(result)
+const groupId = '145f9110-0a6c-4b71-8737-6acb1a3c5da4'
 
-//     expect(validateResult.error).toEqual(undefined)
-//   })
+describe('group api', () => {
+  it('should get group info', async () => {
+    const client = await getClient()
+    const result = await client.group.getGroup(groupId)
 
-//   it('should get group info from md instance', async () => {
-//     const client = getInstanceClient()
-//     const result = await client.group.getGroup(2)
+    expect(result.result).toEqual('ok')
 
-//     const validateResult = groupSchema.validate(result)
+    const validateResult = groupResponseSchema.validate(result)
 
-//     expect(validateResult.error).toEqual(undefined)
-//   })
+    expect(validateResult.error).toEqual(undefined)
+  })
 
-//   it('should get group chapters info', async () => {
-//     const client = await getClient()
-//     const result = await client.group.getGroupChapters(2)
+  it('should get group info from md instance', async () => {
+    const client = getInstanceClient()
+    const result = await client.group.getGroup(groupId)
 
-//     const validateResult = partialChaptersSchema.validate(result)
+    expect(result.result).toEqual('ok')
 
-//     expect(validateResult.error).toEqual(undefined)
-//   })
+    const validateResult = groupResponseSchema.validate(result)
 
-//   it('should get group chapters info from md instance', async () => {
-//     const client = getInstanceClient()
-//     const result = await client.group.getGroupChapters(2)
+    expect(validateResult.error).toEqual(undefined)
+  })
 
-//     const validateResult = partialChaptersSchema.validate(result)
+  //   it('should get group chapters info', async () => {
+  //     const client = await getClient()
+  //     const result = await client.group.getGroupChapters(2)
 
-//     expect(validateResult.error).toEqual(undefined)
-//   })
-// })
+  //     const validateResult = partialChaptersSchema.validate(result)
+
+  //     expect(validateResult.error).toEqual(undefined)
+  //   })
+
+  //   it('should get group chapters info from md instance', async () => {
+  //     const client = getInstanceClient()
+  //     const result = await client.group.getGroupChapters(2)
+
+  //     const validateResult = partialChaptersSchema.validate(result)
+
+  //     expect(validateResult.error).toEqual(undefined)
+  //   })
+})

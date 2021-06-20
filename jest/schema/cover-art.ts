@@ -1,6 +1,6 @@
 import Joi from 'joi'
 import { CoverArtAttributesExtended } from '../../types/data-types/cover-art'
-import { apiBase, apiResponse } from './base'
+import { apiBase, apiResponse, apiResponseList } from './base'
 
 export const coverAttributesSchema = Joi.object<CoverArtAttributesExtended>({
   description: Joi.string().allow('').required(),
@@ -18,5 +18,9 @@ export const coverArtSchema = apiBase(
 )
 
 export const coverArtResponseSchema = apiResponse({
+  data: coverArtSchema
+})
+
+export const coverArtsResponseSchema = apiResponseList({
   data: coverArtSchema
 })

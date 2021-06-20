@@ -64,3 +64,18 @@ export type MangaList = ApiResponseList<{ data: Manga }>
 export type MangaFeedResponse = ApiResponseList<{
   data: Chapter
 }>
+
+export type MangaChapter = {
+  chapter: string
+  count: number
+}
+
+export type MangaVolume = {
+  volume: string
+  count: number
+  chapters: Record<string, MangaChapter>
+}
+
+export type MangaVolumesAndChaptersResponse = ApiResponse<{
+  volumes: Record<string, MangaVolume>
+}>

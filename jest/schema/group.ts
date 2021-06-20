@@ -6,7 +6,7 @@ import { userSchema } from './user'
 export const groupAttributesSchema = Joi.object<GroupAttributesExtended>({
   name: Joi.string().required(),
   leader: userSchema.required(),
-  members: Joi.array().items(userSchema.required()).required(),
+  members: Joi.array().items(userSchema).required(),
   createdAt: Joi.string().required(),
   updatedAt: Joi.string().required(),
   version: Joi.number().required()

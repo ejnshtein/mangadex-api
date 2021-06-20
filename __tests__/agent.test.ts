@@ -1,42 +1,43 @@
-// import { Agent } from '../jest/get-test-client'
-// import path from 'path'
-// import { User } from '../types/mangadex'
+import { Mangadex } from '../jest/get-test-client'
+import path from 'path'
+import { UserResponse } from '../types/data-types/user'
 
-// /**
-//  * TODO add more tests
-//  */
-// describe('agent api', () => {
-//   it('should login, save session and login from saved session and logout', async () => {
-//     const client = new Agent()
+/**
+ * TODO add more tests
+ */
+describe('agent api', () => {
+  it('should login, save session and login from saved session and logout', async () => {
+    const client = new Mangadex()
 
-//     const isLoginOk = await client.login(
-//       process.env.MANGADEX_USERNAME,
-//       process.env.MANGADEX_PASSWORD,
-//       true
-//     )
+    const loginResult = await client.auth.login(
+      process.env.MANGADEX_USERNAME,
+      process.env.MANGADEX_PASSWORD
+    )
 
-//     expect(isLoginOk).toEqual(true)
+    expect(loginResult.result).toEqual('ok')
 
-//     const sessionPath = path.join(__dirname, '..', 'jest-session')
+    const sessionPath = path.join(__dirname, '..', 'jest-session')
 
-//     const isSaveSessionOk = await client.saveSession(sessionPath)
+    const isSaveSessionOk = await client.agent.saveSession(sessionPath)
 
-//     expect(isSaveSessionOk).toEqual(true)
+    expect(isSaveSessionOk).toEqual(true)
 
-//     const newClient = new Agent()
+    const newClient = new Mangadex()
 
-//     const isLoginFromSavedSessionOk = await newClient.loginWithSession(
-//       sessionPath
-//     )
+    const isLoginFromSavedSessionOk = await newClient.agent.loginWithSession(
+      sessionPath
+    )
 
-//     expect(isLoginFromSavedSessionOk).toEqual(true)
+    expect(isLoginFromSavedSessionOk).toEqual(true)
 
-//     const { username } = await newClient.callApi<User>('user/me')
+    const user = await newClient.user.getMe()
 
-//     expect(username).toEqual(process.env.MANGADEX_USERNAME)
+    expect(user.result).toEqual('ok')
 
-//     const isLogoutOk = await newClient.logout()
+    expect(user.data.attributes.username).toEqual(process.env.MANGADEX_USERNAME)
 
-//     expect(isLogoutOk).toEqual(true)
-//   })
-// })
+    const logoutResult = await newClient.auth.logout()
+
+    expect(logoutResult.result).toEqual('ok')
+  })
+})
