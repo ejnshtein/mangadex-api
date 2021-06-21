@@ -3,10 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>mangadex-api - v4.6.4</title>
-	<meta name="description" content="Documentation for mangadex-api - v4.6.4">
+	<title>mangadex-api - v5.0.1</title>
+	<meta name="description" content="Documentation for mangadex-api - v5.0.1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -22,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">mangadex-api - v4.6.4</a>
+					<a href="index.html" class="title">mangadex-api - v5.0.1</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -38,8 +39,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -49,12 +48,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
-			<h1>mangadex-api - v4.6.4</h1>
+			<h1>mangadex-api - v5.0.1</h1>
 		</div>
 	</div>
 </header>
@@ -70,211 +64,159 @@
 					<a href="https://github.com/ejnshtein/mangadex-api"><img src="https://img.shields.io/npm/l/mangadex-api?style=flat-square" alt="License"></a>
 				<a href="https://codecov.io/gh/ejnshtein/mangadex-api"><img src="https://codecov.io/gh/ejnshtein/mangadex-api/branch/master/graph/badge.svg" alt="codecov"></a></p>
 				<p>This is <a href="https://mangadex.org">Mangadex</a> website api wrapper.</p>
-				<a href="#additional-resources" id="additional-resources" style="color: inherit; text-decoration: none;">
-					<h2>Additional resources</h2>
-				</a>
-				<ul>
-					<li><a href="https://github.com/ejnshtein/mangadex-heroku">mangadex-heroku</a> is a <a href="https://graphql.org/">GraphQL</a> public endpoint.<br>Supports caching (in memory) and all public MD-API&#39;s that doesn&#39;t require authorization. (<a href="http://mangadex.herokuapp.com/graphql">playground</a>)</li>
-					<li><a href="https://codesandbox.io/s/condescending-kirch-u71ji?file=/src/index.js">Example webapp</a> that uses mangadex-heroku for API calls.</li>
-				</ul>
+				<blockquote>
+					<p><a href="https://github.com/ejnshtein/mangadex-api/issues/34">WIP on V5 version</a></p>
+				</blockquote>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
-				<pre><code class="language-bash">npm i mangadex-api
+				<pre><code class="language-bash"><span style="color: #000000">npm i mangadex-api</span>
 
-<span class="hljs-comment"># or</span>
+<span style="color: #008000"># or</span>
 
-yarn add mangadex-api
+<span style="color: #000000">yarn add mangadex-api</span>
 </code></pre>
 				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
 					<h2>Example</h2>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
+				<pre><code class="language-js"><span style="color: #008000">// In V5 Mangadex switched id type from number to string.</span>
+<span style="color: #008000">// So if you need to convert it, call the convertLegacyId method.</span>
+<span style="color: #008000">// Soon will be added to usual methods, maybe.</span>
 
-Mangadex.manga.getManga(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">manga</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${manga.follows}</span> followers`</span>)
+<span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #795E26">convertLegacyId</span><span style="color: #000000">([</span><span style="color: #098658">12</span><span style="color: #000000">], </span><span style="color: #A31515">&#039;group&#039;</span><span style="color: #000000">)</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">result</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">result</span><span style="color: #000000">.</span><span style="color: #001080">result</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">      </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span>
+<span style="color: #000000">        </span><span style="color: #A31515">`Got error on convertLegacyId request! </span><span style="color: #0000FF">${</span><span style="color: #001080">result</span><span style="color: #000000FF">.</span><span style="color: #001080">errors</span>
+<span style="color: #000000FF">          .</span><span style="color: #795E26">map</span><span style="color: #000000FF">((</span><span style="color: #001080">err</span><span style="color: #000000FF">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000FF"> </span><span style="color: #001080">err</span><span style="color: #000000FF">.</span><span style="color: #001080">title</span><span style="color: #000000FF">)</span>
+<span style="color: #000000FF">          .</span><span style="color: #795E26">join</span><span style="color: #000000FF">(</span><span style="color: #A31515">&#039;, &#039;</span><span style="color: #000000FF">)</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span>
+<span style="color: #000000">      )</span>
+<span style="color: #000000">      </span><span style="color: #AF00DB">return</span>
+<span style="color: #000000">    }</span>
 
-  Mangadex.manga.getMangaChapters(<span class="hljs-number">22723</span>).then(<span class="hljs-function">(<span class="hljs-params">{ chapters, groups }</span>) =&gt;</span> {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${chapters.length}</span> chapters`</span>)
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Manga <span class="hljs-subst">${manga.title}</span> has <span class="hljs-subst">${groups.length}</span> scanlated groups`</span>)
-  })
-})
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">newId</span><span style="color: #000000"> } = </span><span style="color: #001080">result</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #001080">attributes</span>
 
-Mangadex.chapter.getChapter(<span class="hljs-number">8857</span>).then(<span class="hljs-function">(<span class="hljs-params">chapter</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Chapter title is &quot;<span class="hljs-subst">${chapter.title}</span>&quot; and it is <span class="hljs-subst">${chapter.chapter}</span> chapter from <span class="hljs-subst">${chapter.volume}</span> volume.`</span>
-  )
-})
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`New group id: </span><span style="color: #0000FF">${</span><span style="color: #001080">newId</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">)</span>
+<span style="color: #000000">  })</span>
 
-<span class="hljs-comment">// currently requires authorization</span>
-Mangadex.search(<span class="hljs-string">&#x27;senko&#x27;</span>).then(<span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Found <span class="hljs-subst">${response.titles.length}</span> titles.`</span>)
-})
+<span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #001080">manga</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">getManga</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #A31515">&#039;c26269c7-0f5d-4966-8cd5-b79acb86fb7a&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// will fetch additionally scanlation_group, artist, author attributes</span>
+<span style="color: #000000">      </span><span style="color: #001080">withRelationShips:</span><span style="color: #000000"> </span><span style="color: #0000FF">true</span>
+<span style="color: #000000">    }</span>
+<span style="color: #000000">  )</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">then</span><span style="color: #000000">(({ </span><span style="color: #001080">result</span><span style="color: #000000">, </span><span style="color: #001080">data</span><span style="color: #000000">, </span><span style="color: #001080">errors</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">result</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// oh no! something went wrong!</span>
+<span style="color: #000000">      </span><span style="color: #008000">// here we can handle errors array.</span>
+<span style="color: #000000">    }</span>
 
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">title</span><span style="color: #000000">, </span><span style="color: #0070C1">originalLanguage</span><span style="color: #000000"> } = </span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #001080">attributes</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Manga </span><span style="color: #0000FF">${</span><span style="color: #001080">title</span><span style="color: #000000FF">.</span><span style="color: #001080">en</span><span style="color: #0000FF">}</span><span style="color: #A31515"> published in </span><span style="color: #0000FF">${</span><span style="color: #001080">originalLanguage</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">)</span>
 
-<span class="hljs-comment">// Search with NSFW results</span>
-Mangadex.search({
-  <span class="hljs-attr">title</span>: <span class="hljs-string">&#x27;gotoubun&#x27;</span>,
-  <span class="hljs-attr">with_hentai</span>: <span class="hljs-literal">true</span>
-}).then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Found <span class="hljs-subst">${result.titles.filter(title =&gt; title.is_hentai).length}</span> hentai manga (☞ ͡ ͡° ͜ ʖ ͡ ͡°)☞`</span>)
-})
+<span style="color: #000000">    </span><span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #001080">manga</span>
+<span style="color: #000000">      .</span><span style="color: #795E26">getMangaFeed</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;c26269c7-0f5d-4966-8cd5-b79acb86fb7a&#039;</span><span style="color: #000000">, {</span>
+<span style="color: #000000">        </span><span style="color: #001080">limit:</span><span style="color: #000000"> </span><span style="color: #098658">10</span>
+<span style="color: #000000">      })</span>
+<span style="color: #000000">      .</span><span style="color: #795E26">then</span><span style="color: #000000">(({ </span><span style="color: #001080">results</span><span style="color: #000000">: </span><span style="color: #001080">chapters</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Manga </span><span style="color: #0000FF">${</span><span style="color: #001080">title</span><span style="color: #000000FF">.</span><span style="color: #001080">en</span><span style="color: #0000FF">}</span><span style="color: #A31515"> has </span><span style="color: #0000FF">${</span><span style="color: #001080">chapters</span><span style="color: #000000FF">.</span><span style="color: #001080">length</span><span style="color: #0000FF">}</span><span style="color: #A31515"> chapters`</span><span style="color: #000000">)</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">volume</span><span style="color: #000000">, </span><span style="color: #0070C1">chapter</span><span style="color: #000000"> } = </span><span style="color: #001080">chapters</span><span style="color: #000000">[</span><span style="color: #098658">0</span><span style="color: #000000">].</span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #001080">attributes</span>
+<span style="color: #000000">        </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Latest chapter: Vol </span><span style="color: #0000FF">${</span><span style="color: #001080">volume</span><span style="color: #0000FF">}</span><span style="color: #A31515"> Ch </span><span style="color: #0000FF">${</span><span style="color: #001080">chapter</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">)</span>
+<span style="color: #000000">      })</span>
+<span style="color: #000000">  })</span>
 
-Mangadex.getHome().then(<span class="hljs-function">(<span class="hljs-params">home</span>) =&gt;</span> {
-  <span class="hljs-keyword">if</span> (home.accouncement) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`New accouncement!\n<span class="hljs-subst">${home.accouncement.text}</span>`</span>)
-  }
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Todays top manga by follows is: <span class="hljs-subst">${home.top_manga.follows[<span class="hljs-number">0</span>].title}</span>`</span>
-  )
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Todays top chapter is from manga: <span class="hljs-subst">${home.top_chapters.day[<span class="hljs-number">0</span>].title}</span>`</span>
-  )
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Latest chapter is from manga: <span class="hljs-subst">${home.latest_updates.all[<span class="hljs-number">0</span>].title}</span>`</span>
-  )
-})
+<span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #001080">chapter</span><span style="color: #000000">.</span><span style="color: #795E26">getChapter</span><span style="color: #000000">(</span><span style="color: #098658">8857</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">chapter</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">chapter</span><span style="color: #000000">.</span><span style="color: #001080">result</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #A31515">`Got errors on chapter request! </span><span style="color: #0000FF">${</span><span style="color: #001080">chapter</span><span style="color: #000000FF">.</span><span style="color: #001080">errors</span>
+<span style="color: #000000FF">        .</span><span style="color: #795E26">map</span><span style="color: #000000FF">((</span><span style="color: #001080">err</span><span style="color: #000000FF">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000FF"> </span><span style="color: #001080">err</span><span style="color: #000000FF">.</span><span style="color: #001080">title</span><span style="color: #000000FF">)</span>
+<span style="color: #000000FF">        .</span><span style="color: #795E26">join</span><span style="color: #000000FF">(</span><span style="color: #A31515">&#039;, &#039;</span><span style="color: #000000FF">)</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span>
+<span style="color: #000000">    )</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span>
+<span style="color: #000000">    </span><span style="color: #A31515">`Chapter title is &quot;</span><span style="color: #0000FF">${</span><span style="color: #001080">chapter</span><span style="color: #000000FF">.</span><span style="color: #001080">data</span><span style="color: #000000FF">.</span><span style="color: #001080">attributes</span><span style="color: #000000FF">.</span><span style="color: #001080">title</span><span style="color: #0000FF">}</span><span style="color: #A31515">&quot; and it is </span><span style="color: #0000FF">${</span><span style="color: #001080">chapter</span><span style="color: #000000FF">.</span><span style="color: #001080">data</span><span style="color: #000000FF">.</span><span style="color: #001080">attributes</span><span style="color: #000000FF">.</span><span style="color: #001080">chapter</span><span style="color: #0000FF">}</span><span style="color: #A31515"> chapter from </span><span style="color: #0000FF">${</span><span style="color: #001080">chapter</span><span style="color: #000000FF">.</span><span style="color: #001080">volume</span><span style="color: #0000FF">}</span><span style="color: #A31515"> volume.`</span>
+<span style="color: #000000">  )</span>
+<span style="color: #000000">})</span>
 
-Mangadex.group.getGroup(<span class="hljs-number">12</span>).then(<span class="hljs-function">(<span class="hljs-params">group</span>) =&gt;</span> {
-  <span class="hljs-built_in">console</span>.log(
-    <span class="hljs-string">`Group <span class="hljs-subst">${group.name}</span> has <span class="hljs-subst">${group.stats.follows}</span> followers and <span class="hljs-subst">${group.stats.total_chapters}</span> total chapters uploaded!`</span>
-  )
-})
+<span style="color: #008000">// currently requires authorization</span>
+<span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #001080">manga</span><span style="color: #000000">.</span><span style="color: #795E26">search</span><span style="color: #000000">({ </span><span style="color: #001080">title:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;senko&#039;</span><span style="color: #000000"> }).</span><span style="color: #795E26">then</span><span style="color: #000000">(({ </span><span style="color: #001080">total</span><span style="color: #000000"> }) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Found </span><span style="color: #0000FF">${</span><span style="color: #001080">total</span><span style="color: #0000FF">}</span><span style="color: #A31515"> titles.`</span><span style="color: #000000">)</span>
+<span style="color: #000000">})</span>
+<span style="color: #008000">// Search with NSFW results</span>
+<span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #001080">manga</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">search</span><span style="color: #000000">({</span>
+<span style="color: #000000">    </span><span style="color: #001080">title:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;gotoubun&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">    </span><span style="color: #001080">contentRating:</span><span style="color: #000000"> [</span><span style="color: #A31515">&#039;pornographic&#039;</span><span style="color: #000000">]</span>
+<span style="color: #000000">  })</span>
+<span style="color: #000000">  .</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">result</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Found </span><span style="color: #0000FF">${</span><span style="color: #001080">result</span><span style="color: #000000FF">.</span><span style="color: #001080">results</span><span style="color: #000000FF">.</span><span style="color: #001080">length</span><span style="color: #0000FF">}</span><span style="color: #A31515"> hentai manga (☞ ͡ ͡° ͜ ʖ ͡ ͡°)☞`</span><span style="color: #000000">)</span>
+<span style="color: #000000">  })</span>
+
+<span style="color: #001080">Mangadex</span><span style="color: #000000">.</span><span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">getGroup</span><span style="color: #000000">(</span><span style="color: #098658">12</span><span style="color: #000000">).</span><span style="color: #795E26">then</span><span style="color: #000000">((</span><span style="color: #001080">group</span><span style="color: #000000">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #001080">result</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span>
+<span style="color: #000000">      </span><span style="color: #A31515">`Got errors from group request! </span><span style="color: #0000FF">${</span><span style="color: #001080">group</span><span style="color: #000000FF">.</span><span style="color: #001080">errors</span>
+<span style="color: #000000FF">        .</span><span style="color: #795E26">map</span><span style="color: #000000FF">((</span><span style="color: #001080">err</span><span style="color: #000000FF">) </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000FF"> </span><span style="color: #001080">err</span><span style="color: #000000FF">.</span><span style="color: #001080">title</span><span style="color: #000000FF">)</span>
+<span style="color: #000000FF">        .</span><span style="color: #795E26">join</span><span style="color: #000000FF">(</span><span style="color: #A31515">&#039;, &#039;</span><span style="color: #000000FF">)</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span>
+<span style="color: #000000">    )</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">name</span><span style="color: #000000">, </span><span style="color: #0070C1">members</span><span style="color: #000000"> } = </span><span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">.</span><span style="color: #001080">attributes</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">`Group </span><span style="color: #0000FF">${</span><span style="color: #001080">name</span><span style="color: #0000FF">}</span><span style="color: #A31515"> has </span><span style="color: #0000FF">${</span><span style="color: #001080">members</span><span style="color: #0000FF">}</span><span style="color: #A31515"> members`</span><span style="color: #000000">)</span>
+<span style="color: #000000">})</span>
 </code></pre>
 				<a href="#authorization-example" id="authorization-example" style="color: inherit; text-decoration: none;">
 					<h2>Authorization example</h2>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> { Mangadex } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;mangadex-api&#x27;</span>)
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">Mangadex</span><span style="color: #000000"> } = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;mangadex-api&#039;</span><span style="color: #000000">)</span>
 
-<span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Mangadex()
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">client</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Mangadex</span><span style="color: #000000">()</span>
 
-<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">loginResult</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">auth</span><span style="color: #000000">.</span><span style="color: #795E26">login</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;username&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;password&#039;</span><span style="color: #000000">)</span>
 
-<span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> client.search(<span class="hljs-string">&#x27;To Be Winner&#x27;</span>)
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">loginResult</span><span style="color: #000000">.</span><span style="color: #001080">result</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// oh no! it&#039;s login error!</span>
+<span style="color: #000000">}</span>
 
-<span class="hljs-built_in">console</span>.log(result) <span class="hljs-comment">// { titles: [{ title: &#x27;To Be Winner&#x27;, ... }] }</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">result</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">manga</span><span style="color: #000000">.</span><span style="color: #795E26">search</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;To Be Winner&#039;</span><span style="color: #000000">)</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">result</span><span style="color: #000000">)</span>
 </code></pre>
 				<a href="#cached-session-example" id="cached-session-example" style="color: inherit; text-decoration: none;">
 					<h2>Cached session example</h2>
 				</a>
-				<pre><code class="language-js"><span class="hljs-comment">// first you must save your session somewhere</span>
+				<pre><code class="language-js"><span style="color: #008000">// first you must save your session somewhere</span>
 
-<span class="hljs-keyword">await</span> client.agent.login(<span class="hljs-string">&#x27;username&#x27;</span>, <span class="hljs-string">&#x27;password&#x27;</span>, <span class="hljs-literal">false</span>)
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">loginResult</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">auth</span><span style="color: #000000">.</span><span style="color: #795E26">login</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;username&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;password&#039;</span><span style="color: #000000">)</span>
 
-<span class="hljs-keyword">await</span> client.agent.saveSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>))
+<span style="color: #AF00DB">if</span><span style="color: #000000"> (</span><span style="color: #001080">loginResult</span><span style="color: #000000">.</span><span style="color: #001080">result</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;error&#039;</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// oh no! it&#039;s login error!</span>
+<span style="color: #000000">}</span>
 
-<span class="hljs-comment">// now we can use it</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">agent</span><span style="color: #000000">.</span><span style="color: #795E26">saveSession</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;/path/to/session&#039;</span><span style="color: #000000">))</span>
 
-<span class="hljs-keyword">await</span> client.agent.loginWithSession(<span class="hljs-string">&#x27;/path/to/session&#x27;</span>)
+<span style="color: #008000">// now we can use it</span>
 
-<span class="hljs-keyword">const</span> me = <span class="hljs-keyword">await</span> client.getMe())
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">agent</span><span style="color: #000000">.</span><span style="color: #795E26">loginWithSession</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;/path/to/session&#039;</span><span style="color: #000000">)</span>
 
-<span class="hljs-built_in">console</span>.log(me)
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">me</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000">.</span><span style="color: #001080">user</span><span style="color: #000000">.</span><span style="color: #795E26">getMe</span><span style="color: #000000">()</span>
+
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">me</span><span style="color: #000000">)</span>
 </code></pre>
-				<a href="#migration-to-version-4" id="migration-to-version-4" style="color: inherit; text-decoration: none;">
-					<h2>Migration to version 4</h2>
-				</a>
-				<p>Main focuses in V4 were <a href="https://www.typescriptlang.org/">Typescript</a> and <a href="https://mangadex.org/">Mangadex</a> <a href="https://mangadex.org/thread/351011">API V2</a>.</p>
-				<p>So V1 support was dropped completely. If you still, for some reason, want to use API V1 then use <code>agent.callApi(endpoint, { baseUrl: &#39;https://mangadex.org/api&#39; })</code> code snippet to request data from API V1.</p>
-				<p>So there&#39;re new api groups:</p>
-				<ul>
-					<li>chapter/{id|hash}</li>
-					<li>follows</li>
-					<li>group/{id}<ul>
-							<li>group/{id}/chapters</li>
-						</ul>
-					</li>
-					<li>manga/{id}<ul>
-							<li>manga/{id}/chapters</li>
-							<li>manga/{id}/covers</li>
-						</ul>
-					</li>
-					<li>relations</li>
-					<li>tag</li>
-					<li>tag/{id}</li>
-					<li>user/{id}<ul>
-							<li>user/{id}/chapters</li>
-							<li>user/{id}/followed-manga</li>
-							<li>user/{id}/followed-updates</li>
-							<li>user/{id}/manga/{mangaId}</li>
-							<li>user/{id}/ratings</li>
-							<li>user/{id}/settings</li>
-						</ul>
-					</li>
-					<li>user/{id}/marker</li>
-				</ul>
-				<p>Each of them is available on <code>Mangadex</code> instance via these properties:</p>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> client = <span class="hljs-keyword">new</span> Mangadex()
-
-<span class="hljs-comment">// don&#x27;t forget to login</span>
-<span class="hljs-keyword">await</span> client.agent.login(username, password)
-
-<span class="hljs-comment">// and here we go</span>
-
-<span class="hljs-comment">// chapter/{id|hash}</span>
-client.chapter.getChapter(chapterId)
-
-<span class="hljs-comment">// follows</span>
-client.getFollows()
-
-<span class="hljs-comment">// group/{id}</span>
-client.group.getGroup(groupId)
-
-<span class="hljs-comment">// group/{id}/chapters</span>
-client.group.getGroupChapters(groupId)
-
-<span class="hljs-comment">// manga/{id}</span>
-client.manga.getManga(mangaId)
-
-<span class="hljs-comment">// manga/{id}/chapters</span>
-client.manga.getMangaChapters(mangaId)
-
-<span class="hljs-comment">// manga/{id}/covers</span>
-client.manga.getMangaCovers(mangaId)
-
-<span class="hljs-comment">// relations</span>
-client.getRelations()
-
-<span class="hljs-comment">// tag</span>
-client.tag.getTags()
-
-<span class="hljs-comment">// tag/{id}</span>
-client.tag.getTag(tagId)
-
-<span class="hljs-comment">// user/{id}</span>
-client.user.getUser(userId)
-
-<span class="hljs-comment">// user/{id}/chapters</span>
-client.user.getUserChapters(userId)
-
-<span class="hljs-comment">// user/{id}/followed-updates</span>
-client.user.getUserFollowedUpdates(userId)
-
-<span class="hljs-comment">// user/{id}/manga/{mangaId}</span>
-client.user.getUserManga(userId, mangaId)
-
-<span class="hljs-comment">// user/{id}/ratings</span>
-client.user.getUserRatings(userId)
-
-<span class="hljs-comment">// user/{id}/settings</span>
-client.user.getUserSettings(userId)
-
-<span class="hljs-comment">// user/{id}/followed-manga</span>
-client.user.getUserFollowedManga(userId)
-
-<span class="hljs-comment">// user/{id}/marker</span>
-client.user.setUserChapterRead(userId, chapters, read)
-</code></pre>
-				<a href="#migration-to-version-3" id="migration-to-version-3" style="color: inherit; text-decoration: none;">
-					<h2>Migration to version 3</h2>
-				</a>
-				<p>LRU cache was removed from package, so you&#39;ll have to implement caching by yourself.</p>
-				<p><a href="#Mangadex">Mangadex constructor</a> now accepts only 2 options.</p>
-				<p><a href="#getManga">getManga</a> and <a href="#getChapter">getChapter</a> lost <strong>normalize</strong> argument, now it&#39;s on <strong>by default</strong>.</p>
 				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
 					<h2>API</h2>
 				</a>
 				<p>API section is available on the <a href="https://ejnshtein.github.io/mangadex-api/">website</a>.</p>
+				<a href="#additional-resources" id="additional-resources" style="color: inherit; text-decoration: none;">
+					<h2>Additional resources</h2>
+				</a>
+				<ul>
+					<li><a href="https://github.com/ejnshtein/mangadex-heroku">mangadex-heroku</a> is a <a href="https://graphql.org/">GraphQL</a> public endpoint. (not updated to V5 yet)<br>Supports caching (in memory) and all public MD-API&#39;s that doesn&#39;t require authorization. (<a href="http://mangadex.herokuapp.com/graphql">playground</a>)</li>
+					<li><a href="https://codesandbox.io/s/condescending-kirch-u71ji?file=/src/index.js">Example webapp</a> that uses mangadex-heroku for API calls. (not updated to V5 yet)</li>
+				</ul>
 				<hr>
 				<a href="#contact" id="contact" style="color: inherit; text-decoration: none;">
 					<h2>Contact</h2>
@@ -285,94 +227,70 @@ client.user.setUserChapterRead(userId, chapters, read)
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_agent_.html">&quot;src/<wbr>Agent&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_composer_.html">&quot;src/<wbr>Composer&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_mangadex_.html">&quot;src/<wbr>Mangadex&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_scraper_.html">&quot;src/<wbr>Scraper&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_base_.html">&quot;src/api/base&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_chapter_.html">&quot;src/api/chapter&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_group_.html">&quot;src/api/group&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_index_.html">&quot;src/api/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_manga_.html">&quot;src/api/manga&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_tag_.html">&quot;src/api/tag&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_api_user_.html">&quot;src/api/user&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_index_.html">&quot;src/index&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_deepmerge_.html">&quot;src/lib/deepmerge&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_error_.html">&quot;src/lib/error&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_get_query_.html">&quot;src/lib/get-<wbr>query&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_get_search_headers_.html">&quot;src/lib/get-<wbr>search-<wbr>headers&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_links_.html">&quot;src/lib/links&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_multipart_.html">&quot;src/lib/multipart&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_normalize_.html">&quot;src/lib/normalize&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_options_.html">&quot;src/lib/options&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_src_lib_sleep_.html">&quot;src/lib/sleep&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_agent_d_.html">&quot;types/agent.d&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_cheerio_d_.html">&quot;types/cheerio.d&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_domhandler_d_.html">&quot;types/domhandler.d&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_index_d_.html">&quot;types/index.d&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_language_d_.html">&quot;types/language.d&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/_types_mangadex_d_.html">&quot;types/mangadex.d&quot;</a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/accountresolver.html" class="tsd-kind-icon">Account<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/agent.html" class="tsd-kind-icon">Agent</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/authresolver.html" class="tsd-kind-icon">Auth<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/chapterresolver.html" class="tsd-kind-icon">Chapter<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/composer.html" class="tsd-kind-icon">Composer</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/coverartresolver.html" class="tsd-kind-icon">Cover<wbr>Art<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/groupresolver.html" class="tsd-kind-icon">Group<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/mangaresolver.html" class="tsd-kind-icon">Manga<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/mangadex.html" class="tsd-kind-icon">Mangadex</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/userresolver.html" class="tsd-kind-icon">User<wbr>Resolver</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#checktokenresponse" class="tsd-kind-icon">Check<wbr>Token<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#createmangaoptions" class="tsd-kind-icon">Create<wbr>Manga<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#getcoverartsoptions" class="tsd-kind-icon">Get<wbr>Cover<wbr>Arts<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#getmangafeedoptions" class="tsd-kind-icon">Get<wbr>Manga<wbr>Feed<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#searchchapteroptions" class="tsd-kind-icon">Search<wbr>Chapter<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#searchgroupoptions" class="tsd-kind-icon">Search<wbr>Group<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#searchmangaoptions" class="tsd-kind-icon">Search<wbr>Manga<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#searchusersoptions" class="tsd-kind-icon">Search<wbr>Users<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="modules.html#defaultoptions" class="tsd-kind-icon">Default<wbr>Options</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -383,20 +301,20 @@ client.user.setUserChapterRead(userId, chapters, read)
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
 			</ul>
 			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 			</ul>
 		</div>
 	</div>
