@@ -4,7 +4,6 @@
   "entryPoints": [
     "./src/index.ts"
   ],
-  "includeDeclarations": true,
   "excludeExternals": true,
   "includeVersion": true,
   "sourcefile-url-prefix": "https://github.com/ejnshtein/mangadex-api/tree/master/"
