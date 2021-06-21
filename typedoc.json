@@ -1,9 +1,8 @@
 {
   "name": "mangadex-api",
   "out": "docs",
-  "inputFiles": [
-    "src",
-    "types"
+  "entryPoints": [
+    "./src/index.ts"
   ],
   "includeDeclarations": true,
   "excludeExternals": true,
