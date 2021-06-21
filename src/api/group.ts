@@ -44,6 +44,7 @@ export class GroupResolver extends ApiBase {
    */
   async getGroup(
     groupId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     options: {
       withRelationShips?: boolean
     } = {}
