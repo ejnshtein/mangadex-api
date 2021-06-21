@@ -1,6 +1,5 @@
 import { ApiBase } from './base'
 import { Agent } from '../Agent'
-import { ApiResponseError } from '../lib/error'
 import { Session } from '../../types/agent'
 import { ApiResponse } from '../../types/response'
 import {

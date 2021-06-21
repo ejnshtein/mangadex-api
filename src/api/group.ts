@@ -1,13 +1,11 @@
 import { Agent } from '../Agent'
 import { ApiBase } from './base'
-import { UserResolver } from './user'
 import {
   GroupExtended,
   GroupExtendedResponse,
   GroupList,
   GroupResponse
 } from '../../types/data-types/group'
-import { getRelationshipType } from '../lib/relationship-type'
 import { ApiResponse } from '../../types/response'
 import { formatQueryParams } from '../lib/format-query-params'
 
