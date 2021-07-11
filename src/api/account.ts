@@ -5,6 +5,18 @@ import { ApiResponseError } from '../lib/error'
 import { ApiBase } from './base'
 
 export class AccountResolver extends ApiBase {
+  async activate(code: string): Promise<boolean> {
+    const { data } = await this.agent.call<ApiResponse<Record<string, never>>>(
+      `account/activate/${code}`
+    )
+
+    if (data.result === 'error') {
+      throw new ApiResponseError(data.errors[0])
+    }
+
+    return true
+  }
+
   static async activate(code: string): Promise<boolean> {
     const { data } = await Agent.call<ApiResponse<Record<string, never>>>(
       `account/activate/${code}`
@@ -15,6 +27,35 @@ export class AccountResolver extends ApiBase {
     }
 
     return true
+  }
+
+  /**
+   * @param username 1-64 characters
+   * @param password 8-1024 characters
+   * @param email
+   */
+  async createAccount(
+    username: string,
+    password: string,
+    email: string
+  ): Promise<UserResponse> {
+    const { data: user } = await this.agent.call<ApiResponse<{ data: User }>>(
+      'account/create',
+      {
+        method: 'POST'
+      },
+      {
+        username,
+        password,
+        email
+      }
+    )
+
+    if (user.result === 'error') {
+      return user
+    }
+
+    return user
   }
 
   /**
@@ -46,6 +87,22 @@ export class AccountResolver extends ApiBase {
     return user
   }
 
+  async resendActivation(
+    email: string
+  ): Promise<ApiResponse<Record<string, never>>> {
+    const { data } = await this.agent.call<ApiResponse<Record<string, never>>>(
+      'account/activate/resend',
+      {
+        method: 'POST'
+      },
+      {
+        email
+      }
+    )
+
+    return data
+  }
+
   static async resendActivation(
     email: string
   ): Promise<ApiResponse<Record<string, never>>> {
@@ -62,6 +119,16 @@ export class AccountResolver extends ApiBase {
     return data
   }
 
+  async recover(email: string): Promise<ApiResponse<Record<string, never>>> {
+    const { data } = await this.agent.call<ApiResponse<Record<string, never>>>(
+      'account/recover',
+      { method: 'POST' },
+      { email }
+    )
+
+    return data
+  }
+
   static async recover(
     email: string
   ): Promise<ApiResponse<Record<string, never>>> {
@@ -69,6 +136,21 @@ export class AccountResolver extends ApiBase {
       'account/recover',
       { method: 'POST' },
       { email }
+    )
+
+    return data
+  }
+
+  async completeRecover(
+    code: string,
+    newPassword: string
+  ): Promise<ApiResponse<Record<string, never>>> {
+    const { data } = await this.agent.call<ApiResponse<Record<string, never>>>(
+      `account/recover/${code}`,
+      {
+        method: 'POST'
+      },
+      { newPassword }
     )
 
     return data
